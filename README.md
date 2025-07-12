@@ -20,7 +20,8 @@
 
 ### 🖥️ Debian / Ubuntu / Kali / Linux (Desktop & Server)
 ```bash
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/refs/heads/Max/install_debian.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/refs/heads/Max/install_debian.sh)"
+
 ````
 
 ### 📱 Termux (Android)
