@@ -1,14 +1,25 @@
 #!/bin/bash
 
-echo "[*] Maxter by https://mahendraplus.github.io"
-LOG_FILE="$HOME/maxter_install.log"
-exec > >(tee -a "$LOG_FILE") 2>&1
+# MaxTer v25.2 — Debian Installer
+# Author: Mahendra Mali - Max (https://mahendraplus.github.io)
+# Location: 127.0.0.1
 
 set -e  # Exit on any error
 
-# 1. Install Dependencies
-echo "[*] Installing required packages..."
-sudo apt update
+LOG_FILE="$HOME/maxter_install.log"
+exec > >(tee -a "$LOG_FILE") 2>&1
+
+echo "──────────────────────────────────────────────"
+echo "   🌀 MaxTer v25.2 by Mahendra Mali - Max"
+echo "   🌐 https://mahendraplus.github.io"
+echo "   📁 Log File: $LOG_FILE"
+echo "──────────────────────────────────────────────"
+sleep 1
+
+# 1. Install Required Packages
+echo "[*] Updating packages..."
+sudo apt update -y
+echo "[*] Installing zsh, git, wget, curl..."
 sudo apt install -y zsh git wget curl
 
 # 2. Install Oh My Zsh
@@ -17,21 +28,21 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
     RUNZSH=no KEEP_ZSHRC=yes \
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 else
-    echo "[*] Oh My Zsh already installed. Skipping..."
+    echo "[✔] Oh My Zsh already installed. Skipping..."
 fi
 
-# 3. Install Powerlevel10k
-echo "[*] Installing Powerlevel10k theme..."
+# 3. Install Powerlevel10k Theme
 THEME_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
 if [ ! -d "$THEME_DIR" ]; then
+    echo "[*] Installing Powerlevel10k theme..."
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$THEME_DIR"
 else
-    echo "[*] Powerlevel10k already installed. Skipping..."
+    echo "[✔] Powerlevel10k already installed. Skipping..."
 fi
 
-# 4. Install Fonts
-echo "[*] Installing MesloLGS Nerd Fonts..."
+# 4. Install Fonts (MesloLGS NF)
 FONT_DIR="/usr/share/fonts/truetype/maxter"
+echo "[*] Installing MesloLGS Nerd Fonts..."
 sudo mkdir -p "$FONT_DIR"
 cd /tmp
 
@@ -44,6 +55,7 @@ FONT_URLS=(
 
 for url in "${FONT_URLS[@]}"; do
     fname=$(basename "$url")
+    echo "   ↳ Downloading: $fname"
     wget -q "$url" -O "$fname"
     sudo cp "$fname" "$FONT_DIR/"
 done
@@ -52,16 +64,21 @@ echo "[*] Updating font cache..."
 sudo fc-cache -f -v
 
 # 5. Download .p10k.zsh
-echo "[*] Downloading Maxter Powerlevel10k config..."
+echo "[*] Downloading MaxTer Powerlevel10k config..."
 cd "$HOME"
 wget -q -O .p10k.zsh "https://github.com/mahendraplus/MAXTER/raw/Max/maxterm.p10k.zsh"
 
 # 6. Update .zshrc
-echo "[*] Configuring ~/.zshrc..."
 ZSHRC="$HOME/.zshrc"
+echo "[*] Configuring ~/.zshrc..."
+
+if [ -f "$ZSHRC" ]; then
+    cp "$ZSHRC" "$ZSHRC.bak"
+    echo "   ↳ Backup created: $ZSHRC.bak"
+fi
 
 cat > "$ZSHRC" <<'EOF'
-# Maxter ZSH Configuration
+# MaxTer ZSH Configuration
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(git)
@@ -74,10 +91,14 @@ source $ZSH/oh-my-zsh.sh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 EOF
 
-# 7. Start ZSH
-echo "[*] Switching to Zsh..."
-exec zsh -i <<'EOF'
+# 7. Finish & Launch ZSH
 echo
-echo "[✓] Maxter installed successfully!"
-echo "[*] Maxter by https://mahendraplus.github.io"
-EOF
+echo "🎉 MaxTer v25.2 installed successfully!"
+echo "📦 Oh My Zsh + Powerlevel10k is now configured."
+echo "🌈 Fonts installed at: $FONT_DIR"
+echo "🧠 Author: Mahendra Mali - Max (https://mahendraplus.github.io)"
+echo "📄 You can now use your customized terminal by running: zsh"
+echo
+
+# Switch to Zsh
+exec zsh
