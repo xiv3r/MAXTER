@@ -1,518 +1,513 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- SEO Meta Tags -->
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MAXTER - Supercharge your terminal with this powerful Zsh setup for Debian & Termux. Featuring Powerlevel10k, Oh My Zsh, and hacker-friendly tools.">
-    <meta name="keywords" content="terminal, zsh, powerlevel10k, oh-my-zsh, debian, termux, hacker tools, mahendra mali, maxter">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <title>MAXTER | The Ultimate Zsh Setup for Termux & Linux</title>
+    <meta name="title" content="MAXTER | The Ultimate Zsh Setup for Termux & Linux">
+    <meta name="description" content="Transform your terminal into a futuristic dev environment. MAXTER is the fastest, auto-configuring Zsh setup for Termux, Debian, Ubuntu & Kali. Features Powerlevel10k, syntax highlighting, and autosuggestions. Created by Mahendra Mali.">
+    <meta name="keywords" content="MAXTER, Mahendra Mali, Termux Zsh, Linux Terminal, Oh My Zsh, Powerlevel10k, Terminal Theme, Hacker Terminal, Best Termux Script, Debian Zsh, Ubuntu Terminal, Shell Customization, dotfiles">
     <meta name="author" content="Mahendra Mali (Max)">
-    <meta property="og:title" content="MAXTER - Your Terminal Supercharged">
-    <meta property="og:description" content="The ultimate terminal experience for developers and hackers">
-    <meta property="og:url" content="https://mahendraplus.github.io/MAXTER">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <meta name="theme-color" content="#050505">
+
     <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <title>MAXTER - Your Terminal Supercharged</title>
+    <meta property="og:url" content="https://mahendraplus.github.io/MAXTER/">
+    <meta property="og:title" content="MAXTER | Supercharge Your Terminal">
+    <meta property="og:description" content="One command to rule them all. Install the ultimate Zsh + Powerlevel10k environment on Termux and Linux. Fast, Beautiful, Glitch-Free.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/Maxterm.png">
+    <meta property="og:site_name" content="MAXTER by Mahendra Mali">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://mahendraplus.github.io/MAXTER/">
+    <meta property="twitter:title" content="MAXTER | The Ultimate Shell Experience">
+    <meta property="twitter:description" content="Don't settle for a boring terminal. Get MAXTER. The best Zsh setup for hackers and developers on Termux & Linux.">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/Maxterm.png">
+    <meta property="twitter:creator" content="@mahendraplus"> 
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "MAXTER",
+      "operatingSystem": "Linux, Android (Termux), macOS",
+      "applicationCategory": "DeveloperApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Mahendra Mali",
+        "url": "https://github.com/mahendraplus"
+      },
+      "description": "An automated configuration script for Zsh, Oh My Zsh, and Powerlevel10k optimized for Termux and Debian-based Linux distributions.",
+      "downloadUrl": "https://github.com/mahendraplus/MAXTER"
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Favicon -->
-    <link rel="icon" href="https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/assets/maxter-icon.svg" type="image/svg+xml">
+    <link rel="icon" type="image/png" href="https://github.com/mahendraplus.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- Fonts & Styles -->
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
+        /* --- 1. CORE VARIABLES & RESET --- */
         :root {
-            --primary: #6e8efb;
-            --secondary: #a777e3;
-            --dark: #1e1b18;
-            --light: #f7f7f7;
-            --success: #4ade80;
-            --warning: #fbbf24;
-            --danger: #f87171;
+            --bg-body: #050505;
+            --bg-surface: #0f0f11;
+            --bg-surface-hover: #18181b;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --brand-color: #6366f1; /* Indigo */
+            --brand-glow: rgba(99, 102, 241, 0.5);
+            --accent-green: #10b981;
+            --border-color: #27272a;
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--dark);
-            color: var(--light);
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
             line-height: 1.6;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Fixes horizontal scrollbar */
+            -webkit-font-smoothing: antialiased;
         }
-        
+
+        /* --- 2. CUSTOM SCROLLBAR --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-body); }
+        ::-webkit-scrollbar-thumb { 
+            background: #333; 
+            border-radius: 4px; 
+            border: 2px solid var(--bg-body);
+        }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+        /* --- 3. BACKGROUND EFFECTS --- */
+        .bg-grid {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            pointer-events: none;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        /* --- 4. LAYOUT --- */
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 0 24px;
         }
-        
-        header {
-            text-align: center;
-            margin-bottom: 3rem;
+
+        section {
+            padding: 100px 0;
             position: relative;
         }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .logo img {
-            width: 48px;
-            height: 48px;
-        }
-        
-        .logo-text {
-            font-size: 3rem;
+
+        /* --- 5. TYPOGRAPHY & COMPONENTS --- */
+        h1, h2, h3 {
             font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 6vw, 4.5rem);
+            margin-bottom: 24px;
+            background: linear-gradient(to bottom right, #fff 30%, #a1a1aa 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -1px;
         }
-        
-        .tagline {
+
+        .subtitle {
             font-size: 1.25rem;
-            opacity: 0.9;
-            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 40px;
         }
-        
-        .author {
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
-        
-        .author a {
-            color: var(--primary);
-            text-decoration: none;
-        }
-        
-        .screenshot {
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            margin: 3rem 0;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: transform 0.3s ease;
-        }
-        
-        .screenshot:hover {
-            transform: translateY(-5px);
-        }
-        
-        .screenshot img {
-            width: 100%;
-            display: block;
-        }
-        
-        .version {
-            text-align: center;
-            font-size: 1.5rem;
-            margin: 2rem 0;
-            opacity: 0.9;
-        }
-        
-        section {
-            margin-bottom: 3rem;
-            background: rgba(255,255,255,0.03);
-            border-radius: 12px;
-            padding: 2rem;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        
-        h2 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        h3 {
-            font-size: 1.3rem;
-            margin: 1.5rem 0 1rem;
-            color: var(--secondary);
-        }
-        
-        .command-box {
-            position: relative;
-            background: rgba(0,0,0,0.3);
-            border-radius: 8px;
-            padding: 1.5rem;
-            font-family: 'Fira Code', monospace;
-            margin: 1.5rem 0;
-            border-left: 4px solid var(--primary);
-            overflow: hidden;
-        }
-        
-        .command-box pre {
-            white-space: pre-wrap;
-            word-break: break-all;
-        }
-        
-        .copy-btn {
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.2s ease;
-        }
-        
-        .copy-btn:hover {
-            background: var(--primary);
-        }
-        
-        .copy-btn.copied {
-            background: var(--success);
-        }
-        
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-        
-        .feature {
-            background: rgba(255,255,255,0.03);
-            padding: 1.5rem;
-            border-radius: 8px;
-            border-left: 4px solid var(--primary);
-            transition: transform 0.3s ease;
-        }
-        
-        .feature:hover {
-            transform: translateY(-5px);
-        }
-        
-        .feature h4 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .feature p {
-            opacity: 0.8;
-            font-size: 0.95rem;
-        }
-        
-        .author-section {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-            margin: 3rem 0;
-        }
-        
-        .author-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--primary);
-        }
-        
-        .author-info {
-            flex: 1;
-        }
-        
-        .quote {
-            font-style: italic;
-            margin: 1rem 0;
-            padding-left: 1rem;
-            border-left: 3px solid var(--secondary);
-            opacity: 0.9;
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        
-        .social-link {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: rgba(255,255,255,0.1);
-            border-radius: 6px;
-            color: white;
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-        
-        .social-link:hover {
-            background: var(--primary);
-            transform: translateY(-2px);
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-        }
-        
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        th {
-            color: var(--primary);
-        }
-        
-        tr:hover {
-            background: rgba(255,255,255,0.03);
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .badges {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-        
+
         .badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 6px;
-            color: white;
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--brand-color);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            font-family: var(--font-mono);
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 60px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 8px;
             font-weight: 600;
             text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-        
+
+        .btn-primary {
+            background: var(--text-primary);
+            color: var(--bg-body);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        .btn-secondary:hover {
+            background: var(--bg-surface-hover);
+            border-color: #555;
+        }
+
+        /* --- 6. TERMINAL PREVIEW (HERO) --- */
+        .terminal-wrapper {
+            background: #000;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 0 1px rgba(0,0,0,1), 0 30px 60px -12px rgba(0,0,0,0.8);
+            overflow: hidden;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+            position: relative;
+        }
+
+        .terminal-header {
+            background: #111;
+            padding: 12px 16px;
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid #222;
+        }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .red { background: #ef4444; }
+        .yellow { background: #eab308; }
+        .green { background: #22c55e; }
+
+        .terminal-body {
+            padding: 24px;
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            color: #d4d4d8;
+            min-height: 200px;
+        }
+
+        .prompt { color: var(--accent-green); font-weight: bold; }
+        .path { color: var(--brand-color); font-weight: bold; }
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background: #d4d4d8;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* --- 7. INSTALLATION BOX --- */
+        .install-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 0;
+            max-width: 750px;
+            margin: 40px auto 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .install-box code {
+            font-family: var(--font-mono);
+            color: var(--accent-green);
+            padding: 20px;
+            overflow-x: auto;
+            white-space: nowrap;
+            flex-grow: 1;
+            font-size: 0.9rem;
+            scrollbar-width: none; /* Hide scrollbar inside box */
+        }
+        .install-box code::-webkit-scrollbar { display: none; }
+
+        .copy-btn {
+            background: #18181b;
+            border: none;
+            border-left: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0 24px;
+            height: 60px; /* Match code height */
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .copy-btn:hover { background: #27272a; }
+        .copy-btn:active { background: #10b981; color: #000; }
+
+        /* --- 8. FEATURES GRID --- */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 32px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--brand-color);
+            transform: translateY(-5px);
+        }
+
+        .icon {
+            font-size: 1.5rem;
+            color: var(--brand-color);
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        /* --- 9. ANIMATION CLASSES (Reveal on Scroll) --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- 10. MOBILE OPTIMIZATIONS --- */
         @media (max-width: 768px) {
-            .author-section {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .social-links {
-                justify-content: center;
-            }
-            
-            .features {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        /* Animation classes */
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .floating {
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        .pulsing {
-            animation: pulse 2s ease-in-out infinite;
+            h1 { font-size: 2.5rem; }
+            .install-box { flex-direction: column; align-items: stretch; }
+            .copy-btn { height: 48px; border-left: none; border-top: 1px solid var(--border-color); justify-content: center; }
+            .terminal-body { font-size: 0.8rem; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <h1 class="logo-text">MAXTER</h1>
-            </div>
-            <p class="tagline">Your Terminal. Supercharged.</p>
-            <p class="author">⚙️ <em>Crafted by <a href="https://mahendraplus.github.io">Mahendra Mali - Max</a> from <code>127.0.0.1</code></em></p>
-            <p>A beautifully fast & powerful terminal experience for <strong>Debian</strong> & <strong>Termux</strong>, powered by <strong>Zsh + Powerlevel10k + Oh My Zsh</strong>.</p>
-        </header>
-        
-        <div class="screenshot">
-            <img src="https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/Maxterm.png" alt="MAXTER Terminal Screenshot">
+
+    <div class="bg-grid"></div>
+
+    <nav style="padding: 24px 0; position: absolute; top: 0; width: 100%; z-index: 10;">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-weight: 800; font-size: 1.2rem; font-family: var(--font-mono);">MAXTER_</div>
+            <a href="https://github.com/mahendraplus/MAXTER" style="color: var(--text-secondary); text-decoration: none; font-size: 1.2rem;"><i class="fab fa-github"></i></a>
         </div>
-        
-        <div class="version">
-            <h3>✨ MAXTER v25.2 — Minimal. Fast. Elegant.</h3>
-        </div>
-        
-        <section id="installation">
-            <h2>📦 One-Line Installation</h2>
-            <p><strong>No configs. No mess. Just pure style & power.</strong></p>
-            
-            <h3>🖥️ Debian / Ubuntu / Kali / Linux (Desktop & Server)</h3>
-            <div class="command-box">
-                <button class="copy-btn" onclick="copyToClipboard(this, 'bash -c \"$(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/refs/heads/Max/install_debian.sh)\"')">Copy</button>
-                <pre>bash -c "$(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/refs/heads/Max/install_debian.sh)"</pre>
+    </nav>
+
+    <section style="padding-top: 160px; text-align: center;">
+        <div class="container reveal">
+            <span class="badge">v25.2 Update Available</span>
+            <h1>The Terminal,<br>Re-Engineered.</h1>
+            <p class="subtitle">Transform your Termux, Debian, or Ubuntu shell into a powerhouse. Intelligent auto-complete, instant git status, and a design that keeps you in flow.</p>
+
+            <div class="btn-group">
+                <a href="#install" class="btn btn-primary">
+                    <i class="fas fa-download"></i> Install Now
+                </a>
+                <a href="https://github.com/mahendraplus/MAXTER" class="btn btn-secondary">
+                    <i class="fas fa-code"></i> View Source
+                </a>
             </div>
-            
-            <h3>📱 Termux (Android)</h3>
-            <div class="command-box">
-                <button class="copy-btn" onclick="copyToClipboard(this, 'sh -c \"$(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/install.sh)\"')">Copy</button>
-                <pre>sh -c "$(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/install.sh)"</pre>
-            </div>
-            
-            <p class="pulsing">🔐 <em>Runs cleanly with safe permissions. Fonts, aliases, theme, and tweaks are auto-applied.</em></p>
-        </section>
-        
-        <section id="features">
-            <h2>🌟 What's Inside MAXTER?</h2>
-            <div class="features">
-                <div class="feature">
-                    <h4>🧠 Zsh</h4>
-                    <p>The shell that thinks ahead with advanced completion and powerful scripting capabilities.</p>
+
+            <div class="terminal-wrapper">
+                <div class="terminal-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
                 </div>
-                <div class="feature">
-                    <h4>🎩 Oh My Zsh</h4>
-                    <p>The legendary Zsh framework with hundreds of plugins and themes to boost your productivity.</p>
-                </div>
-                <div class="feature">
-                    <h4>🚀 Powerlevel10k</h4>
-                    <p>Blazing fast and customizable prompt that shows exactly what you need at a glance.</p>
-                </div>
-                <div class="feature">
-                    <h4>🧬 Smart Tools</h4>
-                    <p>Autosuggestions, syntax highlighting, colorful <code>ls</code>, Git info, and much more.</p>
-                </div>
-                <div class="feature">
-                    <h4>💻 Optimized Workflow</h4>
-                    <p>Fine-tuned for <em>speed</em>, <em>clarity</em>, and <em>hacker workflows</em>.</p>
-                </div>
-            </div>
-        </section>
-        
-        <section id="author">
-            <h2>✒️ About the Author</h2>
-            <div class="author-section">
-                <img src="https://avatars.githubusercontent.com/u/57547869?v=4" alt="Mahendra Mali" class="author-avatar">
-                <div class="author-info">
-                    <h3>Mahendra Mali | Max</h3>
-                    <p>Born at <code>127.0.0.1</code>. A self-taught coder, terminal junkie, and ethical hacker.</p>
-                    <p class="quote">"Terminals shouldn't be boring. They should be yours."</p>
-                    <p>MAXTER isn't just another script. It's the setup I built for my students, my friends, and myself to turn every dull terminal into a hacker's cockpit.</p>
-                    <div class="social-links">
-                        <a href="https://mahendraplus.github.io" class="social-link">🌐 Visit My Website</a>
-                        <a href="https://github.com/mahendraplus" class="social-link">💻 GitHub Profile</a>
+                <div class="terminal-body">
+                    <div>
+                        <span class="prompt">➜</span> <span class="path">~</span> <span id="typewriter"></span><span class="cursor"></span>
+                    </div>
+                    <div id="terminal-output" style="margin-top: 10px; color: var(--text-secondary); display: none;">
+                        <span style="color: var(--accent-green);">✔</span> MAXTER Installed Successfully.<br>
+                        <span style="color: var(--brand-color);">ℹ</span> Restarting Shell...<br>
+                        <br>
+                        <span style="color: #fff; font-weight: bold;">Welcome to MAXTER v25.2</span>
                     </div>
                 </div>
             </div>
-        </section>
-        
-        <section id="credits">
-            <h2>🧑‍💻 Coder Credits</h2>
-            <p>Big respect to GitHub Coder</a> for code ideas, patches, and support. Their contribution helped shape MAXTER's flow and finesse.</p>
-        </section>
-        
-        <section id="share">
-            <h2>🗨️ Real Caption to Share</h2>
-            <div class="command-box">
-                <button class="copy-btn" onclick="copyToClipboard(this, 'MAXTER is not just a script. It\\'s a power-packing terminal enhancer that transforms any boring shell into a futuristic workspace — with blazing speed, beautiful prompts, and hacker-grade tools. Built for Debian and Termux by Max from 127.0.0.1.')">Copy</button>
-                <pre>"MAXTER is not just a script. It's a power-packing terminal enhancer that transforms any boring shell into a futuristic workspace — with blazing speed, beautiful prompts, and hacker-grade tools. Built for Debian and Termux by Max from 127.0.0.1."</pre>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="reveal">
+                <h2 style="text-align: center;">Why Maxter?</h2>
+                <p style="text-align: center; color: var(--text-secondary); margin-top: 10px;">Built for speed, designed for hackers.</p>
             </div>
-        </section>
-        
-        <section id="cta">
-            <h2>🧪 Try It. Tweak It. Own It.</h2>
-            <p>Whether you're into hacking, development, or just want your terminal to look fire — MAXTER has you covered. Lightweight, fast, and customizable — install it once, and you're set.</p>
-            <div class="badges">
-                <a href="#installation" class="badge">Get Started Now</a>
+            
+            <div class="grid-3">
+                <div class="feature-card reveal" style="transition-delay: 100ms;">
+                    <i class="fas fa-bolt icon"></i>
+                    <h3>Zero Latency</h3>
+                    <p>Optimized startup time. We stripped the bloat from Oh-My-Zsh to ensure your terminal opens instantly, even on mobile.</p>
+                </div>
+                <div class="feature-card reveal" style="transition-delay: 200ms;">
+                    <i class="fas fa-shield-alt icon"></i>
+                    <h3>Crash Proof</h3>
+                    <p>Includes a self-healing installer that backs up your `.zshrc`, detects network failures, and retries corrupt downloads.</p>
+                </div>
+                <div class="feature-card reveal" style="transition-delay: 300ms;">
+                    <i class="fas fa-paint-brush icon"></i>
+                    <h3>Auto-Theme</h3>
+                    <p>Automatically configures Powerlevel10k with a modern preset, installs Nerd Fonts, and fixes color schemes.</p>
+                </div>
             </div>
-        </section>
-        
-        <section id="links">
-            <h2>🔗 Quick Links</h2>
-            <table>
-                <tr>
-                    <th>Resource</th>
-                    <th>Link</th>
-                </tr>
-                <tr>
-                    <td>🌐 Website</td>
-                    <td><a class="social-link" href="https://mahendraplus.github.io">mahendraplus.github.io</a></td>
-                </tr>
-                <tr>
-                    <td>📦 Termux Install</td>
-                    <td><a class="social-link" href="https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/install.sh">install.sh</a></td>
-                </tr>
-                <tr>
-                    <td>🐧 Debian Install</td>
-                    <td><a class="social-link" href="https://raw.githubusercontent.com/mahendraplus/MAXTER/refs/heads/Max/install_debian.sh">install_debian.sh</a></td>
-                </tr>
-                <tr>
-                    <td>👨‍💻 Author GitHub</td>
-                    <td><a class="social-link" href="https://github.com/mahendraplus">@mahendraplus</a></td>
-                </tr>
-                <tr>
-                    <td>✨ Inspired By</td>
-                    <td>
-                        <a class="social-link" href="https://github.com/romkatv/powerlevel10k">Powerlevel10k</a>
-                        <a class="social-link" href="https://ohmyz.sh">Oh My Zsh</a>
-                    </td>
-                </tr>
-            </table>
-        </section>
-        
-        <footer>
-            <h2>🚀 MAXTER — Built for Hackers, Loved by Everyone.</h2>
-            <p>Transform your shell. Save hours. Look cool doing it.</p>
-            <div class="badges">
-                <a href="https://github.com/mahendraplus/MAXTER" class="badge">⭐ Star on GitHub</a>
-                <a href="https://mahendraplus.github.io" class="badge">👨‍💻 Follow Max</a>
+        </div>
+    </section>
+
+    <section id="install" style="background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.02));">
+        <div class="container reveal" style="text-align: center;">
+            <h2>One Command Install</h2>
+            <p class="subtitle">Detects OS (Termux, Debian, Fedora, Arch) and applies the correct patches automatically.</p>
+            
+            <div class="install-box">
+                <code id="cmdText">bash <(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/main/install.sh)</code>
+                <button class="copy-btn" onclick="copyCommand()">
+                    <i class="far fa-copy"></i> Copy
+                </button>
             </div>
-        </footer>
-    </div>
-    
+            
+            <div style="margin-top: 24px; font-size: 0.85rem; color: var(--text-secondary);">
+                <i class="fas fa-check-circle" style="color: var(--accent-green); margin-right: 6px;"></i>
+                Safe & Open Source. No root required for Termux.
+            </div>
+        </div>
+    </section>
+
+    <footer style="padding: 60px 0; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-secondary);">
+        <div class="container">
+            <p style="font-family: var(--font-mono); font-size: 0.9rem;">&lt;/&gt; with <span style="color: #ef4444;">♥</span> by <strong>Mahendra Mali</strong></p>
+            <div style="margin-top: 20px; display: flex; justify-content: center; gap: 20px;">
+                <a href="#" style="color: var(--text-secondary); text-decoration: none;">License</a>
+                <a href="#" style="color: var(--text-secondary); text-decoration: none;">Support</a>
+            </div>
+        </div>
+    </footer>
+
     <script>
-        function copyToClipboard(button, text) {
-            navigator.clipboard.writeText(text).then(() => {
-                button.classList.add('copied');
-                button.textContent = 'Copied!';
-                setTimeout(() => {
-                    button.classList.remove('copied');
-                    button.textContent = 'Copy';
-                }, 2000);
-            });
-        }
-        
-        // Animate features on scroll
-        const features = document.querySelectorAll('.feature');
-        const observer = new IntersectionObserver((entries) => {
+        // 1. Reveal on Scroll Animation
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = 1;
-                    entry.target.style.transform = 'translateY(0)';
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('active');
                 }
             });
         }, { threshold: 0.1 });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // 2. Typewriter Effect
+        const text = "install maxter";
+        const speed = 100;
+        let i = 0;
         
-        features.forEach(feature => {
-            feature.style.opacity = 0;
-            feature.style.transform = 'translateY(20px)';
-            feature.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            observer.observe(feature);
-        });
+        function typeWriter() {
+            if (i < text.length) {
+                document.getElementById("typewriter").innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, speed);
+            } else {
+                // When typing finishes, show output after delay
+                setTimeout(() => {
+                    document.getElementById("terminal-output").style.display = "block";
+                    document.querySelector(".cursor").style.display = "none";
+                }, 800);
+            }
+        }
+        
+        // Start typing when page loads
+        setTimeout(typeWriter, 1000);
+
+        // 3. Copy Function
+        function copyCommand() {
+            const cmd = document.getElementById('cmdText').innerText;
+            navigator.clipboard.writeText(cmd).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const originalHTML = btn.innerHTML;
+                
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.style.color = 'var(--accent-green)';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.style.color = '';
+                }, 2000);
+            });
+        }
     </script>
 </body>
 </html>
