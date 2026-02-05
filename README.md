@@ -1,99 +1,67 @@
 
-# 🌀 MAXTER — Your Terminal. Supercharged.
+<div align="center">
 
-> ⚙️ *Crafted by [Mahendra Mali - Max](https://mahendraplus.github.io) from `127.0.0.1`*  
-> A beautifully fast & powerful terminal experience for **Debian** & **Termux**, powered by **Zsh + Powerlevel10k + Oh My Zsh**.
+  <img src="https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/Maxterm.png" alt="MAXTER Terminal" width="100%" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
 
----
+  <br><br>
 
-<p align="center">
-  <img src="Maxterm.png" alt="Maxter Screenshot" width="700"/>
-</p>
+  # 🌀 MAXTER
+  
+  **The Ultimate Terminal Experience**
 
-<h3 align="center">✨ MaxTer v25.2 — Minimal. Fast. Elegant.</h3>
+  [![Release](https://img.shields.io/github/v/release/mahendraplus/MAXTER?style=for-the-badge&color=6366f1)](https://github.com/mahendraplus/MAXTER/releases)
+  [![Platform](https://img.shields.io/badge/Platform-Termux%20|%20Linux-white?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/mahendraplus/MAXTER)
+  [![License](https://img.shields.io/github/license/mahendraplus/MAXTER?style=for-the-badge&color=22c55e)](https://github.com/mahendraplus/MAXTER/blob/main/LICENSE)
+
+  <p>
+    <b>Minimal. Fast. Crash-Proof.</b><br>
+    Auto-configures Zsh, Powerlevel10k, and Plugins in seconds.<br>
+    <i>Crafted by <a href="https://mahendraplus.github.io">Mahendra Mali (Max)</a> from <code>127.0.0.1</code></i>
+  </p>
+
+  <br>
+
+</div>
 
 ---
 
 ## 📦 One-Line Installation
 
-> **No configs. No mess. Just pure style & power.**
-
-### 🖥️ Debian / Ubuntu / Kali / Linux (Desktop & Server)
-```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/refs/heads/Max/install_debian.sh)"
-
-````
-
-### 📱 Termux (Android)
+Detects your OS (**Termux**, **Debian**, **Ubuntu**, **Kali**, **Arch**) and installs the perfect setup automatically.
 
 ```bash
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/install.sh)"
+bash <(curl -fsSL [https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/install.sh](https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/install.sh))
+
 ```
 
-> 🔐 *Runs cleanly with safe permissions. Fonts, aliases, theme, and tweaks are auto-applied.*
+> **Note:** This script safely backs up your existing configurations before installing. No data loss.
 
 ---
 
-## 🌟 What’s Inside MAXTER?
+## ⚡ Features at a Glance
 
-* 🧠 **Zsh**: The shell that thinks ahead
-* 🎩 **Oh My Zsh**: The legendary Zsh framework
-* 🚀 **Powerlevel10k**: Fast, slick, and customizable prompt
-* 🧬 Autosuggestions, syntax highlighting, colorful `ls`, Git info, and much more
-* 💻 Optimized for *speed*, *clarity*, and *hacker workflows*
-
----
-
-## ✒️ About the Author
-
-I'm **Mahendra Mali** aka **Max**, born at `127.0.0.1`.
-A self-taught coder, terminal junkie, and ethical hacker.
-MAXTER isn’t just another script. It’s the setup I built for my students, my friends, and myself — to turn every dull terminal into a hacker’s cockpit.
-
-> 💡 *"Terminals shouldn't be boring. They should be yours."*
-> 🔗 [Visit My Website](https://mahendraplus.github.io)
+* **🧠 Smart Shell:** Pre-configured **Zsh** with intelligent auto-completion.
+* **🎨 Pro Theme:** **Powerlevel10k** with a modern, hacker-aesthetic preset.
+* **🚀 Zero Latency:** Optimized startup speed for Android/Termux.
+* **🛠️ Auto-Fix:** Installs missing dependencies (Git, Curl, Fonts) automatically.
+* **✨ Plugins:** Syntax highlighting, autosuggestions, and `ls` colors enabled by default.
 
 ---
 
-## 🧑‍💻 Coder Credits
+## ✒️ About
 
-Big respect to [GitHub Coder](https://github.com/github-coder) for code ideas, patches, and support.
-Their contribution helped shape MAXTER’s flow and finesse.
+> **"MAXTER is not just a script. It's a power-packing terminal enhancer that transforms any boring shell into a futuristic workspace."**
 
----
+Built with ❤️ by **Mahendra Mali** (Max).
 
-## 🗨️ Real Caption to Share with Friends
+Inspired by `Oh My Zsh` & `Powerlevel10k`.
 
-> **"MAXTER is not just a script. It's a power-packing terminal enhancer that transforms any boring shell into a futuristic workspace — with blazing speed, beautiful prompts, and hacker-grade tools. Built for Debian and Termux by Max from 127.0.0.1."**
-
----
-
-## 🧪 Try It. Tweak It. Own It.
-
-Whether you're into hacking, development, or just want your terminal to look fire — MAXTER has you covered.
-Lightweight, fast, and customizable — install it once, and you're set.
-
----
-
-## 🔗 Quick Links
-
-| Resource            | Link                                                                                                         |
-| ------------------- | ------------------------------------------------------------------------------------------------------------ |
-| 🌐 Website          | [mahendraplus.github.io](https://mahendraplus.github.io)                                                     |
-| 📦 Termux Install   | [install.sh](https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/install.sh)                           |
-| 🐧 Debian Install   | [install\_debian.sh](https://raw.githubusercontent.com/mahendraplus/MAXTER/refs/heads/Max/install_debian.sh) |
-| 👨‍💻 Author GitHub | [@mahendraplus](https://github.com/mahendraplus)                                                             |
-| ✨ Inspired By       | [Powerlevel10k](https://github.com/romkatv/powerlevel10k), [Oh My Zsh](https://ohmyz.sh)                     |
-
----
-
-## 🚀 MAXTER — Built for Hackers, Loved by Everyone.
-
-*Transform your shell. Save hours. Look cool doing it.*
-
----
+<div align="center">
 
 
-> ✅ **Ready to use:** Just copy & paste to your `README.md` in your GitHub repo.  
-> Want a custom badge, animated GIF, or video demo? Let me know — I can add it!
 
+
+
+<a href="https://mahendraplus.github.io"><strong>🌐 Visit Website</strong></a> •
+<a href="https://github.com/mahendraplus"><strong>👨‍💻 GitHub Profile</strong></a>
+</div>
