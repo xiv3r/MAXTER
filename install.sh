@@ -41,16 +41,26 @@ run_with_retry() {
 
 log_info "Detecting Operating System..."
 
+# Common options to auto-select "N" (Keep existing config) for apt/pkg
+# --force-confdef: Use default action if available
+# --force-confold: If no default, keep old config (equivalent to pressing N)
+DEBIAN_OPTS="-y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\""
+
 if [ -d "/data/data/com.termux/files/usr" ]; then
     OS="Termux"
     INSTALL_CMD="pkg install -y"
-    UPDATE_CMD="pkg update -y && pkg upgrade -y"
+    # Updated to handle interactive prompts automatically
+    UPDATE_CMD="pkg update -y && pkg upgrade $DEBIAN_OPTS"
+    
     # Termux specific fix for 'source' errors
     termux-setup-storage
 elif [ -f "/etc/debian_version" ]; then
     OS="Debian/Mint/Ubuntu"
+    # Set noninteractive frontend to suppress UI prompts
+    export DEBIAN_FRONTEND=noninteractive
     INSTALL_CMD="sudo apt install -y"
-    UPDATE_CMD="sudo apt update && sudo apt upgrade -y"
+    # Updated to handle interactive prompts automatically
+    UPDATE_CMD="sudo apt update && sudo apt upgrade $DEBIAN_OPTS"
 elif [ -f "/etc/arch-release" ]; then
     OS="Arch"
     INSTALL_CMD="sudo pacman -S --noconfirm"
@@ -62,18 +72,20 @@ elif [ -f "/etc/fedora-release" ]; then
 else
     OS="Unknown"
     log_warn "Unknown OS. Attempting to use 'apt' as fallback."
+    export DEBIAN_FRONTEND=noninteractive
     INSTALL_CMD="sudo apt install -y"
-    UPDATE_CMD="sudo apt update"
+    UPDATE_CMD="sudo apt update && sudo apt upgrade $DEBIAN_OPTS"
 fi
 
 log_info "System Detected: $OS"
 
 # --- 3. System Update & Dependencies ---
 
-log_info "Updating system packages..."
+log_info "Updating system packages (Automated Mode)..."
+# We use eval to execute the command string containing quotes correctly
 eval $UPDATE_CMD
 
-log_info "Installing dependencies (git, zsh, curl, wget)..."
+log_info "Installing dependencies (git, zsh, curl, wget, unzip)..."
 run_with_retry $INSTALL_CMD git zsh curl wget unzip
 
 # --- 4. Cleanup & Backup (Prevents Corruption) ---
@@ -149,6 +161,15 @@ if [ "$OS" == "Termux" ]; then
         rm "/data/data/com.termux/files/usr/etc/motd"
         touch "/data/data/com.termux/files/usr/etc/motd" # Create empty file to suppress error
     fi
+
+    # --- FIX: FORCE ZSH ON STARTUP IN TERMUX ---
+    log_info "Configuring Termux to start Zsh automatically..."
+    
+    # Backup existing bashrc if exists
+    if [ -f "$HOME/.bashrc" ]; then cp "$HOME/.bashrc" "$HOME/.bashrc.old"; fi
+    
+    # Overwrite .bashrc to execute zsh immediately upon login
+    echo "if [ -x \$PREFIX/bin/zsh ]; then exec zsh -l; fi" > "$HOME/.bashrc"
     
     # Reload termux settings
     termux-reload-settings
@@ -157,7 +178,8 @@ fi
 # --- 9. Finalize and Launch ---
 
 log_info "Changing default shell to Zsh..."
-chsh -s "$(which zsh)"
+# Attempt standard chsh (works on Linux/Rooted Android)
+chsh -s "$(which zsh)" 2>/dev/null
 
 log_info "Installation Complete! Starting Zsh..."
 
