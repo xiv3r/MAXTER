@@ -21,9 +21,10 @@ MAXTER/
 ├── configs/         # Configuration templates
 │   ├── termux/      # Termux properties and colors
 │   └── zsh/         # .zshrc and .p10k.zsh templates
-├── docs/            # Documentation and web assets
+├── docs/            # Next.js Documentation (React, Tailwind, Framer Motion)
 ├── scripts/         # Supplemental setup scripts
-└── install.sh       # Main installation entry point
+├── setup.sh         # Main installation entry point
+└── install.sh       # Symlink to setup.sh
 ```
 
 ## 🚀 Installation
@@ -35,6 +36,15 @@ Run the following command to install MAXTER instantly on your system:
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/main/install.sh)
 ```
+
+## 🌐 Documentation Stack
+
+The new MAXTER documentation is built with:
+- **Next.js**: SSR + Fast Page Loading
+- **TailwindCSS**: Modern Styling
+- **Framer Motion**: Smooth Animations
+- **React Icons**: Premium Iconography
+- **Vercel**: Optimized Hosting
 
 ### 2. Manual Install
 
