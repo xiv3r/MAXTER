@@ -20,14 +20,14 @@
     <meta property="og:url" content="https://mahendraplus.github.io/MAXTER/">
     <meta property="og:title" content="MAXTER | Supercharge Your Terminal">
     <meta property="og:description" content="One command to rule them all. Install the ultimate Zsh + Powerlevel10k environment on Termux and Linux. Fast, Beautiful, Glitch-Free.">
-    <meta property="og:image" content="https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/Maxterm.png">
+    <meta property="og:image" content="https://raw.githubusercontent.com/mahendraplus/MAXTER/main/assets/logo.png">
     <meta property="og:site_name" content="MAXTER by Mahendra Mali">
 
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://mahendraplus.github.io/MAXTER/">
     <meta property="twitter:title" content="MAXTER | The Ultimate Shell Experience">
     <meta property="twitter:description" content="Don't settle for a boring terminal. Get MAXTER. The best Zsh setup for hackers and developers on Termux & Linux.">
-    <meta property="twitter:image" content="https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/Maxterm.png">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/mahendraplus/MAXTER/main/assets/logo.png">
     <meta property="twitter:creator" content="@mahendraplus"> 
 
     <script type="application/ld+json">
@@ -58,11 +58,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <link rel="icon" type="image/png" href="https://github.com/mahendraplus.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         /* --- 1. CORE VARIABLES & RESET --- */
@@ -89,7 +84,7 @@
             color: var(--text-primary);
             font-family: var(--font-sans);
             line-height: 1.6;
-            overflow-x: hidden; /* Fixes horizontal scrollbar */
+            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
@@ -273,7 +268,7 @@
             white-space: nowrap;
             flex-grow: 1;
             font-size: 0.9rem;
-            scrollbar-width: none; /* Hide scrollbar inside box */
+            scrollbar-width: none;
         }
         .install-box code::-webkit-scrollbar { display: none; }
 
@@ -283,7 +278,7 @@
             border-left: 1px solid var(--border-color);
             color: var(--text-primary);
             padding: 0 24px;
-            height: 60px; /* Match code height */
+            height: 60px;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.2s;
@@ -334,7 +329,7 @@
             color: var(--text-secondary);
         }
 
-        /* --- 9. ANIMATION CLASSES (Reveal on Scroll) --- */
+        /* --- 9. ANIMATION CLASSES --- */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -367,7 +362,7 @@
 
     <section style="padding-top: 160px; text-align: center;">
         <div class="container reveal">
-            <span class="badge">v25.2 Update Available</span>
+            <span class="badge">v26.0 Stable Release</span>
             <h1>The Terminal,<br>Re-Engineered.</h1>
             <p class="subtitle">Transform your Termux, Debian, or Ubuntu shell into a powerhouse. Intelligent auto-complete, instant git status, and a design that keeps you in flow.</p>
 
@@ -394,7 +389,7 @@
                         <span style="color: var(--accent-green);">✔</span> MAXTER Installed Successfully.<br>
                         <span style="color: var(--brand-color);">ℹ</span> Restarting Shell...<br>
                         <br>
-                        <span style="color: #fff; font-weight: bold;">Welcome to MAXTER v25.2</span>
+                        <span style="color: #fff; font-weight: bold;">Welcome to MAXTER v26.0</span>
                     </div>
                 </div>
             </div>
@@ -434,7 +429,7 @@
             <p class="subtitle">Detects OS (Termux, Debian, Fedora, Arch) and applies the correct patches automatically.</p>
             
             <div class="install-box">
-                <code id="cmdText">bash <(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/install.sh)
+                <code id="cmdText">bash <(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/main/install.sh)
                 </code>
                 <button class="copy-btn" onclick="copyCommand()">
                     <i class="far fa-copy"></i> Copy
@@ -452,8 +447,8 @@
         <div class="container">
             <p style="font-family: var(--font-mono); font-size: 0.9rem;">&lt;/&gt; with <span style="color: #ef4444;">♥</span> by <strong>Mahendra Mali</strong></p>
             <div style="margin-top: 20px; display: flex; justify-content: center; gap: 20px;">
-                <a href="#" style="color: var(--text-secondary); text-decoration: none;">License</a>
-                <a href="#" style="color: var(--text-secondary); text-decoration: none;">Support</a>
+                <a href="https://github.com/mahendraplus/MAXTER/blob/main/LICENSE" style="color: var(--text-secondary); text-decoration: none;">License</a>
+                <a href="https://github.com/mahendraplus/MAXTER/issues" style="color: var(--text-secondary); text-decoration: none;">Support</a>
             </div>
         </div>
     </footer>
@@ -482,7 +477,6 @@
                 i++;
                 setTimeout(typeWriter, speed);
             } else {
-                // When typing finishes, show output after delay
                 setTimeout(() => {
                     document.getElementById("terminal-output").style.display = "block";
                     document.querySelector(".cursor").style.display = "none";
@@ -490,7 +484,6 @@
             }
         }
         
-        // Start typing when page loads
         setTimeout(typeWriter, 1000);
 
         // 3. Copy Function

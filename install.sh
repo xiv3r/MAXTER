@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ==========================================
-# MAXTER ZSH INSTALLER (Refined)
+# MAXTER ZSH INSTALLER (Refined & Organized)
 # ==========================================
 
 # --- 1. Variables & UI Configuration ---
@@ -24,6 +24,12 @@ ICON_LOAD="[•.•]"
 ICON_OK="[✓]"
 ICON_FAIL="[×]"
 
+# Paths
+REPO_DIR="$HOME/MAXTER"
+CONFIG_DIR="$REPO_DIR/configs"
+ASSETS_DIR="$REPO_DIR/assets"
+SCRIPTS_DIR="$REPO_DIR/scripts"
+
 # --- 2. Helper Functions ---
 
 msg_load() {
@@ -42,7 +48,6 @@ msg_warn() {
     echo -e "${YELLOW}[!] ${NC}$1"
 }
 
-# Function to run commands with a spinner/loading status
 run_task() {
     local task_name="$1"
     shift
@@ -50,15 +55,13 @@ run_task() {
 
     echo -ne "${BLUE}${ICON_LOAD} ${NC}${task_name}...\r"
     
-    # Run command and capture output/error just in case
     if eval "$cmd" > /dev/null 2>&1; then
-        # Clear the line and print success
         echo -ne "\033[2K\r" 
         msg_ok "$task_name"
     else
         echo -ne "\033[2K\r"
         msg_fail "$task_name failed!"
-        exit 1
+        return 1
     fi
 }
 
@@ -69,11 +72,12 @@ cleanup_maxter() {
     
     rm -rf "$HOME/.oh-my-zsh"
     rm -rf "$HOME/.zsh-syntax-highlighting"
-    rm -rf "$HOME/MAXTER"
+    # Don't remove REPO_DIR if we are running from it!
+    # But if we are reinstalling, we might want a fresh clone.
+    # For now, let's just clean the destination configs.
     rm -f "$HOME/.zshrc"
     rm -f "$HOME/.p10k.zsh"
     
-    # Restore bashrc if it was previously tampered with (Termux fix)
     if grep -q "exec zsh" "$HOME/.bashrc" 2>/dev/null; then
         sed -i '/exec zsh/d' "$HOME/.bashrc"
         msg_ok "Restored clean .bashrc"
@@ -82,15 +86,22 @@ cleanup_maxter() {
     msg_ok "Cleanup complete."
 }
 
-if [ -d "$HOME/MAXTER" ] || [ -d "$HOME/.oh-my-zsh" ]; then
-    msg_warn "MAXTER or Oh-My-Zsh is already installed."
-    echo -ne "${YELLOW}Do you want to reinstall? This will delete old configs. (y/n): ${NC}"
+# Check if we are running inside the cloned repo
+if [ -d ".git" ] && [[ $(git remote get-url origin 2>/dev/null) == *"$MAXTER_REPO"* ]]; then
+    REPO_DIR=$(pwd)
+    CONFIG_DIR="$REPO_DIR/configs"
+    ASSETS_DIR="$REPO_DIR/assets"
+    SCRIPTS_DIR="$REPO_DIR/scripts"
+fi
+
+if [ -d "$HOME/.oh-my-zsh" ]; then
+    msg_warn "Oh-My-Zsh is already installed."
+    echo -ne "${YELLOW}Do you want to reinstall? (y/n): ${NC}"
     read -r response
     if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
         cleanup_maxter
     else
-        msg_ok "Installation aborted by user."
-        exit 0
+        msg_ok "Proceeding with existing Oh-My-Zsh..."
     fi
 fi
 
@@ -128,7 +139,6 @@ run_task "Installing Dependencies (git, zsh, curl, wget, unzip)" "$INSTALL_CMD g
 # --- 6. Install Oh My Zsh ---
 
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
-    # We use 'sh -c' to run the curl output, passing --unattended to prevent it from switching shell immediately
     echo -ne "${BLUE}${ICON_LOAD} ${NC}Downloading and Installing Oh My Zsh...\r"
     sh -c "$(curl -fsSL $OMZ_INSTALLER)" "" --unattended > /dev/null 2>&1
     
@@ -146,17 +156,30 @@ fi
 
 ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 
-run_task "Downloading Powerlevel10k Theme" "git clone --depth=1 $P10K_REPO $ZSH_CUSTOM/themes/powerlevel10k"
-run_task "Downloading Syntax Highlighting" "git clone --depth=1 $SYNTAX_HIGHLIGHT_REPO $HOME/.zsh-syntax-highlighting"
-run_task "Downloading Auto-Suggestions" "git clone $AUTOSUGGEST_REPO $ZSH_CUSTOM/plugins/zsh-autosuggestions"
+if [ ! -d "$ZSH_CUSTOM/themes/powerlevel10k" ]; then
+    run_task "Downloading Powerlevel10k Theme" "git clone --depth=1 $P10K_REPO $ZSH_CUSTOM/themes/powerlevel10k"
+fi
+
+if [ ! -d "$HOME/.zsh-syntax-highlighting" ]; then
+    run_task "Downloading Syntax Highlighting" "git clone --depth=1 $SYNTAX_HIGHLIGHT_REPO $HOME/.zsh-syntax-highlighting"
+fi
+
+if [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
+    run_task "Downloading Auto-Suggestions" "git clone $AUTOSUGGEST_REPO $ZSH_CUSTOM/plugins/zsh-autosuggestions"
+fi
 
 # --- 8. MAXTER Configuration ---
 
-run_task "Cloning MAXTER Repository" "git clone $MAXTER_REPO $HOME/MAXTER"
+# If we are NOT in the repo, clone it
+if [ ! -d "$REPO_DIR" ]; then
+    run_task "Cloning MAXTER Repository" "git clone $MAXTER_REPO $HOME/MAXTER"
+    REPO_DIR="$HOME/MAXTER"
+    CONFIG_DIR="$REPO_DIR/configs"
+fi
 
 msg_load "Applying Configuration Files"
-cp -rf "$HOME/MAXTER/maxterm.p10k.zsh" "$HOME/.p10k.zsh"
-cp -rf "$HOME/MAXTER/maxterm.zshrc" "$HOME/.zshrc"
+cp -f "$CONFIG_DIR/zsh/.p10k.zsh" "$HOME/.p10k.zsh"
+cp -f "$CONFIG_DIR/zsh/.zshrc" "$HOME/.zshrc"
 
 # Safety: Ensure syntax highlighting is sourced
 if ! grep -q "zsh-syntax-highlighting.zsh" "$HOME/.zshrc"; then
@@ -164,15 +187,15 @@ if ! grep -q "zsh-syntax-highlighting.zsh" "$HOME/.zshrc"; then
 fi
 msg_ok "Configuration Applied"
 
-# --- 9. Termux Specifics (THE FIX) ---
+# --- 9. Termux Specifics ---
 
 if [ "$OS" == "Termux" ]; then
     msg_load "Applying Termux Settings"
     
     mkdir -p "$HOME/.termux"
-    cp -rf "$HOME/MAXTER/maxterm.termux.properties" "$HOME/.termux/termux.properties"
-    cp -rf "$HOME/MAXTER/maxterm.colors.properties" "$HOME/.termux/colors.properties"
-    cp -rf "$HOME/MAXTER/maxterm.font.ttf" "$HOME/.termux/font.ttf"
+    cp -f "$CONFIG_DIR/termux/termux.properties" "$HOME/.termux/termux.properties"
+    cp -f "$CONFIG_DIR/termux/colors.properties" "$HOME/.termux/colors.properties"
+    cp -f "$ASSETS_DIR/font.ttf" "$HOME/.termux/font.ttf"
     
     # Remove MOTD
     rm -f "/data/data/com.termux/files/usr/etc/motd"
@@ -187,11 +210,9 @@ fi
 
 msg_load "Changing default shell to Zsh"
 
-# This is the correct way to set shell in Termux/Linux without breaking bash
 if [ "$OS" == "Termux" ]; then
     chsh -s zsh
 else
-    # On standard Linux, chsh might ask for password
     sudo chsh -s "$(which zsh)" $(whoami) > /dev/null 2>&1
 fi
 

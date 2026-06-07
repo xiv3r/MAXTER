@@ -1,67 +1,71 @@
+# 🚀 MAXTER - Ultimate Zsh & Termux Configuration
 
-<div align="center">
+MAXTER is a high-performance, visually stunning, and highly organized configuration for Zsh and Termux. It brings a modern development environment to your mobile and desktop terminals with Powerlevel10k, syntax highlighting, and auto-suggestions.
 
-  <img src="https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/Maxterm.png" alt="MAXTER Terminal" width="100%" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+![Maxter Logo](assets/logo.png)
 
-  <br><br>
+## ✨ Features
 
-  # 🌀 MAXTER
-  
-  **The Ultimate Terminal Experience**
+- **Powerlevel10k Integration**: A fast and flexible Zsh theme.
+- **Syntax Highlighting**: Real-time code highlighting for Zsh.
+- **Auto-Suggestions**: Fish-like suggestions for your shell commands.
+- **Optimized Termux Settings**: Custom extra-keys, fonts, and colors for Termux.
+- **Cross-Platform Support**: Works on Termux, Debian, Ubuntu, and Arch Linux.
+- **Well-Organized Structure**: Clean directory layout for easy customization.
 
-  [![Release](https://img.shields.io/github/v/release/mahendraplus/MAXTER?style=for-the-badge&color=6366f1)](https://github.com/mahendraplus/MAXTER/releases)
-  [![Platform](https://img.shields.io/badge/Platform-Termux%20|%20Linux-white?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/mahendraplus/MAXTER)
-  [![License](https://img.shields.io/github/license/mahendraplus/MAXTER?style=for-the-badge&color=22c55e)](https://github.com/mahendraplus/MAXTER/blob/main/LICENSE)
+## 📂 Project Structure
 
-  <p>
-    <b>Minimal. Fast. Crash-Proof.</b><br>
-    Auto-configures Zsh, Powerlevel10k, and Plugins in seconds.<br>
-    <i>Crafted by <a href="https://mahendraplus.github.io">Mahendra Mali (Max)</a> from <code>127.0.0.1</code></i>
-  </p>
-
-  <br>
-
-</div>
-
----
-
-## 📦 One-Line Installation
-
-Detects your OS (**Termux**, **Debian**, **Ubuntu**, **Kali**, **Arch**) and installs the perfect setup automatically.
-
-```bash
-bash <(curl -fsSL [https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/install.sh](https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/install.sh))
-
+```text
+MAXTER/
+├── assets/          # Fonts, logos, and images
+├── configs/         # Configuration templates
+│   ├── termux/      # Termux properties and colors
+│   └── zsh/         # .zshrc and .p10k.zsh templates
+├── docs/            # Documentation and web assets
+├── scripts/         # Supplemental setup scripts
+└── install.sh       # Main installation entry point
 ```
 
-> **Note:** This script safely backs up your existing configurations before installing. No data loss.
+## 🚀 Installation
+
+### 1. Fast Install (Recommended)
+
+Run the following command to install MAXTER instantly on your system:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/main/install.sh)
+```
+
+### 2. Manual Install
+
+If you prefer to clone the repository first:
+
+```bash
+git clone https://github.com/mahendraplus/MAXTER.git
+cd MAXTER
+chmod +x install.sh
+./install.sh
+```
+
+## 🛠️ Configuration
+
+### Extra Keys (Termux)
+The default extra keys are optimized for mobile productivity:
+- **Row 1**: ESC, DRAWER, SHIFT, HOME, UP, END, PGUP
+- **Row 2**: TAB, CTRL, ALT, LEFT, DOWN, RIGHT, PGDN
+
+You can modify these in `configs/termux/termux.properties`.
+
+### Customizing Zsh
+Edit `~/.zshrc` for your aliases and environment variables. The Powerlevel10k theme can be reconfigured using `p10k configure`.
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to open issues or submit pull requests to improve the project.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ---
-
-## ⚡ Features at a Glance
-
-* **🧠 Smart Shell:** Pre-configured **Zsh** with intelligent auto-completion.
-* **🎨 Pro Theme:** **Powerlevel10k** with a modern, hacker-aesthetic preset.
-* **🚀 Zero Latency:** Optimized startup speed for Android/Termux.
-* **🛠️ Auto-Fix:** Installs missing dependencies (Git, Curl, Fonts) automatically.
-* **✨ Plugins:** Syntax highlighting, autosuggestions, and `ls` colors enabled by default.
-
----
-
-## ✒️ About
-
-> **"MAXTER is not just a script. It's a power-packing terminal enhancer that transforms any boring shell into a futuristic workspace."**
-
-Built with ❤️ by **Mahendra Mali** (Max).
-
-Inspired by `Oh My Zsh` & `Powerlevel10k`.
-
-<div align="center">
-
-
-
-
-
-<a href="https://mahendraplus.github.io"><strong>🌐 Visit Website</strong></a> •
-<a href="https://github.com/mahendraplus"><strong>👨‍💻 GitHub Profile</strong></a>
-</div>
+Created with ❤️ by [Mahendra](https://github.com/mahendraplus)

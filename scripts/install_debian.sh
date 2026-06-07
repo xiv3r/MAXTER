@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# MaxTer v25.2 — Debian Installer
-# Author: Mahendra Mali - Max (https://mahendraplus.github.io)
-# Location: 127.0.0.1
+# MaxTer v26.0 — Debian/Ubuntu Installer (Specialized)
+# Author: Mahendra Mali (https://github.com/mahendraplus)
 
 set -e  # Exit on any error
 
@@ -10,8 +9,8 @@ LOG_FILE="$HOME/maxter_install.log"
 exec > >(tee -a "$LOG_FILE") 2>&1
 
 echo "──────────────────────────────────────────────"
-echo "   🌀 MaxTer v25.2 by Mahendra Mali - Max"
-echo "   🌐 https://mahendraplus.github.io"
+echo "   🌀 MaxTer v26.0 by Mahendra Mali"
+echo "   🌐 https://github.com/mahendraplus/MAXTER"
 echo "   📁 Log File: $LOG_FILE"
 echo "──────────────────────────────────────────────"
 sleep 1
@@ -20,13 +19,13 @@ sleep 1
 echo "[*] Updating packages..."
 sudo apt update -y
 echo "[*] Installing zsh, git, wget, curl..."
-sudo apt install -y zsh git wget curl
+sudo apt install -y zsh git wget curl fontconfig
 
 # 2. Install Oh My Zsh
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     echo "[*] Installing Oh My Zsh..."
     RUNZSH=no KEEP_ZSHRC=yes \
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 else
     echo "[✔] Oh My Zsh already installed. Skipping..."
 fi
@@ -41,9 +40,9 @@ else
 fi
 
 # 4. Install Fonts (MesloLGS NF)
-FONT_DIR="/usr/share/fonts/truetype/maxter"
+FONT_DIR="$HOME/.local/share/fonts/maxter"
 echo "[*] Installing MesloLGS Nerd Fonts..."
-sudo mkdir -p "$FONT_DIR"
+mkdir -p "$FONT_DIR"
 cd /tmp
 
 FONT_URLS=(
@@ -57,48 +56,43 @@ for url in "${FONT_URLS[@]}"; do
     fname=$(basename "$url")
     echo "   ↳ Downloading: $fname"
     wget -q "$url" -O "$fname"
-    sudo cp "$fname" "$FONT_DIR/"
+    cp "$fname" "$FONT_DIR/"
 done
 
 echo "[*] Updating font cache..."
-sudo fc-cache -f -v
+fc-cache -f -v
 
-# 5. Download .p10k.zsh
-echo "[*] Downloading MaxTer Powerlevel10k config..."
+# 5. Download MAXTER Configs
+echo "[*] Downloading MaxTer Configuration..."
 cd "$HOME"
-wget -q -O .p10k.zsh "https://github.com/mahendraplus/MAXTER/raw/Max/maxterm.p10k.zsh"
+wget -q -O .p10k.zsh "https://raw.githubusercontent.com/mahendraplus/MAXTER/main/configs/zsh/.p10k.zsh"
+wget -q -O .zshrc "https://raw.githubusercontent.com/mahendraplus/MAXTER/main/configs/zsh/.zshrc"
 
-# 6. Update .zshrc
-ZSHRC="$HOME/.zshrc"
-echo "[*] Configuring ~/.zshrc..."
-
-if [ -f "$ZSHRC" ]; then
-    cp "$ZSHRC" "$ZSHRC.bak"
-    echo "   ↳ Backup created: $ZSHRC.bak"
+# 6. Install Plugins
+ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+if [ ! -d "$HOME/.zsh-syntax-highlighting" ]; then
+    git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME/.zsh-syntax-highlighting"
+fi
+if [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
 fi
 
-cat > "$ZSHRC" <<'EOF'
-# MaxTer ZSH Configuration
-export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="powerlevel10k/powerlevel10k"
-plugins=(git)
-
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+# Safety: Ensure syntax highlighting is sourced
+if ! grep -q "zsh-syntax-highlighting.zsh" "$HOME/.zshrc"; then
+    echo "source $HOME/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> "$HOME/.zshrc"
 fi
 
-source $ZSH/oh-my-zsh.sh
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-EOF
+# 7. Set Default Shell
+echo "[*] Changing default shell to Zsh..."
+sudo chsh -s "$(which zsh)" $(whoami)
 
-# 7. Finish & Launch ZSH
+# 8. Finish & Launch ZSH
 echo
-echo "🎉 MaxTer v25.2 installed successfully!"
+echo "🎉 MaxTer v26.0 installed successfully!"
 echo "📦 Oh My Zsh + Powerlevel10k is now configured."
 echo "🌈 Fonts installed at: $FONT_DIR"
-echo "🧠 Author: Mahendra Mali - Max (https://mahendraplus.github.io)"
+echo "🧠 Author: Mahendra Mali (https://github.com/mahendraplus)"
 echo "📄 You can now use your customized terminal by running: zsh"
 echo
 
-# Switch to Zsh
-exec zsh
+exec zsh -l
