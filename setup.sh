@@ -4,130 +4,194 @@
 # MAXTER ULTIMATE INSTALLER (Universal)
 # ==========================================
 # Version: 26.0
-# Author: Mahendra Mali
-# Support: Termux, Debian, Ubuntu, Kali, Arch, Fedora
+# Author: Mahendra Mali (Max)
 
-# --- 1. Colors & UI ---
-GREEN='\033[0;32m'
-RED='\033[0;31m'
-BLUE='\033[0;34m'
-YELLOW='\033[1;33m'
-CYAN='\033[0;36m'
-NC='\033[0m'
+set -uo pipefail
 
-ICON_LOAD="[•.•]"
-ICON_OK="[✓]"
-ICON_FAIL="[×]"
-
-# --- 2. Variables ---
-MAXTER_REPO="https://github.com/mahendraplus/MAXTER"
+# --- 1. Variables & UI ---
+REPO_URL="https://github.com/mahendraplus/MAXTER"
+RAW_URL="https://raw.githubusercontent.com/mahendraplus/MAXTER/Max"
+LOG_FILE="/tmp/maxter_install.log"
 ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 REPO_DIR="$HOME/MAXTER"
 
-# --- 3. Helper Functions ---
-msg_load() { echo -e "${BLUE}${ICON_LOAD} ${NC}$1..."; }
-msg_ok() { echo -e "${GREEN}${ICON_OK} ${NC}$1"; }
-msg_fail() { echo -e "${RED}${ICON_FAIL} ${NC}$1"; exit 1; }
+# TUI Icons
+DONE="[\033[1;32mDONE\033[0m]"
+SKIP="[\033[1;34mSKIP\033[0m]"
+FAIL="[\033[1;31mFAIL\033[0m]"
+INFO="[\033[1;36m >> \033[0m]"
 
-run_task() {
-    local task_name="$1"
+# --- 2. Helper Functions ---
+clear_log() { rm -f "$LOG_FILE" && touch "$LOG_FILE"; }
+
+spinner() {
+    local pid=$1
+    local msg=$2
+    local frames=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
+    local i=0
+    while kill -0 "$pid" 2>/dev/null; do
+        printf "\r   ${frames[$i]}  %s..." "$msg"
+        i=$(( (i+1) % 10 ))
+        sleep 0.1
+    done
+    printf "\r\033[2K"
+}
+
+run_silent() {
+    local msg="$1"
     shift
-    echo -ne "${BLUE}${ICON_LOAD} ${NC}${task_name}...\r"
-    if eval "$@" > /dev/null 2>&1; then
-        echo -ne "\033[2K\r"
-        msg_ok "$task_name"
+    local cmd="$@"
+    
+    printf " %b %s..." "$INFO" "$msg"
+    eval "$cmd" >> "$LOG_FILE" 2>&1 &
+    spinner $! "$msg"
+    wait $!
+    
+    if [ $? -eq 0 ]; then
+        printf "\r %b  %-25s %s\n" "$DONE" "$msg" "successful"
     else
-        echo -ne "\033[2K\r"
-        echo -e "${YELLOW}${ICON_FAIL} ${NC}${task_name} (Warning: Check manually if issues occur)"
+        printf "\r %b  %-25s %s\n" "$FAIL" "$msg" "failed (see $LOG_FILE)"
+        return 1
     fi
 }
 
-# --- 4. OS Detection ---
-msg_load "Detecting System"
-if [ -d "/data/data/com.termux/files/usr" ]; then
-    OS="Termux"
-    PKG_MAN="pkg"
-    INSTALL_CMD="pkg install -y"
-    UPDATE_CMD="pkg update -y && pkg upgrade -y"
-elif [ -f "/etc/debian_version" ] || [ -f "/etc/kali_version" ]; then
-    OS="Debian/Kali"
-    PKG_MAN="apt"
-    INSTALL_CMD="sudo apt install -y"
-    UPDATE_CMD="sudo apt update && sudo apt upgrade -y"
-elif [ -f "/etc/arch-release" ]; then
-    OS="Arch"
-    PKG_MAN="pacman"
-    INSTALL_CMD="sudo pacman -S --noconfirm"
-    UPDATE_CMD="sudo pacman -Syu --noconfirm"
-elif [ -f "/etc/fedora-release" ]; then
-    OS="Fedora"
-    PKG_MAN="dnf"
-    INSTALL_CMD="sudo dnf install -y"
-    UPDATE_CMD="sudo dnf update -y"
-else
-    msg_fail "Unsupported OS. MAXTER currently supports Termux, Debian, Kali, Arch, and Fedora."
-fi
-msg_ok "System: $OS"
+show_banner() {
+    clear
+    echo -e "\033[1;36m  ╔══════════════════════════════════════╗"
+    echo -e "  ║   MAXTER INSTALLER  v26.0             ║"
+    echo -e "  ║   System: $(uname -s) $(uname -m)             ║"
+    echo -e "  ╚══════════════════════════════════════╝\033[0m"
+    echo ""
+}
 
-# --- 5. Install Dependencies ---
-run_task "Updating System" "$UPDATE_CMD"
-run_task "Installing Core Tools (git, zsh, curl, nodejs)" "$INSTALL_CMD git zsh curl wget nodejs fontconfig"
+# --- 3. OS Detection ---
+detect_os() {
+    if [ -d "/data/data/com.termux/files/usr" ]; then
+        OS="termux"
+        PKG_MAN="pkg"
+        INSTALL_CMD="DEBIAN_FRONTEND=noninteractive pkg install -y"
+        UPDATE_CMD="pkg update -y && pkg upgrade -y"
+    elif [ -f "/etc/os-release" ]; then
+        . /etc/os-release
+        case "$ID" in
+            debian|ubuntu|linuxmint|pop|kali)
+                OS="debian"
+                PKG_MAN="apt"
+                INSTALL_CMD="sudo DEBIAN_FRONTEND=noninteractive apt install -y"
+                UPDATE_CMD="sudo apt update -y && sudo apt upgrade -y"
+                ;;
+            arch|manjaro|endeavouros)
+                OS="arch"
+                PKG_MAN="pacman"
+                INSTALL_CMD="sudo pacman -S --noconfirm"
+                UPDATE_CMD="sudo pacman -Syu --noconfirm"
+                ;;
+            fedora|rhel|centos)
+                OS="fedora"
+                PKG_MAN="dnf"
+                INSTALL_CMD="sudo dnf install -y -q"
+                UPDATE_CMD="sudo dnf update -y"
+                ;;
+            *) OS="unknown" ;;
+        esac
+    else
+        OS="unknown"
+    fi
+}
 
-# Install Framework CLI for React/Vue
-if [[ "$OS" != "Termux" ]]; then
-    run_task "Installing Dev Tools (npm, yarn)" "$INSTALL_CMD npm && sudo npm install -g yarn"
-fi
+# --- 4. Component Checks ---
+is_installed() {
+    case "$1" in
+        zsh) command -v zsh >/dev/null 2>&1 ;;
+        omz) [ -d "$HOME/.oh-my-zsh" ] ;;
+        p10k) [ -d "$ZSH_CUSTOM/themes/powerlevel10k" ] ;;
+        syntax) [ -d "$HOME/.zsh-syntax-highlighting" ] ;;
+        autosugg) [ -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ] ;;
+        font) [ -f "$HOME/.termux/font.ttf" ] ;;
+        configs) [ -f "$HOME/.zshrc" ] && grep -q "MAXTER" "$HOME/.zshrc" ;;
+        *) return 1 ;;
+    esac
+}
 
-# --- 6. Install ZSH & Plugins ---
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
-    run_task "Installing Oh-My-Zsh" "sh -c \"\$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\" \"\" --unattended"
-fi
+# --- 5. Main Installation ---
+clear_log
+show_banner
+detect_os
 
-# Plugins & Theme
-[ ! -d "$ZSH_CUSTOM/themes/powerlevel10k" ] && run_task "Installing P10K" "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k"
-[ ! -d "$HOME/.zsh-syntax-highlighting" ] && run_task "Installing Syntax Highlighting" "git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.zsh-syntax-highlighting"
-[ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ] && run_task "Installing Autosuggestions" "git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions"
-
-# --- 7. Apply MAXTER Configuration ---
-if [ ! -d "$REPO_DIR" ]; then
-    run_task "Cloning MAXTER Repository" "git clone -b Max $MAXTER_REPO $REPO_DIR"
-fi
-
-msg_load "Applying Configuration Files"
-[ -f "$REPO_DIR/configs/zsh/.zshrc" ] && cp -f "$REPO_DIR/configs/zsh/.zshrc" "$HOME/.zshrc" || echo "Warning: .zshrc template missing"
-[ -f "$REPO_DIR/configs/zsh/.p10k.zsh" ] && cp -f "$REPO_DIR/configs/zsh/.p10k.zsh" "$HOME/.p10k.zsh" || echo "Warning: .p10k.zsh template missing"
-
-if [ "$OS" == "Termux" ]; then
-    mkdir -p "$HOME/.termux"
-    [ -f "$REPO_DIR/configs/termux/termux.properties" ] && cp -f "$REPO_DIR/configs/termux/termux.properties" "$HOME/.termux/termux.properties"
-    [ -f "$REPO_DIR/configs/termux/colors.properties" ] && cp -f "$REPO_DIR/configs/termux/colors.properties" "$HOME/.termux/colors.properties"
-    [ -f "$REPO_DIR/assets/font.ttf" ] && cp -f "$REPO_DIR/assets/font.ttf" "$HOME/.termux/font.ttf"
-    termux-reload-settings
-fi
-
-# --- 8. Setup TUI Command ---
-msg_load "Finalizing Maxter Dashboard"
-chmod +x "$REPO_DIR/scripts/maxter_tui.sh"
-
-# Add alias to .zshrc if not present
-if ! grep -q "alias maxter=" "$HOME/.zshrc"; then
-    echo "alias maxter='bash $REPO_DIR/scripts/maxter_tui.sh'" >> "$HOME/.zshrc"
+if [ "$OS" == "unknown" ]; then
+    echo -e " %b Unsupported Operating System. Exiting." "$FAIL"
+    exit 1
 fi
 
-msg_ok "Maxter Command Ready"
-
-# --- 9. Finalize ---
-msg_load "Setting ZSH as Default"
-ZSH_PATH=$(command -v zsh)
-if [ "$OS" == "Termux" ]; then
-    chsh -s "$ZSH_PATH"
-else
-    sudo chsh -s "$ZSH_PATH" "$(whoami)"
-fi
-
-echo -e "\n${GREEN}=======================================${NC}"
-echo -e "${GREEN}   MAXTER INSTALLED SUCCESSFULLY!      ${NC}"
-echo -e "${GREEN}=======================================${NC}"
-echo -e "Type ${CYAN}maxter${NC} anytime to open the settings dashboard."
+echo "   Checking system and installing components..."
 echo ""
-exec zsh -l
+
+# Update System
+run_silent "Updating system" "$UPDATE_CMD"
+
+# Core Dependencies
+CORE_PKGS="git zsh curl wget nodejs fontconfig"
+run_silent "Installing core tools" "$INSTALL_CMD $CORE_PKGS"
+
+# Oh-My-Zsh
+if is_installed omz; then
+    printf " %b  %-25s %s\n" "$SKIP" "oh-my-zsh" "already installed"
+else
+    run_silent "Installing oh-my-zsh" "CHSH=no RUNZSH=no sh -c \"\$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\" \"\" --unattended"
+fi
+
+# Plugins & Themes
+if is_installed p10k; then
+    printf " %b  %-25s %s\n" "$SKIP" "powerlevel10k" "already installed"
+else
+    run_silent "Installing powerlevel10k" "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k"
+fi
+
+if is_installed syntax; then
+    printf " %b  %-25s %s\n" "$SKIP" "zsh-syntax-highlighting" "already installed"
+else
+    run_silent "Installing zsh-syntax" "git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.zsh-syntax-highlighting"
+fi
+
+if is_installed autosugg; then
+    printf " %b  %-25s %s\n" "$SKIP" "zsh-autosuggestions" "already installed"
+else
+    run_silent "Installing autosuggestions" "git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions"
+fi
+
+# Clone Repo if not present
+if [ ! -d "$REPO_DIR" ]; then
+    run_silent "Cloning MAXTER repo" "git clone -b Max $REPO_URL $REPO_DIR"
+fi
+
+# Apply Configs
+run_silent "Applying Zsh configs" "cp -f $REPO_DIR/configs/zsh/.zshrc $HOME/.zshrc && cp -f $REPO_DIR/configs/zsh/.p10k.zsh $HOME/.p10k.zsh"
+
+if [ "$OS" == "termux" ]; then
+    if is_installed font; then
+        printf " %b  %-25s %s\n" "$SKIP" "termux font" "already installed"
+    else
+        run_silent "Applying Termux settings" "mkdir -p $HOME/.termux && cp -f $REPO_DIR/configs/termux/termux.properties $HOME/.termux/termux.properties && cp -f $REPO_DIR/configs/termux/colors.properties $HOME/.termux/colors.properties && cp -f $REPO_DIR/assets/font.ttf $HOME/.termux/font.ttf && termux-reload-settings"
+    fi
+fi
+
+# Dashboard Setup
+run_silent "Finalizing Dashboard" "chmod +x $REPO_DIR/scripts/maxter_tui.sh && chmod +x $REPO_DIR/scripts/uninstall.sh"
+
+# Set Shell
+ZSH_PATH=$(command -v zsh)
+if [ "$OS" == "termux" ]; then
+    run_silent "Setting default shell" "chsh -s $ZSH_PATH"
+else
+    run_silent "Setting default shell" "sudo chsh -s $ZSH_PATH $(whoami)"
+fi
+
+echo ""
+echo -e "  \033[1;32m══════════════════════════════════════════\033[0m"
+echo -e "   Installation complete!"
+echo -e "   Type: \033[1;36mmaxter\033[0m   to open settings"
+echo -e "   Restart terminal or run: \033[1;33mexec zsh -l\033[0m"
+echo -e "  \033[1;32m══════════════════════════════════════════\033[0m"
+echo ""
+
+# Done

@@ -1,20 +1,57 @@
 @import "tailwindcss";
 
 :root {
-  --background: #050505;
-  --foreground: #ffffff;
-  --brand: #6366f1;
-  --surface: #0f0f11;
-  --border: #27272a;
+  /* Light Theme Defaults */
+  --bg: #f8f8f8;
+  --surface: #ffffff;
+  --border: #e0e0e0;
+  --primary: #007a40;
+  --text: #111111;
+  --muted: #666666;
+  --code-bg: #f0f0f0;
+  --accent-green: #10b981;
+}
+
+[data-theme="dark"] {
+  --bg: #0d0d0d;
+  --surface: #1a1a1a;
+  --border: #2a2a2a;
+  --primary: #00ff88;
+  --text: #e0e0e0;
+  --muted: #888888;
+  --code-bg: #111111;
+  --accent-green: #00ff88;
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: 'Inter', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', system-ui, sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .grid-bg {
-  background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
+  background-image: radial-gradient(circle at 2px 2px, rgba(128, 128, 128, 0.05) 1px, transparent 0);
   background-size: 40px 40px;
+}
+
+[data-theme="dark"] .grid-bg {
+  background-image: radial-gradient(circle at 2px 2px, rgba(255, 255, 255, 0.03) 1px, transparent 0);
+}
+
+/* Fluid Typography */
+h1 { font-size: clamp(2.5rem, 8vw, 5rem); }
+h2 { font-size: clamp(1.8rem, 5vw, 3rem); }
+.text-hero { font-size: clamp(1rem, 2.5vw, 1.25rem); }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
