@@ -31,7 +31,7 @@ const App = () => {
     localStorage.setItem('theme', newTheme);
   };
 
-  // Terminal Animation
+  // Terminal Animation Sequence
   useEffect(() => {
     const timer = setInterval(() => {
       setTerminalStep(prev => (prev < 6 ? prev + 1 : prev));
@@ -76,7 +76,7 @@ const App = () => {
         </div>
       </nav>
 
-      <main className="pt-20 pb-16 px-4 sm:px-0">
+      <main className="pt-20 px-4 sm:px-0">
         {/* Hero Section */}
         <section className="container-max grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start mb-20 lg:mb-32">
           <div className="lg:col-span-7 pt-4">
@@ -176,8 +176,8 @@ const App = () => {
         </section>
 
         {/* Features Grid */}
-        <section id="features" className="container-max py-16 lg:py-24">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-12">
+        <section id="features" className="container-max py-12 lg:py-16">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10">
             <div>
               <h2 className="text-3xl font-bold mb-2 tracking-tight uppercase">Core Engine</h2>
               <p className="text-[var(--text-muted)] text-sm">Industrial grade terminal optimization.</p>
@@ -204,7 +204,7 @@ const App = () => {
         </section>
 
         {/* Platforms */}
-        <section className="py-16 bg-[var(--surface-2)]/30 border-y border-[var(--border)]">
+        <section className="py-12 bg-[var(--surface-2)]/30 border-y border-[var(--border)]">
           <div className="container-max flex flex-wrap justify-center gap-3 sm:gap-6">
              {[
                { icon: <VscTerminal />, name: "Termux" },
@@ -223,21 +223,21 @@ const App = () => {
         </section>
 
         {/* Config Snippet */}
-        <section className="container-max py-20 text-center">
-          <div className="max-w-xl mx-auto bg-black border border-[var(--border)] rounded-lg p-6 font-mono text-[10px] sm:text-xs text-left text-zinc-500 overflow-x-auto shadow-sm">
+        <section className="container-max py-12 text-center">
+          <div className="max-w-xl mx-auto bg-black border border-[var(--border)] rounded-lg p-6 font-mono text-[10px] sm:text-xs text-left text-zinc-500 overflow-x-auto shadow-sm whitespace-pre">
             <div className="text-[var(--accent)] mb-2 font-bold opacity-80"># termux.properties</div>
-            extra-keys = [['ESC','DRAWER','SHIFT','HOME','UP','END','PGUP'], \<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]
+            extra-keys = [['ESC','DRAWER','SHIFT','HOME','UP','END','PGUP'], \
+            <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]
           </div>
-          <p className="mt-8 text-[var(--text-muted)] text-sm font-medium italic underline underline-offset-4 decoration-[var(--accent)]/20 uppercase tracking-widest">
+          <p className="mt-6 text-[var(--text-muted)] text-xs sm:text-sm font-medium italic underline underline-offset-4 decoration-[var(--accent)]/20 uppercase tracking-[0.2em]">
             Built for professional efficiency.
           </p>
         </section>
       </main>
 
       {/* Footer */}
-      <footer className="py-10 border-t border-[var(--border)] bg-[var(--surface)]">
-        <div className="container-max flex flex-col sm:flex-row justify-between items-center gap-6">
+      <footer className="py-8 border-t border-[var(--border)] bg-[var(--surface)]">
+        <div className="container-max flex flex-col sm:row justify-between items-center gap-4">
           <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--text-muted)]">
             <span>MAXTER</span>
             <span className="w-1 h-1 rounded-full bg-[var(--border)]"></span>
@@ -246,7 +246,7 @@ const App = () => {
           
           <div className="flex items-center gap-6 text-[10px] font-bold uppercase tracking-wider">
              <a href="https://github.com/mahendraplus" className="flex items-center gap-2 text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">
-               Author: <span className="text-[var(--text)]">Max Mali</span>
+               Author: <span className="text-[var(--text)]">Mahendra Mali</span>
              </a>
              <a href="https://github.com/mahendraplus/MAXTER" className="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors" aria-label="GitHub">
                <FaGithub className="text-base" />
