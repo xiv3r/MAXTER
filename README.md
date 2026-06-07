@@ -20,21 +20,8 @@ Run the following command in your terminal to set up MAXTER instantly:
 bash <(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/install.sh)
 ```
 
-## 📂 Project Structure
+## 🚀 Instant Installation
 
-```text
-MAXTER/
-├── .github/         # Automated build & deploy workflows
-├── assets/          # High-fidelity branding & fonts
-├── configs/         # Production-ready Zsh & Termux templates
-├── docs-src/        # React + Vite documentation source
-├── docs/            # Static production website (GitHub Pages)
-├── scripts/         # TUI Dashboard & Uninstaller logic
-├── setup.sh         # Universal installer engine
-└── install.sh       # Fast-install remote entry point
-```
-
-## 🛠️ Configuration
 
 ### Settings Dashboard
 Simply type `maxter` in your terminal to open the interactive settings menu.
