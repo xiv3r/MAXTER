@@ -229,12 +229,14 @@ const App = () => {
             <span>MIT License</span>
           </div>
           
-          <div className="flex items-center gap-6 text-[10px] font-bold uppercase tracking-wider">
-             <div className="text-[var(--text-muted)] flex items-center gap-2">
-               Author: <span className="text-[var(--text)]">Mahendra Mali</span>
+          <div className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-wider">
+             <div className="text-[var(--text-muted)] flex items-center gap-1.5">
+               AUTHOR: <span className="text-[var(--text)]">MAHENDRA MALI</span>
              </div>
+             <div className="w-px h-3 bg-[var(--border)]"></div>
              <a href="https://github.com/mahendraplus/MAXTER" className="text-[var(--text)] hover:text-[var(--accent)] transition-colors flex items-center gap-2" aria-label="GitHub">
-               <FaGithub className="text-base" />
+               <FaGithub className="text-sm" />
+               <span className="hidden xs:inline">GITHUB</span>
              </a>
           </div>
         </div>
