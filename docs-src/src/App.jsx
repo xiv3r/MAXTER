@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FaGithub, FaCheck, FaCopy, 
   FaShieldAlt, FaPaintBrush, FaSync, FaSun, FaMoon,
-  FaArrowRight, FaTerminal
+  FaArrowRight, FaTerminal, FaCode
 } from 'react-icons/fa';
 import { SiDebian, SiUbuntu, SiKalilinux, SiArchlinux, SiFedora } from 'react-icons/si';
 import { VscTerminal } from 'react-icons/vsc';
@@ -51,7 +51,7 @@ const App = () => {
       <nav className="fixed top-0 w-full z-50 h-14 bg-[var(--bg)]/80 backdrop-blur-md border-b border-[var(--border)] flex items-center">
         <div className="container-max w-full flex justify-between items-center">
           <div className="flex items-center gap-2 font-bold tracking-tight text-base text-[var(--text)]">
-            <VscTerminal className="text-[var(--accent)] text-lg" aria-hidden="true" />
+            <FaTerminal className="text-[var(--accent)] text-lg" aria-hidden="true" />
             <span>MAXTER</span>
           </div>
           
@@ -60,14 +60,14 @@ const App = () => {
               href="https://github.com/mahendraplus/MAXTER" 
               target="_blank" 
               rel="noreferrer" 
-              className="p-2 text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
+              className="p-2 text-[var(--text)] hover:text-[var(--accent)] transition-colors"
               aria-label="GitHub"
             >
               <FaGithub className="text-xl" />
             </a>
             <button 
               onClick={toggleTheme}
-              className="p-2 text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
+              className="p-2 text-[var(--text)] hover:text-[var(--accent)] transition-colors"
               aria-label="Theme"
             >
               {theme === 'dark' ? <FaSun /> : <FaMoon />}
@@ -85,9 +85,9 @@ const App = () => {
               Open Source v26.0
             </div>
             
-            <h1 className="text-hero mb-6">
+            <h1 className="text-hero mb-6 font-bold">
               Terminal, <br />
-              <span className="font-bold text-[var(--accent)]">Re-Engineered.</span>
+              <span className="text-[var(--accent)]">Re-Engineered.</span>
             </h1>
             
             <p className="text-[var(--text-muted)] text-base sm:text-lg mb-8 max-w-lg leading-relaxed">
@@ -97,10 +97,10 @@ const App = () => {
             {/* Compact Install Box */}
             <div className="install-box mb-8 max-w-2xl bg-[var(--code-bg)]">
               <FaTerminal className="text-[var(--text-muted)] text-xs flex-shrink-0" aria-hidden="true" />
-              <code>{installCmd}</code>
+              <code className="font-mono text-[var(--accent)]">{installCmd}</code>
               <button 
                 onClick={copyToClipboard}
-                className="copy-btn"
+                className="copy-btn bg-[var(--surface)] text-[var(--text)] border border-[var(--border)] px-3 py-1.5 rounded text-[10px] font-bold uppercase tracking-wider hover:border-[var(--accent)] transition-all flex items-center gap-2"
                 aria-label="Copy"
               >
                 {copied ? <FaCheck className="text-[var(--accent)]" /> : <FaCopy />}
@@ -109,10 +109,10 @@ const App = () => {
             </div>
 
             <div className="flex flex-wrap gap-3">
-              <a href="https://github.com/mahendraplus/MAXTER" target="_blank" rel="noreferrer" className="flex-1 sm:flex-none px-5 py-2.5 border border-[var(--border)] rounded-md font-bold text-xs uppercase tracking-wider hover:border-[var(--text)] transition-all flex items-center justify-center gap-2">
+              <a href="https://github.com/mahendraplus/MAXTER" target="_blank" rel="noreferrer" className="flex-1 sm:flex-none px-5 py-2.5 border border-[var(--border)] rounded-md font-bold text-xs uppercase tracking-wider text-[var(--text)] hover:border-[var(--accent)] transition-all flex items-center justify-center gap-2">
                 <FaGithub /> GitHub
               </a>
-              <a href="#features" className="flex-1 sm:flex-none px-5 py-2.5 border border-[var(--border)] rounded-md font-bold text-xs uppercase tracking-wider hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all flex items-center justify-center gap-2">
+              <a href="#features" className="flex-1 sm:flex-none px-5 py-2.5 border border-[var(--border)] rounded-md font-bold text-xs uppercase tracking-wider text-[var(--text)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all flex items-center justify-center gap-2">
                 Features <FaArrowRight className="text-[10px]" />
               </a>
             </div>
@@ -120,14 +120,14 @@ const App = () => {
 
           {/* Minimal Terminal */}
           <div className="lg:col-span-5 w-full mt-8 lg:mt-0">
-            <div className="terminal-window border border-[var(--border)]">
-              <div className="terminal-header bg-[var(--bg)]">
+            <div className="terminal-window border border-[var(--border)] rounded-lg overflow-hidden shadow-2xl">
+              <div className="terminal-header bg-[var(--surface-2)] px-4 py-2 flex gap-2 border-b border-[var(--border)]">
                 <div className="dot dot-red"></div>
                 <div className="dot dot-yellow"></div>
                 <div className="dot dot-green"></div>
-                <div className="flex-1 text-center text-[9px] text-zinc-500 font-mono opacity-50 uppercase tracking-widest">maxter.log</div>
+                <div className="flex-1 text-center text-[9px] text-[var(--text-muted)] font-mono opacity-50 uppercase tracking-widest">maxter.log</div>
               </div>
-              <div className="terminal-body min-h-[240px] sm:min-h-[280px] bg-black">
+              <div className="terminal-body min-h-[240px] sm:min-h-[280px] bg-black p-6 font-mono text-xs leading-relaxed">
                 <div className="mb-3">
                   <span className="text-[var(--accent)] font-bold mr-2">➜</span>
                   <span className="text-white">install maxter</span>
@@ -140,7 +140,7 @@ const App = () => {
                     </motion.div>
                   )}
                   {terminalStep >= 2 && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-1">
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-1 text-zinc-300">
                       [SKIP] oh-my-zsh detected
                     </motion.div>
                   )}
@@ -150,18 +150,18 @@ const App = () => {
                     </motion.div>
                   )}
                   {terminalStep >= 4 && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-1">
-                      <span className="text-[var(--accent)] mr-2">[DONE]</span> powerlevel10k
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-1 text-zinc-300">
+                      <span className="text-[var(--accent)] mr-2 font-bold">[DONE]</span> powerlevel10k
                     </motion.div>
                   )}
                   {terminalStep >= 5 && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                      <span className="text-[var(--accent)] mr-2">[DONE]</span> configs applied
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-zinc-300">
+                      <span className="text-[var(--accent)] mr-2 font-bold">[DONE]</span> configs applied
                     </motion.div>
                   )}
                   {terminalStep >= 6 && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-4 border-t border-zinc-900 pt-4">
-                      <div className="text-[var(--accent)] font-bold text-xs uppercase mb-1">Complete</div>
+                      <div className="text-[var(--accent)] font-bold text-[10px] uppercase mb-1">Complete</div>
                       <div className="text-zinc-500 text-[11px]">Type 'maxter' to start dashboard.</div>
                       <div className="flex items-center gap-1 mt-2">
                         <span className="text-[var(--accent)] font-bold">➜</span>
@@ -187,33 +187,33 @@ const App = () => {
               { icon: <FaTerminal />, title: "Powerlevel10k", desc: "Optimized Zsh theme for developer productivity." },
               { icon: <FaShieldAlt />, title: "Silent Install", desc: "Zero-prompt setup for all supported systems." },
               { icon: <FaSync />, title: "Autosuggestions", desc: "Smart completions based on shell history." },
-              { icon: <VscTerminal />, title: "Termux Layout", desc: "Optimized extra-keys for mobile terminal." },
-              { icon: <FaTerminal />, title: "Dashboard", desc: "Integrated TUI to manage configs easily." },
+              { icon: <FaTerminal />, title: "Termux Layout", desc: "Optimized extra-keys for mobile terminal." },
+              { icon: <FaCode />, title: "Dashboard", desc: "Integrated TUI to manage configs easily." },
               { icon: <FaPaintBrush />, title: "Nerd Fonts", desc: "Automated font patching and icons." }
             ].map((f, i) => (
               <div key={i} className="feature-card bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--accent)] transition-colors p-6 rounded-lg">
                 <div className="text-[var(--accent)] text-xl mb-4" aria-hidden="true">{f.icon}</div>
                 <h3 className="text-base font-bold mb-2 uppercase tracking-wide text-[var(--text)]">{f.title}</h3>
-                <p className="text-[var(--text-muted)] text-xs leading-relaxed">{f.desc}</p>
+                <p className="text-[var(--text)] opacity-85 text-xs leading-relaxed">{f.desc}</p>
               </div>
             ))}
           </div>
         </section>
 
         {/* Platforms */}
-        <section className="py-12 bg-[var(--surface-2)]/30 border-y border-[var(--border)]">
-          <div className="container-max flex flex-wrap justify-center gap-3 sm:gap-4">
+        <section className="py-20 lg:py-24 bg-[var(--surface-2)]/30 border-y border-[var(--border)]">
+          <div className="container-max flex flex-wrap justify-center gap-4 sm:gap-6">
              {[
-               { icon: <VscTerminal />, name: "Termux" },
+               { icon: <FaTerminal />, name: "Termux" },
                { icon: <SiDebian />, name: "Debian" },
                { icon: <SiUbuntu />, name: "Ubuntu" },
                { icon: <SiArchlinux />, name: "Arch" },
                { icon: <SiKalilinux />, name: "Kali" },
                { icon: <SiFedora />, name: "Fedora" }
              ].map((p, i) => (
-               <div key={i} className="platform-chip border border-[var(--border)] hover:border-[var(--accent)] bg-[var(--surface)] px-4 py-2 rounded-md flex items-center gap-2 transition-all">
-                 <span className="text-base text-[var(--accent)]" aria-hidden="true">{p.icon}</span>
-                 <span className="text-[11px] font-bold uppercase text-[var(--text)]">{p.name}</span>
+               <div key={i} className="platform-chip border border-[var(--border)] hover:border-[var(--accent)] bg-[var(--surface)] px-5 py-2.5 rounded flex items-center gap-3 transition-all">
+                 <span className="text-lg text-[var(--accent)]" aria-hidden="true">{p.icon}</span>
+                 <span className="text-[11px] font-bold uppercase text-[var(--text)] tracking-wider">{p.name}</span>
                </div>
              ))}
           </div>
@@ -233,7 +233,7 @@ const App = () => {
              <div className="text-[var(--text-muted)] flex items-center gap-2">
                Author: <span className="text-[var(--text)]">Mahendra Mali</span>
              </div>
-             <a href="https://github.com/mahendraplus/MAXTER" className="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors" aria-label="GitHub">
+             <a href="https://github.com/mahendraplus/MAXTER" className="text-[var(--text)] hover:text-[var(--accent)] transition-colors flex items-center gap-2" aria-label="GitHub">
                <FaGithub className="text-base" />
              </a>
           </div>
