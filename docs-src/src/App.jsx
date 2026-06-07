@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  FaTerminal, FaGithub, FaCheck, FaCopy, 
+  FaGithub, FaCheck, FaCopy, 
   FaShieldAlt, FaPaintBrush, FaSync, FaSun, FaMoon,
-  FaArrowRight, FaCode
+  FaArrowRight, FaTerminal
 } from 'react-icons/fa';
 import { SiDebian, SiUbuntu, SiKalilinux, SiArchlinux, SiFedora } from 'react-icons/si';
 import { VscTerminal } from 'react-icons/vsc';
@@ -31,7 +31,7 @@ const App = () => {
     localStorage.setItem('theme', newTheme);
   };
 
-  // Terminal Animation Sequence
+  // Terminal Animation
   useEffect(() => {
     const timer = setInterval(() => {
       setTerminalStep(prev => (prev < 6 ? prev + 1 : prev));
@@ -48,27 +48,27 @@ const App = () => {
   return (
     <div className="min-h-screen transition-colors duration-200">
       {/* Navbar */}
-      <nav className="fixed top-0 w-full z-50 h-14 bg-[var(--bg)] shadow-sm flex items-center border-b border-[var(--border)]">
+      <nav className="fixed top-0 w-full z-50 h-14 bg-[var(--bg)]/80 backdrop-blur-md border-b border-[var(--border)] flex items-center">
         <div className="container-max w-full flex justify-between items-center">
-          <div className="flex items-center gap-2 font-bold tracking-tight text-lg">
-            <VscTerminal className="text-[var(--accent)] text-xl" aria-hidden="true" />
+          <div className="flex items-center gap-2 font-bold tracking-tight text-base">
+            <VscTerminal className="text-[var(--accent)] text-lg" aria-hidden="true" />
             <span>MAXTER</span>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
             <a 
               href="https://github.com/mahendraplus/MAXTER" 
               target="_blank" 
               rel="noreferrer" 
               className="p-2 text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
-              aria-label="GitHub Repository"
+              aria-label="GitHub"
             >
               <FaGithub className="text-xl" />
             </a>
             <button 
               onClick={toggleTheme}
               className="p-2 text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
-              aria-label="Toggle Dark/Light Mode"
+              aria-label="Theme"
             >
               {theme === 'dark' ? <FaSun /> : <FaMoon />}
             </button>
@@ -76,96 +76,96 @@ const App = () => {
         </div>
       </nav>
 
-      <main className="pt-24 pb-20 px-6">
+      <main className="pt-20 pb-16 px-4 sm:px-0">
         {/* Hero Section */}
-        <section className="container-max grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-32">
-          <div className="lg:col-span-7">
-            <div className="inline-flex items-center gap-2 text-[var(--text-muted)] font-bold text-xs uppercase tracking-widest mb-4">
-              <span className="w-2 h-2 rounded-full bg-[var(--accent)]"></span>
+        <section className="container-max grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start mb-20 lg:mb-32">
+          <div className="lg:col-span-7 pt-4">
+            <div className="inline-flex items-center gap-2 text-[var(--text-muted)] font-bold text-[10px] uppercase tracking-[0.2em] mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]"></span>
               Open Source v26.0
             </div>
             
             <h1 className="text-hero mb-6">
-              MAXTER — Ultimate <br />
-              <span className="font-bold text-[var(--accent)]">Zsh & Termux Setup.</span>
+              Terminal, <br />
+              <span className="font-bold text-[var(--accent)] underline decoration-2 underline-offset-8 decoration-[var(--accent)]/30">Re-Engineered.</span>
             </h1>
             
-            <p className="text-[var(--text-muted)] text-lg mb-10 max-w-xl leading-relaxed">
-              The fastest <strong>termux setup</strong> and <strong>zsh configuration</strong> tool. Optimize your terminal for speed, aesthetics, and modern development workflows in <strong>one command</strong>.
+            <p className="text-[var(--text-muted)] text-base sm:text-lg mb-8 max-w-lg leading-relaxed">
+              Professional <strong>zsh setup</strong> and <strong>termux optimization</strong> tool. Zero prompts. Zero friction. Just pure performance.
             </p>
 
-            {/* Redesigned Install Box */}
-            <div className="install-box mb-8 group">
-              <FaTerminal className="text-[var(--text-muted)] group-hover:text-[var(--accent)] transition-colors" aria-hidden="true" />
-              <code className="scrollbar-hide" title="One command install for MAXTER">{installCmd}</code>
+            {/* Compact Install Box */}
+            <div className="install-box mb-8 max-w-2xl">
+              <FaTerminal className="text-[var(--text-muted)] text-xs flex-shrink-0" aria-hidden="true" />
+              <code>{installCmd}</code>
               <button 
                 onClick={copyToClipboard}
                 className="copy-btn"
-                aria-label="Copy installation command"
+                aria-label="Copy"
               >
                 {copied ? <FaCheck className="text-[var(--accent)]" /> : <FaCopy />}
                 <span>{copied ? 'Copied' : 'Copy'}</span>
               </button>
             </div>
 
-            <div className="flex flex-wrap gap-4">
-              <a href="https://github.com/mahendraplus/MAXTER" target="_blank" rel="noreferrer" className="px-6 py-3 border border-[var(--border)] rounded-lg font-bold text-sm hover:border-[var(--text)] transition-all flex items-center gap-2">
-                <FaGithub /> View on GitHub
+            <div className="flex flex-wrap gap-3">
+              <a href="https://github.com/mahendraplus/MAXTER" target="_blank" rel="noreferrer" className="flex-1 sm:flex-none px-5 py-2.5 border border-[var(--border)] rounded-md font-bold text-xs uppercase tracking-wider hover:border-[var(--text)] transition-all flex items-center justify-center gap-2">
+                <FaGithub /> GitHub
               </a>
-              <a href="#features" className="px-6 py-3 border border-[var(--border)] rounded-lg font-bold text-sm hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all flex items-center gap-2">
-                Explore Features <FaArrowRight className="text-xs" />
+              <a href="#features" className="flex-1 sm:flex-none px-5 py-2.5 border border-[var(--border)] rounded-md font-bold text-xs uppercase tracking-wider hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all flex items-center justify-center gap-2">
+                Features <FaArrowRight className="text-[10px]" />
               </a>
             </div>
           </div>
 
-          {/* Realistic Terminal Mockup */}
-          <div className="lg:col-span-5">
-            <div className="terminal-window" role="img" aria-label="Mockup of MAXTER terminal installation on Android">
+          {/* Minimal Terminal */}
+          <div className="lg:col-span-5 w-full mt-8 lg:mt-0">
+            <div className="terminal-window">
               <div className="terminal-header">
                 <div className="dot dot-red"></div>
                 <div className="dot dot-yellow"></div>
                 <div className="dot dot-green"></div>
-                <div className="flex-1 text-center text-[10px] text-zinc-500 font-mono underline underline-offset-2 decoration-[var(--accent)]/50">maxter — setup.sh</div>
+                <div className="flex-1 text-center text-[9px] text-zinc-500 font-mono opacity-50 uppercase tracking-widest">maxter_setup.log</div>
               </div>
-              <div className="terminal-body min-h-[320px]">
-                <div className="mb-2">
+              <div className="terminal-body min-h-[260px] sm:min-h-[300px]">
+                <div className="mb-3">
                   <span className="text-[var(--accent)] font-bold mr-2">➜</span>
                   <span className="text-white">install maxter</span>
                 </div>
                 
                 <AnimatePresence>
                   {terminalStep >= 1 && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-zinc-400">
-                      Detecting system... <span className="text-white">Termux (Android)</span>
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-zinc-500 mb-1">
+                      [*] Detecting system... <span className="text-white">Termux</span>
                     </motion.div>
                   )}
                   {terminalStep >= 2 && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                      <span className="text-white mr-4">[OK]</span> zsh already installed
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-1">
+                      [SKIP] zsh already installed
                     </motion.div>
                   )}
                   {terminalStep >= 3 && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                      <span className="text-yellow-500 mr-4">[GET]</span> <strong>powerlevel10k</strong> installing...
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-1 text-yellow-500">
+                      [INFO] installing powerlevel10k...
                     </motion.div>
                   )}
                   {terminalStep >= 4 && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                      <span className="text-[var(--accent)] mr-2">[DONE]</span> <strong>oh-my-zsh</strong> configured
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-1">
+                      <span className="text-[var(--accent)] mr-2">[DONE]</span> powerlevel10k ready
                     </motion.div>
                   )}
                   {terminalStep >= 5 && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                      <span className="text-[var(--accent)] mr-2">[DONE]</span> <strong>syntax-highlighting</strong> applied
+                      <span className="text-[var(--accent)] mr-2">[DONE]</span> configs applied
                     </motion.div>
                   )}
                   {terminalStep >= 6 && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-4 border-t border-zinc-800 pt-4">
-                      <div className="text-[var(--accent)] font-bold uppercase tracking-wider text-xs mb-1">Status: Ready</div>
-                      <div className="text-zinc-500">MAXTER setup complete. Type 'maxter' to start.</div>
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-4 border-t border-zinc-900 pt-4">
+                      <div className="text-[var(--accent)] font-bold text-xs uppercase mb-1">Ready to use</div>
+                      <div className="text-zinc-500 text-[11px]">Type 'maxter' to open dashboard.</div>
                       <div className="flex items-center gap-1 mt-2">
                         <span className="text-[var(--accent)] font-bold">➜</span>
-                        <div className="w-2 h-4 bg-white animate-pulse"></div>
+                        <div className="w-1.5 h-3 bg-white animate-pulse"></div>
                       </div>
                     </motion.div>
                   )}
@@ -175,87 +175,81 @@ const App = () => {
           </div>
         </section>
 
-        {/* Features Section */}
-        <section id="features" className="container-max py-24">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-16">
+        {/* Features Grid */}
+        <section id="features" className="container-max py-16 lg:py-24">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-12">
             <div>
-              <h2 className="text-4xl font-bold mb-4 tracking-tight">One Command Install for Termux, Kali & More</h2>
-              <p className="text-[var(--text-muted)] max-w-md">Everything you need for a professional <strong>termux setup</strong> in one lightweight package.</p>
+              <h2 className="text-3xl font-bold mb-2 tracking-tight uppercase">Core Engine</h2>
+              <p className="text-[var(--text-muted)] text-sm">Industrial grade terminal optimization.</p>
             </div>
-            <div className="h-px flex-1 bg-[var(--border)] hidden md:block mb-4 mx-12"></div>
+            <div className="h-px flex-1 bg-[var(--border)] hidden md:block mx-8"></div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
-              { icon: <FaTerminal />, title: "Powerlevel10k Theme", desc: "Automated installation of the fastest Zsh theme for developers." },
-              { icon: <FaCode />, title: "Zsh Syntax Highlighting", desc: "Real-time visual feedback for terminal commands as you type." },
-              { icon: <FaSync />, title: "Zsh Autosuggestions", desc: "Fish-style command completions based on your shell history." },
-              { icon: <VscTerminal />, title: "Termux Extra Keys", desc: "A perfectly organized keys layout for mobile terminal productivity." },
-              { icon: <FaShieldAlt />, title: "Smart OS Detection", desc: "Automatic optimization for Debian, Ubuntu, Kali, Arch, and Fedora." },
-              { icon: <FaPaintBrush />, title: "Nerd Fonts Support", desc: "High-fidelity iconography with automated Meslo Nerd Font patching." }
+              { icon: <FaTerminal />, title: "Powerlevel10k", desc: "The fastest and most flexible Zsh theme, pre-configured." },
+              { icon: <FaShieldAlt />, title: "Silent Install", desc: "One-command setup with automatic 'yes' to all prompts." },
+              { icon: <FaSync />, title: "Autosuggestions", desc: "Smart command completion based on your session history." },
+              { icon: <VscTerminal />, title: "Termux Layout", desc: "Optimized extra-keys for mobile terminal productivity." },
+              { icon: <FaTerminal />, title: "Dashboard", desc: "Integrated TUI to manage configs and dev workflows." },
+              { icon: <FaPaintBrush />, title: "Nerd Fonts", desc: "High-fidelity iconography with automated font patching." }
             ].map((f, i) => (
-              <div key={i} className="feature-card shadow-sm">
-                <div className="text-[var(--accent)] text-2xl mb-6" aria-hidden="true">{f.icon}</div>
-                <h3 className="text-xl font-bold mb-3">{f.title}</h3>
-                <p className="text-[var(--text-muted)] text-sm leading-relaxed">{f.desc}</p>
+              <div key={i} className="feature-card">
+                <div className="text-[var(--accent)] text-xl mb-4" aria-hidden="true">{f.icon}</div>
+                <h3 className="text-base font-bold mb-2 uppercase tracking-wide">{f.title}</h3>
+                <p className="text-[var(--text-muted)] text-xs leading-relaxed">{f.desc}</p>
               </div>
             ))}
           </div>
         </section>
 
-        {/* Platforms Section */}
-        <section className="py-24 bg-[var(--surface-2)]/30 border-y border-[var(--border)]">
-          <div className="container-max">
-             <div className="text-center mb-12">
-               <h2 className="text-[var(--text-muted)] font-bold text-xs uppercase tracking-widest">Supported <strong>Terminal</strong> Environments</h2>
-             </div>
-             <div className="flex flex-wrap justify-center gap-4">
-               {[
-                 { icon: <VscTerminal />, name: "Termux" },
-                 { icon: <SiDebian />, name: "Debian" },
-                 { icon: <SiUbuntu />, name: "Ubuntu" },
-                 { icon: <SiArchlinux />, name: "Arch" },
-                 { icon: <SiKalilinux />, name: "Kali" },
-                 { icon: <SiFedora />, name: "Fedora" }
-               ].map((p, i) => (
-                 <div key={i} className="platform-chip hover:border-[var(--accent)] transition-colors cursor-default" title={`MAXTER supports ${p.name}`}>
-                   <span className="text-lg" aria-hidden="true">{p.icon}</span>
-                   <span>{p.name}</span>
-                 </div>
-               ))}
-             </div>
+        {/* Platforms */}
+        <section className="py-16 bg-[var(--surface-2)]/30 border-y border-[var(--border)]">
+          <div className="container-max flex flex-wrap justify-center gap-3 sm:gap-6">
+             {[
+               { icon: <VscTerminal />, name: "Termux" },
+               { icon: <SiDebian />, name: "Debian" },
+               { icon: <SiUbuntu />, name: "Ubuntu" },
+               { icon: <SiArchlinux />, name: "Arch" },
+               { icon: <SiKalilinux />, name: "Kali" },
+               { icon: <SiFedora />, name: "Fedora" }
+             ].map((p, i) => (
+               <div key={i} className="platform-chip border-[var(--border)] hover:border-[var(--accent)] transition-all">
+                 <span className="text-base" aria-hidden="true">{p.icon}</span>
+                 <span className="text-[10px]">{p.name}</span>
+               </div>
+             ))}
           </div>
         </section>
 
-        {/* Documentation / Info Section */}
-        <section className="container-max py-24 text-center">
-          <h2 className="text-3xl font-bold mb-6 tracking-tight">Best <strong>Termux Setup</strong> for Professionals.</h2>
-          <p className="text-[var(--text-muted)] max-w-2xl mx-auto mb-12 leading-relaxed">
-            MAXTER is an expertly tuned <strong>zsh configuration</strong> suite. It brings industrial-grade productivity to your terminal with zero manual effort.
-          </p>
-          <div className="max-w-xl mx-auto bg-black border border-[var(--border)] rounded-xl p-8 font-mono text-xs text-left text-zinc-500 shadow-inner">
-            <div className="text-[var(--accent)] mb-2 font-bold"># Optimized extra-keys for Termux</div>
+        {/* Config Snippet */}
+        <section className="container-max py-20 text-center">
+          <div className="max-w-xl mx-auto bg-black border border-[var(--border)] rounded-lg p-6 font-mono text-[10px] sm:text-xs text-left text-zinc-500 overflow-x-auto shadow-sm">
+            <div className="text-[var(--accent)] mb-2 font-bold opacity-80"># termux.properties</div>
             extra-keys = [['ESC','DRAWER','SHIFT','HOME','UP','END','PGUP'], \<br />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]
           </div>
+          <p className="mt-8 text-[var(--text-muted)] text-sm font-medium italic underline underline-offset-4 decoration-[var(--accent)]/20 uppercase tracking-widest">
+            Built for professional efficiency.
+          </p>
         </section>
       </main>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-[var(--border)] bg-[var(--surface)]">
-        <div className="container-max flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-[var(--text-muted)]">
+      <footer className="py-10 border-t border-[var(--border)] bg-[var(--surface)]">
+        <div className="container-max flex flex-col sm:flex-row justify-between items-center gap-6">
+          <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--text-muted)]">
             <span>MAXTER</span>
             <span className="w-1 h-1 rounded-full bg-[var(--border)]"></span>
-            <span>MIT License</span>
+            <span>MIT</span>
           </div>
           
-          <div className="flex items-center gap-6 text-sm">
-             <a href="https://github.com/mahendraplus" className="flex items-center gap-2 hover:text-[var(--accent)] transition-colors" title="Mahendra Mali on GitHub">
-               Created by <span className="font-bold text-[var(--text)]">Mahendra Mali</span>
+          <div className="flex items-center gap-6 text-[10px] font-bold uppercase tracking-wider">
+             <a href="https://github.com/mahendraplus" className="flex items-center gap-2 text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">
+               Author: <span className="text-[var(--text)]">Max Mali</span>
              </a>
-             <a href="https://github.com/mahendraplus/MAXTER" className="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors" aria-label="GitHub Repository">
-               <FaGithub className="text-lg" />
+             <a href="https://github.com/mahendraplus/MAXTER" className="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors" aria-label="GitHub">
+               <FaGithub className="text-base" />
              </a>
           </div>
         </div>

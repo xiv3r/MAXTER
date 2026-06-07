@@ -11,7 +11,7 @@ set -uo pipefail
 # --- 1. Variables & UI ---
 REPO_URL="https://github.com/mahendraplus/MAXTER"
 RAW_URL="https://raw.githubusercontent.com/mahendraplus/MAXTER/Max"
-LOG_FILE="/tmp/maxter_install.log"
+LOG_FILE="$HOME/.maxter_install.log"
 ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 REPO_DIR="$HOME/MAXTER"
 

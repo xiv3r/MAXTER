@@ -10,7 +10,7 @@ set -euo pipefail
 
 # --- 1. Variables ---
 REPO_URL="https://raw.githubusercontent.com/mahendraplus/MAXTER/Max"
-LOG_FILE="/tmp/maxter_install.log"
+LOG_FILE="$HOME/.maxter_install.log"
 
 # --- 2. Clean Start ---
 clear
