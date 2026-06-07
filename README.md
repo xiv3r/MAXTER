@@ -1,105 +1,62 @@
-# 🚀 MAXTER - Ultimate Zsh & Termux Configuration
+# MAXTER - Ultimate Zsh & Termux Setup Tool
 
-MAXTER is a high-performance, visually stunning, and highly organized configuration for Zsh and Termux. It brings a modern development environment to your mobile and desktop terminals with Powerlevel10k, syntax highlighting, and auto-suggestions.
+**MAXTER** is a high-performance, one-command terminal setup tool designed for **Termux**, **Kali Linux**, **Ubuntu**, **Debian**, **Arch**, and **Fedora**. It automatically installs and configures **Zsh**, **Oh-My-Zsh**, the **Powerlevel10k** theme, and **Nerd Fonts** with zero manual prompts.
 
-![Maxter Logo](assets/logo.png)
+[![Maxter Logo](assets/logo.png)](https://mahendraplus.github.io/MAXTER/)
 
-## ✨ Features
+## ✨ Key Features
 
-- **Maxter TUI Dashboard**: Type `maxter` to manage settings and dev workflows.
-- **Powerlevel10k Integration**: A fast and flexible Zsh theme.
-- **Syntax Highlighting**: Real-time code highlighting for Zsh.
-- **Auto-Suggestions**: Fish-like suggestions for your shell commands.
-- **Optimized Termux Settings**: Custom extra-keys, fonts, and colors for Termux.
-- **Cross-Platform Support**: Works on Termux, Debian, Ubuntu, Kali, Arch, and Fedora.
-- **Well-Organized Structure**: Clean directory layout for easy customization.
+- **One-Command Setup**: A silent, non-interactive installer for a frictionless experience.
+- **Maxter TUI Dashboard**: Type `maxter` to manage settings and bootstrap **React** or **Vue** workflows via Vite.
+- **Optimized for Termux**: Custom extra-keys and color schemes tailored for mobile productivity.
+- **Industrial Aesthetic**: Powered by Powerlevel10k with sharp, professional configurations.
+- **Smart OS Detection**: Automatically applies system-specific patches for all major Linux distributions.
 
-## 📂 Project Structure
+## 🚀 Instant Installation
 
-```text
-MAXTER/
-├── assets/          # Fonts, logos, and images
-├── configs/         # Configuration templates
-│   ├── termux/      # Termux properties and colors
-│   └── zsh/         # .zshrc and .p10k.zsh templates
-├── docs/            # Next.js Documentation (React, Tailwind, Framer Motion)
-├── scripts/         # Dashboard and uninstall scripts
-├── setup.sh         # Main installation entry point
-└── install.sh       # Fast-install entry point
-```
-
-## 🚀 Installation
-
-### 1. Fast Install (Recommended)
-
-Run the following command to install MAXTER instantly on your system:
+Run the following command in your terminal to set up MAXTER instantly:
 
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/install.sh)
 ```
 
-### 2. Manual Install
+## 📂 Project Structure
 
-If you prefer to clone the repository first:
-
-```bash
-git clone -b Max https://github.com/mahendraplus/MAXTER.git
-cd MAXTER
-chmod +x install.sh
-./install.sh
+```text
+MAXTER/
+├── .github/         # Automated build & deploy workflows
+├── assets/          # High-fidelity branding & fonts
+├── configs/         # Production-ready Zsh & Termux templates
+├── docs-src/        # React + Vite documentation source
+├── docs/            # Static production website (GitHub Pages)
+├── scripts/         # TUI Dashboard & Uninstaller logic
+├── setup.sh         # Universal installer engine
+└── install.sh       # Fast-install remote entry point
 ```
-
-## 🛠️ Configuration
-
-### Extra Keys (Termux)
-The default extra keys are optimized for mobile productivity:
-- **Row 1**: ESC, DRAWER, SHIFT, HOME, UP, END, PGUP
-- **Row 2**: TAB, CTRL, ALT, LEFT, DOWN, RIGHT, PGDN
-
-You can modify these using the `maxter` command.
-
-### Customizing Zsh
-Edit `~/.zshrc` for your aliases and environment variables. The Powerlevel10k theme can be reconfigured using `p10k configure`.
 
 ## 🌐 Documentation Stack
 
-The new MAXTER documentation is built with:
-- **Next.js**: SSR + Fast Page Loading
-- **TailwindCSS**: Modern Styling
-- **Framer Motion**: Smooth Animations
-- **React Icons**: Premium Iconography
-- **Vercel**: Optimized Hosting
+The MAXTER documentation is a high-performance web app built with:
+- **React 19** & **Vite 6**
+- **TailwindCSS 4** (Industrial Theme)
+- **Framer Motion** (Smooth Animations)
+- **GitHub Actions** (Automated Deployment)
 
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to open issues or submit pull requests to improve the project.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-Created with ❤️ by [Mahendra](https://github.com/mahendraplus)
+Explore the live site: [mahendraplus.github.io/MAXTER/](https://mahendraplus.github.io/MAXTER/)
 
 ## 🛠️ Configuration
 
-### Extra Keys (Termux)
-The default extra keys are optimized for mobile productivity:
+### Termux Extra Keys
+Default layout optimized for one-hand mobile coding:
 - **Row 1**: ESC, DRAWER, SHIFT, HOME, UP, END, PGUP
 - **Row 2**: TAB, CTRL, ALT, LEFT, DOWN, RIGHT, PGDN
 
-You can modify these in `configs/termux/termux.properties`.
-
-### Customizing Zsh
-Edit `~/.zshrc` for your aliases and environment variables. The Powerlevel10k theme can be reconfigured using `p10k configure`.
-
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to open issues or submit pull requests to improve the project.
+### Settings Dashboard
+Simply type `maxter` in your terminal to open the interactive settings menu.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for full details.
 
 ---
-Created with ❤️ by [Mahendra](https://github.com/mahendraplus)
+Created with ❤️ by [Mahendra Mali](https://github.com/mahendraplus)
