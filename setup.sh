@@ -5,9 +5,7 @@
 # ==========================================
 # Version: 26.0
 # Author: Mahendra Mali
-# Support: Termux, Debian, Ubuntu, Arch, Fedora
-
-set -e
+# Support: Termux, Debian, Ubuntu, Kali, Arch, Fedora
 
 # --- 1. Colors & UI ---
 GREEN='\033[0;32m'
@@ -24,6 +22,7 @@ ICON_FAIL="[×]"
 # --- 2. Variables ---
 MAXTER_REPO="https://github.com/mahendraplus/MAXTER"
 ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+REPO_DIR="$HOME/MAXTER"
 
 # --- 3. Helper Functions ---
 msg_load() { echo -e "${BLUE}${ICON_LOAD} ${NC}$1..."; }
@@ -39,7 +38,7 @@ run_task() {
         msg_ok "$task_name"
     else
         echo -ne "\033[2K\r"
-        msg_fail "$task_name"
+        echo -e "${YELLOW}${ICON_FAIL} ${NC}${task_name} (Warning: Check manually if issues occur)"
     fi
 }
 
@@ -50,8 +49,8 @@ if [ -d "/data/data/com.termux/files/usr" ]; then
     PKG_MAN="pkg"
     INSTALL_CMD="pkg install -y"
     UPDATE_CMD="pkg update -y && pkg upgrade -y"
-elif [ -f "/etc/debian_version" ]; then
-    OS="Debian"
+elif [ -f "/etc/debian_version" ] || [ -f "/etc/kali_version" ]; then
+    OS="Debian/Kali"
     PKG_MAN="apt"
     INSTALL_CMD="sudo apt install -y"
     UPDATE_CMD="sudo apt update && sudo apt upgrade -y"
@@ -60,8 +59,13 @@ elif [ -f "/etc/arch-release" ]; then
     PKG_MAN="pacman"
     INSTALL_CMD="sudo pacman -S --noconfirm"
     UPDATE_CMD="sudo pacman -Syu --noconfirm"
+elif [ -f "/etc/fedora-release" ]; then
+    OS="Fedora"
+    PKG_MAN="dnf"
+    INSTALL_CMD="sudo dnf install -y"
+    UPDATE_CMD="sudo dnf update -y"
 else
-    msg_fail "Unsupported OS"
+    msg_fail "Unsupported OS. MAXTER currently supports Termux, Debian, Kali, Arch, and Fedora."
 fi
 msg_ok "System: $OS"
 
@@ -85,73 +89,40 @@ fi
 [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ] && run_task "Installing Autosuggestions" "git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions"
 
 # --- 7. Apply MAXTER Configuration ---
-REPO_DIR="$HOME/MAXTER"
 if [ ! -d "$REPO_DIR" ]; then
-    run_task "Cloning MAXTER" "git clone $MAXTER_REPO $REPO_DIR"
+    run_task "Cloning MAXTER Repository" "git clone -b Max $MAXTER_REPO $REPO_DIR"
 fi
 
-msg_load "Applying Configs"
-cp -f "$REPO_DIR/configs/zsh/.zshrc" "$HOME/.zshrc"
-cp -f "$REPO_DIR/configs/zsh/.p10k.zsh" "$HOME/.p10k.zsh"
+msg_load "Applying Configuration Files"
+[ -f "$REPO_DIR/configs/zsh/.zshrc" ] && cp -f "$REPO_DIR/configs/zsh/.zshrc" "$HOME/.zshrc" || echo "Warning: .zshrc template missing"
+[ -f "$REPO_DIR/configs/zsh/.p10k.zsh" ] && cp -f "$REPO_DIR/configs/zsh/.p10k.zsh" "$HOME/.p10k.zsh" || echo "Warning: .p10k.zsh template missing"
 
 if [ "$OS" == "Termux" ]; then
     mkdir -p "$HOME/.termux"
-    cp -f "$REPO_DIR/configs/termux/termux.properties" "$HOME/.termux/termux.properties"
-    cp -f "$REPO_DIR/configs/termux/colors.properties" "$HOME/.termux/colors.properties"
-    cp -f "$REPO_DIR/assets/font.ttf" "$HOME/.termux/font.ttf"
+    [ -f "$REPO_DIR/configs/termux/termux.properties" ] && cp -f "$REPO_DIR/configs/termux/termux.properties" "$HOME/.termux/termux.properties"
+    [ -f "$REPO_DIR/configs/termux/colors.properties" ] && cp -f "$REPO_DIR/configs/termux/colors.properties" "$HOME/.termux/colors.properties"
+    [ -f "$REPO_DIR/assets/font.ttf" ] && cp -f "$REPO_DIR/assets/font.ttf" "$HOME/.termux/font.ttf"
     termux-reload-settings
 fi
 
-# --- 8. Create 'maxter' command ---
-msg_load "Setting up Maxter Settings Dashboard"
-cat > "$REPO_DIR/scripts/maxter_tui.sh" <<'EOF'
-#!/bin/bash
-# MAXTER Settings TUI
-while true; do
-    clear
-    echo -e "\033[1;36m"
-    echo "  __  __   _   __  __ _____ _____ ____  "
-    echo " |  \/  | /_\  \ \/ /|_   _| ____|  _ \ "
-    echo " | |\/| |/ _ \  \  /   | | |  _| | |_) |"
-    echo " | |  | / ___ \ /  \   | | | |___|  _ < "
-    echo " |_|  |_/_/   \_/_/\_\  |_| |_____|_| \_\\"
-    echo -e "\033[0m"
-    echo -e " \033[1;33m--- Ultimate Settings Dashboard ---\033[0m"
-    echo ""
-    echo -e " [1] Edit .zshrc         [2] Edit .p10k.zsh"
-    echo -e " [3] Termux Keys         [4] UI Colors"
-    echo -e " [5] React Workflow      [6] Vue Workflow"
-    echo -e " [7] Update Maxter       [0] Exit"
-    echo ""
-    read -p " Select Option: " opt
-    case $opt in
-        1) nano ~/.zshrc ;;
-        2) nano ~/.p10k.zsh ;;
-        3) nano ~/.termux/termux.properties && termux-reload-settings ;;
-        4) nano ~/.termux/colors.properties && termux-reload-settings ;;
-        5) echo "Launching React Dev Environment..."; npx create-react-app my-app && cd my-app && npm start ;;
-        6) echo "Launching Vue Dev Environment..."; npm init vue@latest ;;
-        7) cd ~/MAXTER && git pull && ./install.sh ;;
-        0) break ;;
-        *) echo "Invalid option." ; sleep 1 ;;
-    esac
-done
-EOF
+# --- 8. Setup TUI Command ---
+msg_load "Finalizing Maxter Dashboard"
 chmod +x "$REPO_DIR/scripts/maxter_tui.sh"
 
-# Add alias to .zshrc
+# Add alias to .zshrc if not present
 if ! grep -q "alias maxter=" "$HOME/.zshrc"; then
-    echo "alias maxter='$REPO_DIR/scripts/maxter_tui.sh'" >> "$HOME/.zshrc"
+    echo "alias maxter='bash $REPO_DIR/scripts/maxter_tui.sh'" >> "$HOME/.zshrc"
 fi
 
 msg_ok "Maxter Command Ready"
 
 # --- 9. Finalize ---
 msg_load "Setting ZSH as Default"
+ZSH_PATH=$(command -v zsh)
 if [ "$OS" == "Termux" ]; then
-    chsh -s zsh
+    chsh -s "$ZSH_PATH"
 else
-    sudo chsh -s "$(which zsh)" "$(whoami)"
+    sudo chsh -s "$ZSH_PATH" "$(whoami)"
 fi
 
 echo -e "\n${GREEN}=======================================${NC}"
