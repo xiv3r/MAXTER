@@ -34,22 +34,7 @@ MAXTER/
 └── install.sh       # Fast-install remote entry point
 ```
 
-## 🌐 Documentation Stack
-
-The MAXTER documentation is a high-performance web app built with:
-- **React 19** & **Vite 6**
-- **TailwindCSS 4** (Industrial Theme)
-- **Framer Motion** (Smooth Animations)
-- **GitHub Actions** (Automated Deployment)
-
-Explore the live site: [mahendraplus.github.io/MAXTER/](https://mahendraplus.github.io/MAXTER/)
-
 ## 🛠️ Configuration
-
-### Termux Extra Keys
-Default layout optimized for one-hand mobile coding:
-- **Row 1**: ESC, DRAWER, SHIFT, HOME, UP, END, PGUP
-- **Row 2**: TAB, CTRL, ALT, LEFT, DOWN, RIGHT, PGDN
 
 ### Settings Dashboard
 Simply type `maxter` in your terminal to open the interactive settings menu.
