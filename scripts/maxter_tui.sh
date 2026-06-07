@@ -3,15 +3,24 @@
 # MAXTER PREMIUM DASHBOARD (v27.0)
 # ==========================================
 
-# ── Colors ──────────────────────────────────────────
+# ── Colors & Nerd Icons ─────────────────────────────
 CYAN='\033[1;36m'
 WHITE='\033[1;37m'
 BOLD='\033[1m'
 DIM='\033[2m'
 GRAY='\033[0;90m'
 NC='\033[0m'
+GREEN='\033[1;32m'
+RED='\033[1;31m'
 
-# ── Icons ────────────────────────────────────────────
+ICON_UP="󰚰"
+ICON_DEL="󰆴"
+ICON_COLOR="󰏘"
+ICON_KEYS="󰌌"
+ICON_INFO="󰋼"
+ICON_HELP="󰘥"
+ICON_GLOBE="󰖟"
+ICON_SUPPORT="󰮔"
 DIV="────────────────────────────────────────"
 
 # --- Logic ---
@@ -34,30 +43,35 @@ detect_system() {
 show_help() {
     detect_system
     clear
-    echo -e "${BOLD}${CYAN}MAXTER${NC} ${DIM}v27.0${NC}                    ${GRAY}System: ${BOLD}${SYSTEM} $(uname -m)${NC}"
+    echo -e "${BOLD}${CYAN}󰀼  MAXTER${NC} ${DIM}v27.0${NC}             ${GRAY}System: ${BOLD}${SYSTEM} $(uname -m)${NC}"
     echo -e "${GRAY}${DIV}${NC}"
-    echo -e " ${BOLD}${WHITE}Usage:${NC} maxter <command> [args]"
-    echo ""
-    echo -e " ${BOLD}Customization:${NC}"
-    echo -e "   color           Interactive theme selector"
-    echo -e "   color <name>    Apply theme directly"
     
+    # ── Management ────────────────────────────────────
+    echo -e " ${BOLD}${WHITE}󰒓  Management${NC}"
+    echo -e "   ${GREEN}update${NC}          ${ICON_UP}  Sync repo & update"
+    echo -e "   ${RED}uninstall${NC}       ${ICON_DEL}  Remove MAXTER"
+    echo ""
+    
+    # ── Customization ──────────────────────────────────
+    echo -e " ${BOLD}${WHITE}󰃢  Customization${NC}"
+    echo -e "   ${CYAN}color${NC}           ${ICON_COLOR}  Interactive selector"
     if [ "$SYSTEM" == "termux" ]; then
-        echo -e "   keys            Manage Termux extra-keys  *"
+        echo -e "   ${CYAN}keys${NC}            ${ICON_KEYS}  Manage extra-keys  *"
     fi
+    echo ""
     
+    # ── Information ────────────────────────────────────
+    echo -e "   ${WHITE}info${NC}            ${ICON_INFO}  System diagnostics"
+    echo -e "   ${WHITE}help${NC}            ${ICON_HELP}  Usage guide"
     echo ""
-    echo -e " ${BOLD}Management:${NC}"
-    echo -e "   update          Sync repo and update configs"
-    echo -e "   uninstall       Remove MAXTER completely"
-    echo ""
-    echo -e " ${BOLD}System:${NC}"
-    echo -e "   info            Show system diagnostics"
-    echo -e "   help            Show this menu"
+    
+    # ── Social / Support ───────────────────────────────
+    echo -e " ${ICON_GLOBE}  ${WHITE}mahendraplus.github.io${NC}"
+    echo -e " ${ICON_SUPPORT}  ${GRAY}Support: ${DIM}https://mahendraplus.github.io/maxlab/support/${NC}"
     
     if [ "$SYSTEM" == "termux" ]; then
-        echo ""
-        echo -e " ${DIM}* Termux only${NC}"
+        echo -e "${GRAY}${DIV}${NC}"
+        echo -e " ${DIM}* Termux only feature${NC}"
     fi
     echo -e "${GRAY}${DIV}${NC}"
 }
@@ -76,7 +90,6 @@ case "${1:-help}" in
         ;;
     color)
         if [ -n "$2" ]; then
-            # Direct application logic
             source "$SCRIPT_DIR/themes/definitions.sh"
             for name in "${!THEMES[@]}"; do
                 if [[ "${name,,}" == "${2,,}" ]]; then

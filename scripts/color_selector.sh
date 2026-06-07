@@ -1,13 +1,19 @@
 #!/bin/bash
-# MAXTER v27.0 Interactive Color Selector
+# MAXTER v27.0 Interactive Color Selector with Live Preview
 
-# ── Colors & Icons ──────────────────────────────────
+# ── Colors & Nerd Icons ─────────────────────────────
 CYAN='\033[1;36m'
 GREEN='\033[1;32m'
+RED='\033[1;31m'
 WHITE='\033[1;37m'
 GRAY='\033[0;90m'
 NC='\033[0m'
-ARROW="▶"
+
+# Nerd Icons
+ICON_PALETTE="🎨" # Using standard for now, but script assumes NF terminal
+ARROW="" 
+ICON_SAVE=""
+ICON_BACK="󰌍"
 DIV="────────────────────────────────────────"
 
 # Load Definitions
@@ -24,28 +30,46 @@ ALL_THEMES=("${DARK_THEMES[@]}" "${LIGHT_THEMES[@]}" "${SPECIAL_THEMES[@]}")
 current_pos=0
 total_themes=${#ALL_THEMES[@]}
 
+# Backup original theme
+ORIGINAL_THEME=""
+if [ -f ~/.termux/colors.properties ]; then
+    ORIGINAL_THEME=$(cat ~/.termux/colors.properties)
+fi
+
 # Helper: Detect Termux
 is_termux() { [ -d "/data/data/com.termux/files/usr" ]; }
 
-apply_theme() {
+apply_preview() {
     local theme_name="${ALL_THEMES[$current_pos]}"
     local theme_data="${THEMES[$theme_name]}"
     
     if is_termux; then
         echo -e "${theme_data}" | tr ';' '\n' > ~/.termux/colors.properties
         termux-reload-settings
-        echo -e "\n ${GREEN}[✓] Applied ${theme_name}${NC}"
-        sleep 1
-    else
-        echo -e "\n ${GRAY}[i] Direct theme application only supported on Termux.${NC}"
-        echo -e " ${GRAY}Theme Data: ${theme_data}${NC}"
-        sleep 2
     fi
+}
+
+save_theme() {
+    echo -e "\n ${GREEN}check  Theme Saved!${NC}"
+    sleep 1
+}
+
+discard_changes() {
+    if is_termux; then
+        if [ -n "$ORIGINAL_THEME" ]; then
+            echo "$ORIGINAL_THEME" > ~/.termux/colors.properties
+        else
+            rm -f ~/.termux/colors.properties
+        fi
+        termux-reload-settings
+    fi
+    echo -e "\n ${RED}󰆴  Changes Discarded${NC}"
+    sleep 1
 }
 
 draw_menu() {
     clear
-    echo -e " ${CYAN}🎨 Color Themes${NC}"
+    echo -e " ${CYAN}󱓞  Live Theme Preview${NC}"
     echo -e " ${GRAY}${DIV}${NC}"
     
     echo -e " ${WHITE}[ Dark ]${GRAY}─────────────────────────────${NC}"
@@ -80,12 +104,13 @@ draw_menu() {
     done
 
     echo -e " ${GRAY}${DIV}${NC}"
-    echo -e " ${GRAY}↑↓ Navigate   Enter to Apply   q Quit${NC}"
+    echo -e " ${GRAY}↑↓ Navigate   ${WHITE}Enter${GRAY} Save   ${RED}q${GRAY} Discard${NC}"
 }
 
 # Main Loop
 while true; do
     draw_menu
+    apply_preview
     read -rsn1 key
     case "$key" in
         $'\x1b') # Multi-character escape
@@ -100,10 +125,11 @@ while true; do
             esac
             ;;
         "") # Enter
-            apply_theme
+            save_theme
             break
             ;;
         "q")
+            discard_changes
             break
             ;;
     esac
