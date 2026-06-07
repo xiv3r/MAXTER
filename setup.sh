@@ -176,7 +176,21 @@ if [ "$OS" == "termux" ]; then
 fi
 
 # Dashboard Setup
-run_silent "Finalizing Dashboard" "chmod +x $REPO_DIR/scripts/maxter_tui.sh && chmod +x $REPO_DIR/scripts/uninstall.sh"
+finalize_dashboard() {
+    chmod +x "$REPO_DIR/scripts/maxter_tui.sh"
+    chmod +x "$REPO_DIR/scripts/uninstall.sh"
+    
+    # Add alias to .zshrc
+    if ! grep -q "alias maxter=" "$HOME/.zshrc"; then
+        echo "alias maxter='bash $REPO_DIR/scripts/maxter_tui.sh'" >> "$HOME/.zshrc"
+    fi
+    
+    # Optional: System-wide symlink for Termux
+    if [ -d "/data/data/com.termux/files/usr/bin" ]; then
+        ln -sf "$REPO_DIR/scripts/maxter_tui.sh" "/data/data/com.termux/files/usr/bin/maxter"
+    fi
+}
+run_silent "Finalizing Dashboard" "finalize_dashboard"
 
 # Set Shell
 ZSH_PATH=$(command -v zsh)
