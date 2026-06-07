@@ -218,18 +218,6 @@ const App = () => {
              ))}
           </div>
         </section>
-
-        {/* Simplified Config Snippet */}
-        <section className="container-max py-12 text-center text-[var(--text)]">
-          <div className="max-w-xl mx-auto bg-black border border-[var(--border)] rounded-lg p-6 font-mono text-[11px] text-left text-zinc-500 overflow-x-auto shadow-sm whitespace-pre">
-            <div className="text-[var(--accent)] mb-2 font-bold opacity-80"># termux.properties excerpt</div>
-            extra-keys = [['ESC','DRAWER','SHIFT','HOME','UP','END','PGUP'], \
-            <br />              ['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]
-          </div>
-          <p className="mt-8 text-[var(--text-muted)] text-xs font-bold uppercase tracking-[0.2em]">
-            Built for professional efficiency.
-          </p>
-        </section>
       </main>
 
       {/* Footer */}
