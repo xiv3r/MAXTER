@@ -11,26 +11,35 @@ import {
 } from 'react-icons/si';
 import { VscTerminal, VscCloudDownload, VscGraph } from 'react-icons/vsc';
 
-// --- Optimized Ambient Background (60fps guaranteed) ---
+// --- Ultra Luxurious Premium Background (60fps guaranteed) ---
 const AmbientBackground = () => {
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" style={{ transform: 'translateZ(0)' }}>
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[var(--bg)]" style={{ transform: 'translateZ(0)' }}>
       {/* 
-        Using purely radial-gradients instead of CSS blur() prevents layout thrashing, 
-        repaints, and GPU lag, ensuring a buttery smooth experience on all devices.
+        Ultra-smooth, luxurious ambient gradients.
+        Using deep, rich colors with massive transparent falloffs for a high-end feel.
       */}
       <div 
-        className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] animate-pulse" 
+        className="absolute top-[-30%] left-[-20%] w-[80%] h-[80%] opacity-40 animate-pulse" 
         style={{ 
-          background: 'radial-gradient(circle, var(--accent-glow) 0%, transparent 70%)',
-          animationDuration: '8s'
+          background: 'radial-gradient(circle at center, rgba(59, 130, 246, 0.15) 0%, rgba(30, 58, 138, 0.05) 40%, transparent 70%)',
+          animationDuration: '10s'
         }} 
       />
       <div 
-        className="absolute bottom-[-20%] right-[-10%] w-[70%] h-[70%] animate-pulse" 
+        className="absolute bottom-[-30%] right-[-20%] w-[90%] h-[90%] opacity-30 animate-pulse" 
         style={{ 
-          background: 'radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, transparent 70%)',
-          animationDuration: '12s'
+          background: 'radial-gradient(circle at center, rgba(139, 92, 246, 0.12) 0%, rgba(76, 29, 149, 0.05) 40%, transparent 70%)',
+          animationDuration: '15s',
+          animationDelay: '-5s'
+        }} 
+      />
+      <div 
+        className="absolute top-[20%] right-[10%] w-[50%] h-[50%] opacity-20 animate-pulse" 
+        style={{ 
+          background: 'radial-gradient(circle at center, rgba(16, 185, 129, 0.08) 0%, transparent 60%)',
+          animationDuration: '12s',
+          animationDelay: '-2s'
         }} 
       />
     </div>
@@ -60,8 +69,7 @@ const CommandCopy = ({ label, command }) => {
             </code>
           </div>
           <div className="h-px w-full bg-gradient-to-r from-[var(--border)] to-transparent" />
-          <div className="flex justify-between items-center">
-            <span className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-widest">Global Production Stream</span>
+          <div className="flex justify-end items-center">
             <button 
               onClick={copy}
               className={`flex items-center gap-2 px-6 py-3 rounded-xl font-black text-xs uppercase tracking-widest transition-all ${
