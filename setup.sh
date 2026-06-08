@@ -1,8 +1,7 @@
 #!/bin/bash
 # ==========================================
-# MAXTER ULTIMATE INSTALLER (Clean & Perfect)
+# MAXTER // SYSTEM_READY // v27.1.B1
 # ==========================================
-# Version: 26.0
 # Author: Mahendra Mali (Max)
 
 set -uo pipefail
@@ -87,7 +86,7 @@ run_silent() {
 
 show_header() {
     clear
-    echo -e "${BOLD_CYAN}MAXTER${NC} ${DIM}v26.0${NC}"
+    echo -e "${BOLD_CYAN}SYSTEM_READY${NC} ${DIM}v27.1.B2${NC}"
     echo -e "${GRAY}System: $(uname -s) $(uname -m)${NC}"
     echo -e "${DIM}${DIV_THIN}${NC}"
     echo ""

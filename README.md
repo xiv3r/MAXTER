@@ -1,6 +1,7 @@
-# MAXTER - Ultimate Zsh & Termux Setup Tool
+# SYSTEM_READY // v27.1.B2
 
-**MAXTER** is a high-performance, one-command terminal setup tool designed for **Termux**, **Kali Linux**, **Ubuntu**, **Debian**, **Arch**, and **Fedora**. It automatically installs and configures **Zsh**, **Oh-My-Zsh**, the **Powerlevel10k** theme, and **Nerd Fonts** with zero manual prompts.
+**MAXTER** is a professional terminal setup tool designed for **Termux**, **Kali Linux**, **Ubuntu**, **Debian**, **Arch**, and **Fedora**.
+ It automatically installs and configures **Zsh**, **Oh-My-Zsh**, the **Powerlevel10k** theme, and **Nerd Fonts** with zero manual prompts.
 
 [![Maxter Logo](assets/logo.png)](https://mahendraplus.github.io/MAXTER/)
 

@@ -1,5 +1,6 @@
 #!/bin/bash
-# MAXTER v27.0 Interactive Color Selector with Live Preview
+# SYSTEM_READY // v27.1.B2
+# Interactive Color Selector with Live Preview
 
 # ── Colors & Nerd Icons ─────────────────────────────
 CYAN='\033[1;36m'

@@ -1,6 +1,6 @@
 #!/bin/bash
 # ==========================================
-# MAXTER PREMIUM DASHBOARD (v27.0)
+# SYSTEM_READY // v27.1.B2
 # ==========================================
 # Termux Extra-Keys Manager (Interactive)
 

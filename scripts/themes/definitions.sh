@@ -1,5 +1,6 @@
 #!/bin/bash
-# MAXTER v27.0 Color Theme Definitions
+# SYSTEM_READY // v27.1.B2
+# Color Theme Definitions
 
 # Format: "name:background;foreground;cursor"
 # Note: On non-Termux systems, these can be used as a reference or applied via Xresources/OSC sequences.

@@ -1,5 +1,6 @@
 #!/bin/bash
-# MAXTER v27.0 System Diagnostics with Nerd Icons
+# SYSTEM_READY // v27.1.B2
+# System Diagnostics with Nerd Icons
 
 # ── Colors ──────────────────────────────────────────
 CYAN='\033[1;36m'
