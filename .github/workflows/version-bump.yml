@@ -84,6 +84,21 @@ jobs:
           # Pass variable to other steps if needed via output
           echo "new_version=$DISPLAY_VER" >> $GITHUB_OUTPUT
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build Web UI
+        run: |
+          cd docs-src
+          npm install
+          npm run build
+          cd ..
+          rm -rf docs
+          mkdir -p docs
+          cp -r docs-src/dist/* docs/
+
       - name: Commit and Push Changes
         run: |
           # Configure identity as github-actions[bot]
@@ -93,7 +108,7 @@ jobs:
           # Only commit if files actually changed (idempotency)
           if ! git diff --exit-code; then
             git add .
-            git commit -m "chore: bump version to ${{ env.DISPLAY_VER }}"
+            git commit -m "chore: bump version to ${{ env.DISPLAY_VER }} and rebuild docs"
             git push
           else
             echo "No changes detected. Skipping commit."
