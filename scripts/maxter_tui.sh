@@ -64,7 +64,7 @@ total_options=${#OPTIONS[@]}
 
 draw_menu() {
     clear
-    echo -e "${BOLD}${CYAN}󰀼  SYSTEM_READY${NC} ${DIM}v27.1.B2${NC}       ${GRAY}System: ${BOLD}${SYSTEM} $(uname -m)${NC}"
+    echo -e "${BOLD}${CYAN}󰀼  MAXTER${NC} ${DIM}Version 27.1.B3${NC}       ${GRAY}System: ${BOLD}${SYSTEM} $(uname -m)${NC}"
     echo -e "${GRAY}${DIV}${NC}"
     
     for i in "${!OPTIONS[@]}"; do

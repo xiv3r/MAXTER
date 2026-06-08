@@ -67,7 +67,7 @@ jobs:
           # Only commit if the file actually changed (idempotency)
           if ! git diff --exit-code version.properties; then
             git add version.properties
-            git commit -m "chore: bump version to ${{ env.VERSION_NAME }}"
+            git commit -m "chore: bump version to Version ${{ env.VERSION_NAME }}"
             git push
           else
             echo "No version changes detected. Skipping commit."
