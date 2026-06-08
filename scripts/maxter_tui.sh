@@ -33,6 +33,45 @@ DIV="─────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_DIR="$HOME/MAXTER"
 
+check_for_updates() {
+    # Only check if in an interactive TTY
+    [[ -t 1 ]] || return
+    
+    local remote_version_file="https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/version.properties"
+    local local_version_file="$REPO_DIR/version.properties"
+    
+    if [ ! -f "$local_version_file" ]; then return; fi
+    
+    # Fetch remote version (silently, 2s timeout)
+    local remote_props=$(curl -s --connect-timeout 2 "$remote_version_file")
+    if [ -z "$remote_props" ]; then return; fi
+    
+    local r_main=$(echo "$remote_props" | grep "MAIN=" | cut -d'=' -f2)
+    local r_minor=$(echo "$remote_props" | grep "MINOR=" | cut -d'=' -f2)
+    local r_build=$(echo "$remote_props" | grep "BUILD=" | cut -d'=' -f2)
+    
+    local l_main=$(grep "MAIN=" "$local_version_file" | cut -d'=' -f2)
+    local l_minor=$(grep "MINOR=" "$local_version_file" | cut -d'=' -f2)
+    local l_build=$(grep "BUILD=" "$local_version_file" | cut -d'=' -f2)
+    
+    local update_available=false
+    if [ "$r_main" -gt "$l_main" ]; then update_available=true;
+    elif [ "$r_main" -eq "$l_main" ] && [ "$r_minor" -gt "$l_minor" ]; then update_available=true;
+    elif [ "$r_main" -eq "$l_main" ] && [ "$r_minor" -eq "$l_minor" ] && [ "$r_build" -gt "$l_build" ]; then update_available=true;
+    fi
+    
+    if [ "$update_available" = true ]; then
+        local r_ver="$r_main.$r_minor.B$r_build"
+        echo -e "\n ${YELLOW}󰚰  Update Available: ${BOLD}${r_ver}${NC}"
+        echo -ne " ${GRAY}Do you want to update now? (y/n): ${NC}"
+        read -n 1 update_choice
+        echo ""
+        if [[ "$update_choice" =~ ^[Yy]$ ]]; then
+            run_action "update"
+        fi
+    fi
+}
+
 detect_system() {
     if [ -d "/data/data/com.termux" ]; then
         SYSTEM="termux"
@@ -143,6 +182,7 @@ if [ $# -gt 0 ]; then
 fi
 
 # Main Loop
+check_for_updates
 while true; do
     draw_menu
     read -rsn1 key
