@@ -17,6 +17,11 @@ printf "  %-15s : %s\n" "󰟀  OS" "$(uname -s)"
 printf "  %-15s : %s\n" "󰒋  Kernel" "$(uname -r)"
 printf "  %-15s : %s\n" "󰘚  Arch" "$(uname -m)"
 
+# Hardware Info
+printf "  %-15s : %s\n" "󰍛  RAM" "$(free -h 2>/dev/null | awk '/Mem:/ {print $3 "/" $2}' || echo "N/A")"
+printf "  %-15s : %s\n" "󰋊  Disk" "$(df -h $HOME | tail -1 | awk '{print $3 "/" $2 " (" $5 ")"}' || echo "N/A")"
+printf "  %-15s : %s\n" "󰻠  CPU Cores" "$(nproc 2>/dev/null || echo "N/A")"
+
 if [ -d "/data/data/com.termux" ]; then
     printf "  %-15s : %s\n" "󰄖  Platform" "Termux (Android)"
 fi

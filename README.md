@@ -21,9 +21,6 @@ Run the following command in your terminal to set up MAXTER instantly:
 bash <(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/install.sh)
 ```
 
-## 🚀 Instant Installation
-
-
 ### Settings Dashboard
 Simply type `maxter` in your terminal to open the interactive settings menu.
 

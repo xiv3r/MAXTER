@@ -85,7 +85,7 @@ run_action() {
     case "$action" in
         update)
             echo -e "\n ${BLUE}${ICON_UP}${NC} Syncing configurations..."
-            cd "$REPO_DIR" && git pull origin Max && bash setup.sh
+            cd "$REPO_DIR" && git pull origin Max && bash "$REPO_DIR/setup.sh"
             echo -e "\n ${GRAY}Press any key to return...${NC}"
             read -n 1
             ;;

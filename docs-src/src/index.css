@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700;900&family=IBM+Plex+Mono:wght@400;700&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -10,9 +10,9 @@
   --text: #ffffff;
   --text-muted: #a0a0a0;
   --border: #1a1a1a;
-  --font-main: 'Inter', sans-serif;
+  --font-main: 'IBM Plex Sans', sans-serif;
   --font-heading: 'Space Grotesk', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-mono: 'IBM Plex Mono', monospace;
   --particle-color: 57, 255, 20;
 }
 

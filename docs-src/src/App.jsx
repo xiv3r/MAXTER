@@ -221,6 +221,9 @@ const App = () => {
                 <div className="flex-1 px-4 py-3 font-mono text-[var(--accent)] text-xs sm:text-sm overflow-hidden whitespace-nowrap">
                   <span className="opacity-40 mr-2">$</span> {npmInstallCmd}
                 </div>
+                <div className="hidden sm:block text-[8px] font-bold uppercase tracking-widest text-[var(--text-muted)] mr-4">
+                  (Linux/macOS only)
+                </div>
                 <button 
                   onClick={() => {
                     navigator.clipboard.writeText(npmInstallCmd);

@@ -4,6 +4,13 @@ on:
   push:
     branches:
       - Max # Trigger on pushes to the Max branch
+    paths:
+      - 'setup.sh'
+      - 'install.sh'
+      - 'scripts/**'
+      - 'configs/**'
+      - 'docs-src/**'
+      - 'version.properties'
   workflow_dispatch: # Allow manual triggering
 
 # Prevent concurrent runs from creating git conflicts

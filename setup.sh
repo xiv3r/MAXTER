@@ -4,7 +4,7 @@
 # ==========================================
 # Author: Mahendra Mali (Max)
 
-set -uo pipefail
+set -euo pipefail
 
 # ── Colors ──────────────────────────────────────────
 GREEN='\033[0;32m'
@@ -127,7 +127,7 @@ is_installed() {
         zsh) command -v zsh >/dev/null 2>&1 ;;
         omz) [ -d "$HOME/.oh-my-zsh" ] ;;
         p10k) [ -d "$ZSH_CUSTOM/themes/powerlevel10k" ] ;;
-        syntax) [ -d "$HOME/.zsh-syntax-highlighting" ] ;;
+        syntax) [ -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ] ;;
         autosugg) [ -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ] ;;
         font) [ -f "$HOME/.termux/font.ttf" ] ;;
         *) return 1 ;;
@@ -149,7 +149,12 @@ echo ""
 
 # Tasks
 run_silent "Updating system" "$UPDATE_CMD"
-run_silent "Installing core tools" "$INSTALL_CMD git zsh curl nodejs fontconfig"
+
+if [ "$OS" == "termux" ]; then
+    run_silent "Installing core tools" "$INSTALL_CMD git zsh curl nodejs"
+else
+    run_silent "Installing core tools" "$INSTALL_CMD git zsh curl nodejs fontconfig"
+fi
 
 # Oh-My-Zsh
 if is_installed omz; then
@@ -163,7 +168,7 @@ if is_installed p10k; then printf " ${GRAY}${ICON_SKIP}${NC}  %-30s ${GRAY}alrea
     run_silent "Installing powerlevel10k" "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k"; fi
 
 if is_installed syntax; then printf " ${GRAY}${ICON_SKIP}${NC}  %-30s ${GRAY}already exists${NC}\n" "zsh-syntax"; else
-    run_silent "Installing zsh-syntax" "git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.zsh-syntax-highlighting"; fi
+    run_silent "Installing zsh-syntax" "git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting"; fi
 
 if is_installed autosugg; then printf " ${GRAY}${ICON_SKIP}${NC}  %-30s ${GRAY}already exists${NC}\n" "zsh-autosuggestions"; else
     run_silent "Installing zsh-autosuggestions" "git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions"; fi
@@ -176,6 +181,11 @@ else
 fi
 
 # Apply
+backup_configs() {
+    [ -f "$HOME/.zshrc" ] && cp "$HOME/.zshrc" "$HOME/.zshrc.bak.$(date +%s)"
+    [ -f "$HOME/.p10k.zsh" ] && cp "$HOME/.p10k.zsh" "$HOME/.p10k.zsh.bak.$(date +%s)"
+}
+run_silent "Backing up existing configs" "backup_configs"
 run_silent "Applying Zsh configs" "cp -f $REPO_DIR/configs/zsh/.zshrc $HOME/.zshrc && cp -f $REPO_DIR/configs/zsh/.p10k.zsh $HOME/.p10k.zsh"
 
 if [ "$OS" == "termux" ]; then

@@ -16,8 +16,22 @@ if [[ "$confirm" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     # Remove configs
     rm -f "$HOME/.zshrc"
     rm -f "$HOME/.p10k.zsh"
+    
+    # Restore backups if they exist
+    latest_zshrc_bak=$(ls -t $HOME/.zshrc.bak.* 2>/dev/null | head -n 1)
+    if [ -n "$latest_zshrc_bak" ]; then
+        echo "Restoring latest .zshrc backup: $latest_zshrc_bak"
+        cp "$latest_zshrc_bak" "$HOME/.zshrc"
+    fi
+
+    latest_p10k_bak=$(ls -t $HOME/.p10k.zsh.bak.* 2>/dev/null | head -n 1)
+    if [ -n "$latest_p10k_bak" ]; then
+        echo "Restoring latest .p10k.zsh backup: $latest_p10k_bak"
+        cp "$latest_p10k_bak" "$HOME/.p10k.zsh"
+    fi
+
+    echo "Removing MAXTER-specific plugins and themes..."
     rm -rf "$HOME/.oh-my-zsh"
-    rm -rf "$HOME/.zsh-syntax-highlighting"
     
     # Restore termux defaults if applicable
     if [ -d "$HOME/.termux" ]; then

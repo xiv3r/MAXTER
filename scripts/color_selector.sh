@@ -73,6 +73,18 @@ draw_menu() {
     echo -e " ${CYAN}󱓞  Live Theme Preview${NC}"
     echo -e " ${GRAY}${DIV}${NC}"
     
+    # Preview Block for non-Termux
+    if ! is_termux; then
+        local theme_name="${ALL_THEMES[$current_pos]}"
+        local theme_data="${THEMES[$theme_name]}"
+        # Extract colors (very simplified hex extraction for preview)
+        local bg=$(echo "$theme_data" | grep -o "background:#[0-9a-fA-F]*" | cut -d'#' -f2)
+        local fg=$(echo "$theme_data" | grep -o "foreground:#[0-9a-fA-F]*" | cut -d'#' -f2)
+        echo -e "  Preview: [ BG:#$bg FG:#$fg ]"
+        echo -e "  ${WHITE}Note: Live preview only active on Termux.${NC}"
+        echo -e " ${GRAY}${DIV}${NC}"
+    fi
+
     echo -e " ${WHITE}[ Dark ]${GRAY}─────────────────────────────${NC}"
     for i in "${!DARK_THEMES[@]}"; do
         if [ "$current_pos" -eq "$i" ]; then

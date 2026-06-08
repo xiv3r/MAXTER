@@ -19,4 +19,10 @@ echo "Initializing setup..."
 
 # --- 3. Remote execution logic ---
 # This ensures that when someone curls this file, it grabs the actual setup logic.
-bash <(curl -fsSL "$REPO_URL/setup.sh")
+# If running locally, it prioritizes the local setup.sh.
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+if [ -f "$SCRIPT_DIR/setup.sh" ]; then
+    bash "$SCRIPT_DIR/setup.sh"
+else
+    bash <(curl -fsSL "$REPO_URL/setup.sh")
+fi
