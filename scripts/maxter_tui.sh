@@ -1,6 +1,6 @@
 #!/bin/bash
 # ==========================================
-# MAXTER // Version 27.1.B6
+# MAXTER // Version 27.1.B7
 # ==========================================
 # Fully Interactive TUI with Arrow Navigation
 
@@ -64,7 +64,7 @@ total_options=${#OPTIONS[@]}
 
 draw_menu() {
     clear
-    echo -e "${BOLD}${CYAN}󰀼  MAXTER${NC} ${DIM}Version 27.1.B6${NC}       ${GRAY}System: ${BOLD}${SYSTEM} $(uname -m)${NC}"
+    echo -e "${BOLD}${CYAN}󰀼  MAXTER${NC} ${DIM}Version 27.1.B7${NC}       ${GRAY}System: ${BOLD}${SYSTEM} $(uname -m)${NC}"
     echo -e "${GRAY}${DIV}${NC}"
     
     for i in "${!OPTIONS[@]}"; do
