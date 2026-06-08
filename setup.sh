@@ -100,8 +100,10 @@ run_silent() {
 
 show_header() {
     clear
+    local sys_info="$(uname -s) $(uname -m)"
+    if [ "$OS" == "termux" ]; then sys_info="Termux (Android)"; fi
     echo -e "${BOLD_CYAN}MAXTER${NC} ${DIM}Version 27.2.B7${NC}"
-    echo -e "${GRAY}System: $(uname -s) $(uname -m)${NC}"
+    echo -e "${GRAY}System: $sys_info${NC}"
     echo -e "${DIM}${DIV_THIN}${NC}"
     echo ""
 }
@@ -109,13 +111,10 @@ show_header() {
 detect_os() {
     if [ -d "/data/data/com.termux/files/usr" ] || [ -n "${TERMUX_VERSION:-}" ]; then
         OS="termux"
-        if command -v pkg >/dev/null 2>&1; then
-            INSTALL_CMD="DEBIAN_FRONTEND=noninteractive pkg install -y"
-            UPDATE_CMD="DEBIAN_FRONTEND=noninteractive pkg update -y && DEBIAN_FRONTEND=noninteractive pkg upgrade -y"
-        else
-            INSTALL_CMD="DEBIAN_FRONTEND=noninteractive apt install -y"
-            UPDATE_CMD="DEBIAN_FRONTEND=noninteractive apt update -y && DEBIAN_FRONTEND=noninteractive apt upgrade -y"
-        fi
+        # Use DEBIAN_FRONTEND=noninteractive and Dpkg options for full automation
+        local common_opts="-y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\""
+        INSTALL_CMD="DEBIAN_FRONTEND=noninteractive apt install $common_opts"
+        UPDATE_CMD="DEBIAN_FRONTEND=noninteractive apt update -y && DEBIAN_FRONTEND=noninteractive apt upgrade $common_opts"
     elif [ -f "/etc/os-release" ]; then
         . /etc/os-release
         SUDO_CMD=""
@@ -156,9 +155,10 @@ is_installed() {
 }
 
 # --- Main Flow ---
+OS="unknown"
 clear_log
-show_header
 detect_os
+show_header
 
 if [ "$OS" == "unknown" ]; then
     echo -e " ${BOLD_RED}${ICON_FAIL}${NC} Unsupported OS."
@@ -198,7 +198,7 @@ if is_installed autosugg; then printf " ${GRAY}${ICON_SKIP}${NC}  %-30s ${GRAY}a
 if [ ! -d "$REPO_DIR" ]; then
     run_silent "Cloning MAXTER repo" "git clone -b Max $REPO_URL $REPO_DIR"
 else
-    run_silent "Syncing configurations" "cd $REPO_DIR && git pull origin Max"
+    run_silent "Syncing configurations" "cd $REPO_DIR && git fetch origin Max && git reset --hard origin/Max"
 fi
 
 # Apply
