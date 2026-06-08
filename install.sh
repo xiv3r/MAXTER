@@ -2,7 +2,7 @@
 # ==========================================
 # MAXTER - Fast Installer Entry Point
 # ==========================================
-# Version 27.2.B5
+# Version 27.2.B6
 # Author: Mahendra Mali (Max)
 # Branch: Max
 
