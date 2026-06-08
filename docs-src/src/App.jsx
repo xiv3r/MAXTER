@@ -187,7 +187,7 @@ const App = () => {
                 initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
                 className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[var(--accent)]/10 border border-[var(--accent)]/20 text-[var(--accent)] font-mono text-[10px] uppercase tracking-widest mb-6"
               >
-                <FaMicrochip /> SYSTEM_READY // v27.1.B1
+                <FaMicrochip /> Version 27.1.B3
               </motion.div>
               
               <h1 className="text-hero mb-6">
