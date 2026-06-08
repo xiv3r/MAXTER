@@ -1,6 +1,6 @@
 {
   "name": "@mahendraplus/maxter",
-  "version": "27.2.3",
+  "version": "27.2.4",
   "description": "Professional terminal setup tool and dashboard",
   "main": "scripts/maxter_tui.sh",
   "bin": {
