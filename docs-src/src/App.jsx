@@ -101,7 +101,7 @@ const App = () => {
   const [copied, setCopied] = useState(false);
   const [terminalStep, setTerminalStep] = useState(0);
   const installCmd = "bash <(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/install.sh)";
-  const npmInstallCmd = "npm install -g @mahendraplus/maxter";
+  const npmInstallCmd = "npm install -g github:mahendraplus/MAXTER#Max";
   
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
