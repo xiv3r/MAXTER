@@ -245,9 +245,15 @@ const App = () => {
                <a href="https://mahendraplus.github.io" className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"><FaGlobe size={22} /></a>
              </div>
              
-             <div className="flex flex-col items-center sm:items-end gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)]">
-                <span className="text-[var(--text)]">MIT LICENSE // REBUILD_SYSTEM</span>
-                <span className="text-[var(--accent)] opacity-80 font-mono tracking-widest">Version 27.3.B4 // MXTR273B408062026</span>
+             <div className="flex flex-col sm:flex-row items-center sm:items-end gap-3 text-[9px] font-black uppercase tracking-[0.15em]">
+                <div className="flex items-center gap-2 opacity-80">
+                  <span className="bg-[var(--surface-2)] border border-[var(--border)] px-3 py-1.5 rounded-lg text-[var(--text)] hover:border-[var(--accent)]/50 transition-colors">MIT LICENSE</span>
+                  <span className="bg-[var(--surface-2)] border border-[var(--border)] px-3 py-1.5 rounded-lg text-[var(--text)] hover:border-[var(--accent)]/50 transition-colors">REBUILD_SYSTEM</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="bg-[var(--accent)]/10 border border-[var(--accent)]/20 px-3 py-1.5 rounded-lg text-[var(--accent)] font-mono tracking-widest hover:bg-[var(--accent)]/20 transition-colors">Version 27.3.B4</span>
+                  <span className="bg-[var(--accent)]/10 border border-[var(--accent)]/20 px-3 py-1.5 rounded-lg text-[var(--accent)] font-mono tracking-widest hover:bg-[var(--accent)]/20 transition-colors">MXTR273B408062026</span>
+                </div>
              </div>
           </div>
         </div>
