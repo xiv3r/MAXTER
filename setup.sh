@@ -45,6 +45,21 @@ REPO_URL="https://github.com/mahendraplus/MAXTER"
 LOG_FILE="$HOME/.maxter_install.log"
 ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 REPO_DIR="$HOME/MAXTER"
+PROPS_FILE="$REPO_DIR/version.properties"
+
+# Dynamic Versioning
+get_version() {
+    local fallback="27.3.B1"
+    if [ -f "$PROPS_FILE" ]; then
+        local v_main=$(grep 'MAIN=' "$PROPS_FILE" | cut -d'=' -f2)
+        local v_minor=$(grep 'MINOR=' "$PROPS_FILE" | cut -d'=' -f2)
+        local v_build=$(grep 'BUILD=' "$PROPS_FILE" | cut -d'=' -f2)
+        echo "$v_main.$v_minor.B$v_build"
+    else
+        echo "$fallback"
+    fi
+}
+VERSION=$(get_version)
 
 # --- Helper Functions ---
 clear_log() { rm -f "$LOG_FILE" && touch "$LOG_FILE"; }
@@ -71,7 +86,7 @@ run_silent() {
         while true; do
             printf "\r   ${BLUE}${SPIN[$i]}${NC}  %s..." "$msg"
             i=$(( (i+1) % 10 ))
-            sleep 0.1 || true # Ignore sleep failures during upgrades
+            sleep 0.1 2>/dev/null || true # Silence linker errors during upgrades
         done
     ) &
     local spin_pid=$!
@@ -102,7 +117,7 @@ show_header() {
     clear
     local sys_info="$(uname -s) $(uname -m)"
     if [ "$OS" == "termux" ]; then sys_info="Termux (Android)"; fi
-    echo -e "${BOLD_CYAN}MAXTER${NC} ${DIM}Version 27.3.B1${NC}"
+    echo -e "${BOLD_CYAN}MAXTER${NC} ${DIM}Version $VERSION${NC}"
     echo -e "${GRAY}System: $sys_info${NC}"
     echo -e "${DIM}${DIV_THIN}${NC}"
     echo ""

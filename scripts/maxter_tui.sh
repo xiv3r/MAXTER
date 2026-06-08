@@ -32,6 +32,21 @@ DIV="─────────────────────────
 # --- Logic ---
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_DIR="$HOME/MAXTER"
+PROPS_FILE="$REPO_DIR/version.properties"
+
+# Dynamic Versioning
+get_version() {
+    local fallback="27.3.B1"
+    if [ -f "$PROPS_FILE" ]; then
+        local v_main=$(grep 'MAIN=' "$PROPS_FILE" | cut -d'=' -f2)
+        local v_minor=$(grep 'MINOR=' "$PROPS_FILE" | cut -d'=' -f2)
+        local v_build=$(grep 'BUILD=' "$PROPS_FILE" | cut -d'=' -f2)
+        echo "$v_main.$v_minor.B$v_build"
+    else
+        echo "$fallback"
+    fi
+}
+VERSION=$(get_version)
 
 check_for_updates() {
     # Only check if in an interactive TTY
@@ -103,7 +118,7 @@ total_options=${#OPTIONS[@]}
 
 draw_menu() {
     clear
-    echo -e "${BOLD}${CYAN}󰀼  MAXTER${NC} ${DIM}Version 27.3.B1${NC}       ${GRAY}System: ${BOLD}${SYSTEM} $(uname -m)${NC}"
+    echo -e "${BOLD}${CYAN}󰀼  MAXTER${NC} ${DIM}Version $VERSION${NC}       ${GRAY}System: ${BOLD}${SYSTEM} $(uname -m)${NC}"
     echo -e "${GRAY}${DIV}${NC}"
     
     for i in "${!OPTIONS[@]}"; do
