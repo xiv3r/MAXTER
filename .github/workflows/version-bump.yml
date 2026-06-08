@@ -37,7 +37,14 @@ jobs:
           # 2. Increment BUILD by 1
           BUILD=$((BUILD + 1))
 
-          # 3. Apply rollover logic (If MINOR reaches 10)
+          # 3. Apply rollover logic
+          # If BUILD exceeds 10, increment MINOR and reset BUILD
+          if [ "$BUILD" -gt 10 ]; then
+            MINOR=$((MINOR + 1))
+            BUILD=1
+          fi
+
+          # If MINOR reaches 10, increment MAIN and reset MINOR/BUILD
           if [ "$MINOR" -ge 10 ]; then
             MAIN=$((MAIN + 1))
             MINOR=0
@@ -58,15 +65,21 @@ jobs:
           echo "BUILD=$BUILD" >> $PROPS_FILE
           
           # 7. Update version strings in project files
-          # Using a broad regex to find "Version X.Y.BZ" or "vX.Y.BZ"
-          SED_PATTERN="[0-9]\+\.[0-9]\+\.B[0-9]\+"
+          # Regex to match various version formats: v27.0, Version 27.1.B4, STABLE_v27.0 etc.
+          OLD_VER_PATTERN="\(Version \|v\|STABLE_v\)[0-9]\+\.[0-9]\+\(\.B[0-9]\+\)\?"
           
-          sed -i "s/Version $SED_PATTERN/$DISPLAY_VER/g" setup.sh
-          sed -i "s/Version $SED_PATTERN/$DISPLAY_VER/g" scripts/maxter_tui.sh
-          sed -i "s/Version $SED_PATTERN/$DISPLAY_VER/g" README.md
-          sed -i "s/Version $SED_PATTERN/$DISPLAY_VER/g" docs-src/src/App.jsx
-          # Also handle the v-prefix cases if any remain
-          sed -i "s/v$SED_PATTERN/$DISPLAY_VER/g" docs-src/src/App.jsx
+          # Clean up legacy prefixes
+          sed -i "s/SYSTEM_READY \/\/ //g" docs-src/src/App.jsx
+          sed -i "s/STABLE_v/Version /g" docs-src/src/App.jsx
+          
+          # Replace all version occurrences with the new clean format
+          FILES_TO_UPDATE="setup.sh scripts/maxter_tui.sh README.md docs-src/src/App.jsx install.sh scripts/keys.sh scripts/color_selector.sh scripts/sysinfo.sh scripts/themes/definitions.sh"
+          
+          for file in $FILES_TO_UPDATE; do
+            if [ -f "$file" ]; then
+              sed -i "s/$OLD_VER_PATTERN/$DISPLAY_VER/g" "$file"
+            fi
+          done
           
           # Pass variable to other steps if needed via output
           echo "new_version=$DISPLAY_VER" >> $GITHUB_OUTPUT
