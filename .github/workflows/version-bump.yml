@@ -80,6 +80,9 @@ jobs:
               sed -i "s/$OLD_VER_PATTERN/$DISPLAY_VER/g" "$file"
             fi
           done
+
+          # Update package.json version (semver format)
+          sed -i "s/\"version\": \".*\"/\"version\": \"$MAIN.$MINOR.$BUILD\"/g" package.json
           
           # Pass variable to other steps if needed via output
           echo "new_version=$DISPLAY_VER" >> $GITHUB_OUTPUT
