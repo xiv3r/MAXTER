@@ -71,7 +71,7 @@ run_silent() {
         while true; do
             printf "\r   ${BLUE}${SPIN[$i]}${NC}  %s..." "$msg"
             i=$(( (i+1) % 10 ))
-            sleep 0.1
+            sleep 0.1 || true # Ignore sleep failures during upgrades
         done
     ) &
     local spin_pid=$!
