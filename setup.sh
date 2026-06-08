@@ -102,7 +102,7 @@ show_header() {
     clear
     local sys_info="$(uname -s) $(uname -m)"
     if [ "$OS" == "termux" ]; then sys_info="Termux (Android)"; fi
-    echo -e "${BOLD_CYAN}MAXTER${NC} ${DIM}Version 27.2.B8${NC}"
+    echo -e "${BOLD_CYAN}MAXTER${NC} ${DIM}Version 27.2.B9${NC}"
     echo -e "${GRAY}System: $sys_info${NC}"
     echo -e "${DIM}${DIV_THIN}${NC}"
     echo ""
@@ -203,8 +203,8 @@ fi
 
 # Apply
 backup_configs() {
-    [ -f "$HOME/.zshrc" ] && cp "$HOME/.zshrc" "$HOME/.zshrc.bak.$(date +%s)"
-    [ -f "$HOME/.p10k.zsh" ] && cp "$HOME/.p10k.zsh" "$HOME/.p10k.zsh.bak.$(date +%s)"
+    [ -f "$HOME/.zshrc" ] && cp "$HOME/.zshrc" "$HOME/.zshrc.bak.$(date +%s)" || true
+    [ -f "$HOME/.p10k.zsh" ] && cp "$HOME/.p10k.zsh" "$HOME/.p10k.zsh.bak.$(date +%s)" || true
 }
 run_silent "Backing up existing configs" "backup_configs"
 run_silent "Applying Zsh configs" "cp -f $REPO_DIR/configs/zsh/.zshrc $HOME/.zshrc && cp -f $REPO_DIR/configs/zsh/.p10k.zsh $HOME/.p10k.zsh"
