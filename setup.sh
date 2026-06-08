@@ -189,8 +189,11 @@ finalize() {
     if ! grep -q "alias maxter=" "$HOME/.zshrc"; then
         echo "alias maxter='bash $REPO_DIR/scripts/maxter_tui.sh'" >> "$HOME/.zshrc"
     fi
-    if [ -d "/data/data/com.termux/files/usr/bin" ]; then
-        ln -sf "$REPO_DIR/scripts/maxter_tui.sh" "/data/data/com.termux/files/usr/bin/maxter"
+    # Only create symlink if NOT running via npm
+    if [ -z "${npm_config_global:-}" ] && [ -z "${npm_lifecycle_event:-}" ]; then
+        if [ -d "/data/data/com.termux/files/usr/bin" ]; then
+            ln -sf "$REPO_DIR/scripts/maxter_tui.sh" "/data/data/com.termux/files/usr/bin/maxter"
+        fi
     fi
 }
 run_silent "Finalizing Dashboard" "finalize"
@@ -209,4 +212,10 @@ echo -e " ${BOLD_GREEN}${ICON_DONE}${NC} ${BOLD_WHITE}MAXTER Installation Comple
 echo -e " ${GRAY}Type ${BOLD_CYAN}maxter${GRAY} to manage settings${NC}"
 echo -e "${DIM}${DIV_THIN}${NC}"
 echo ""
-exec zsh -l
+
+# Only restart shell if in an interactive TTY and not running via npm
+if [[ -t 1 ]] && [ -z "${npm_lifecycle_event:-}" ]; then
+    exec zsh -l
+else
+    echo -e " ${BOLD_BLUE}${ICON_INFO}${NC} Please restart your terminal or type ${BOLD_CYAN}zsh${NC} to apply changes."
+fi
