@@ -247,7 +247,7 @@ const App = () => {
              
              <div className="flex flex-col items-center sm:items-end gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)]">
                 <span className="text-[var(--text)]">MIT LICENSE // REBUILD_SYSTEM</span>
-                <span className="text-[var(--accent)] opacity-80 font-mono tracking-widest">Version 27.3.B2 // MXTR273B208062026</span>
+                <span className="text-[var(--accent)] opacity-80 font-mono tracking-widest">Version 27.3.B3 // MXTR273B308062026</span>
              </div>
           </div>
         </div>
