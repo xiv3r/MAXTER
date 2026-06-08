@@ -68,12 +68,14 @@ run_silent() {
     local spin_pid=$!
     
     # Execute command in foreground
+    # Temporarily disable exit-on-error to capture status
+    set +e
     eval "$cmd" >> "$LOG_FILE" 2>&1
     local ret=$?
+    set -e
     
     # Stop spinner
-    kill "$spin_pid" 2>/dev/null
-    wait "$spin_pid" 2>/dev/null
+    { kill "$spin_pid"; wait "$spin_pid"; } 2>/dev/null || true
     printf "\r\033[2K"
     
     if [ $ret -eq 0 ]; then
