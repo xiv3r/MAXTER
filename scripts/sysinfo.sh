@@ -1,5 +1,5 @@
 #!/bin/bash
-# MAXTER // Version 27.1.B5
+# MAXTER // Version 27.1.B6
 # System Diagnostics with Nerd Icons
 
 # ── Colors ──────────────────────────────────────────
