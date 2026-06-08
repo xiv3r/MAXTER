@@ -96,14 +96,14 @@ detect_os() {
     if [ -d "/data/data/com.termux/files/usr" ]; then
         OS="termux"
         INSTALL_CMD="DEBIAN_FRONTEND=noninteractive pkg install -y"
-        UPDATE_CMD="pkg update -y"
+        UPDATE_CMD="DEBIAN_FRONTEND=noninteractive pkg update -y"
     elif [ -f "/etc/os-release" ]; then
         . /etc/os-release
         case "$ID" in
             debian|ubuntu|kali|pop|mint)
                 OS="debian"
-                INSTALL_CMD="sudo DEBIAN_FRONTEND=noninteractive apt install -y"
-                UPDATE_CMD="sudo apt update -y && sudo apt upgrade -y"
+                INSTALL_CMD="sudo DEBIAN_FRONTEND=noninteractive apt install -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\""
+                UPDATE_CMD="sudo DEBIAN_FRONTEND=noninteractive apt update -y"
                 ;;
             arch|manjaro)
                 OS="arch"
