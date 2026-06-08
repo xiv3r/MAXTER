@@ -1,5 +1,5 @@
 #!/bin/bash
-# MAXTER // Version 27.1.B9
+# MAXTER // Version 27.1.B10
 # Color Theme Definitions
 
 # Format: "name:background;foreground;cursor"
