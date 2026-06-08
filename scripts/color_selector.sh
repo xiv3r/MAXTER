@@ -1,5 +1,5 @@
 #!/bin/bash
-# MAXTER // Version 27.1.B7
+# MAXTER // Version 27.1.B8
 # Interactive Color Selector with Live Preview
 
 # ── Colors & Nerd Icons ─────────────────────────────
