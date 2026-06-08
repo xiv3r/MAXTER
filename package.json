@@ -6,9 +6,6 @@
   "bin": {
     "maxter": "scripts/maxter_tui.sh"
   },
-  "scripts": {
-    "install": "bash setup.sh"
-  },
   "keywords": [
     "terminal",
     "zsh",

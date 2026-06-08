@@ -34,6 +34,21 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_DIR="$HOME/MAXTER"
 PROPS_FILE="$REPO_DIR/version.properties"
 
+# First-time setup check (for NPM global installations)
+if [ ! -d "$REPO_DIR" ]; then
+    echo -e "${CYAN}󰀼  MAXTER${NC} - First-time initialization..."
+    if [ -f "$SCRIPT_DIR/../setup.sh" ]; then
+        bash "$SCRIPT_DIR/../setup.sh"
+        # After setup, the repository is cloned to $HOME/MAXTER. We should switch to it.
+        if [ -x "$REPO_DIR/scripts/maxter_tui.sh" ]; then
+            exec "$REPO_DIR/scripts/maxter_tui.sh" "$@"
+        fi
+    else
+        echo -e "${RED}[×] Error: Cannot find setup.sh. Please install via curl.${NC}"
+        exit 1
+    fi
+fi
+
 # Dynamic Versioning
 get_version() {
     local fallback="27.3.B1"
