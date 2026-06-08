@@ -50,29 +50,34 @@ REPO_DIR="$HOME/MAXTER"
 # --- Helper Functions ---
 clear_log() { rm -f "$LOG_FILE" && touch "$LOG_FILE"; }
 
-spinner() {
-    local pid=$1
-    local msg=$2
-    local i=0
-    while kill -0 "$pid" 2>/dev/null; do
-        printf "\r   ${BLUE}${SPIN[$i]}${NC}  %s..." "$msg"
-        i=$(( (i+1) % 10 ))
-        sleep 0.1
-    done
-    printf "\r\033[2K"
-}
-
 run_silent() {
     local msg="$1"
     shift
     local cmd="$@"
     
     printf " ${CYAN}${ICON_LOAD}${NC} %s..." "$msg"
-    eval "$cmd" >> "$LOG_FILE" 2>&1 &
-    spinner $! "$msg"
-    wait $!
     
-    if [ $? -eq 0 ]; then
+    # Start spinner in background
+    (
+        local i=0
+        while true; do
+            printf "\r   ${BLUE}${SPIN[$i]}${NC}  %s..." "$msg"
+            i=$(( (i+1) % 10 ))
+            sleep 0.1
+        done
+    ) &
+    local spin_pid=$!
+    
+    # Execute command in foreground
+    eval "$cmd" >> "$LOG_FILE" 2>&1
+    local ret=$?
+    
+    # Stop spinner
+    kill "$spin_pid" 2>/dev/null
+    wait "$spin_pid" 2>/dev/null
+    printf "\r\033[2K"
+    
+    if [ $ret -eq 0 ]; then
         printf "\r ${BOLD_GREEN}${ICON_OK}${NC}  %-30s ${GREEN}successful${NC}\n" "$msg"
     else
         printf "\r ${BOLD_RED}${ICON_FAIL}${NC}  %-30s ${RED}failed (see log)${NC}\n" "$msg"
@@ -92,7 +97,7 @@ detect_os() {
     if [ -d "/data/data/com.termux/files/usr" ]; then
         OS="termux"
         INSTALL_CMD="DEBIAN_FRONTEND=noninteractive pkg install -y"
-        UPDATE_CMD="pkg update -y && pkg upgrade -y"
+        UPDATE_CMD="pkg update -y"
     elif [ -f "/etc/os-release" ]; then
         . /etc/os-release
         case "$ID" in
@@ -149,19 +154,19 @@ run_silent "Installing core tools" "$INSTALL_CMD git zsh curl nodejs fontconfig"
 
 # Oh-My-Zsh
 if is_installed omz; then
-    echo -e " ${GRAY}${ICON_SKIP}${NC}  %-30s ${GRAY}already exists${NC}" "oh-my-zsh"
+    printf " ${GRAY}${ICON_SKIP}${NC}  %-30s ${GRAY}already exists${NC}\n" "oh-my-zsh"
 else
     run_silent "Installing oh-my-zsh" "CHSH=no RUNZSH=no sh -c \"\$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\" \"\" --unattended"
 fi
 
 # Plugins
-if is_installed p10k; then echo -e " ${GRAY}${ICON_SKIP}${NC}  %-30s ${GRAY}already exists${NC}" "powerlevel10k"; else
+if is_installed p10k; then printf " ${GRAY}${ICON_SKIP}${NC}  %-30s ${GRAY}already exists${NC}\n" "powerlevel10k"; else
     run_silent "Installing powerlevel10k" "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k"; fi
 
-if is_installed syntax; then echo -e " ${GRAY}${ICON_SKIP}${NC}  %-30s ${GRAY}already exists${NC}" "zsh-syntax"; else
+if is_installed syntax; then printf " ${GRAY}${ICON_SKIP}${NC}  %-30s ${GRAY}already exists${NC}\n" "zsh-syntax"; else
     run_silent "Installing zsh-syntax" "git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.zsh-syntax-highlighting"; fi
 
-if is_installed autosugg; then echo -e " ${GRAY}${ICON_SKIP}${NC}  %-30s ${GRAY}already exists${NC}" "zsh-autosuggestions"; else
+if is_installed autosugg; then printf " ${GRAY}${ICON_SKIP}${NC}  %-30s ${GRAY}already exists${NC}\n" "zsh-autosuggestions"; else
     run_silent "Installing zsh-autosuggestions" "git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions"; fi
 
 # Clone/Sync Repo

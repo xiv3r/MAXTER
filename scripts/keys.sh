@@ -1,5 +1,8 @@
 #!/bin/bash
-# MAXTER v27.0 Termux Extra-Keys Manager
+# ==========================================
+# MAXTER PREMIUM DASHBOARD (v27.0)
+# ==========================================
+# Termux Extra-Keys Manager (Interactive)
 
 # ── Colors & Icons ──────────────────────────────────
 CYAN='\033[1;36m'
@@ -9,6 +12,8 @@ RED='\033[1;31m'
 WHITE='\033[1;37m'
 GRAY='\033[0;90m'
 NC='\033[0m'
+BOLD='\033[1m'
+ARROW="󰁔"
 DIV="────────────────────────────────────────"
 
 # Helper: Detect Termux
@@ -16,17 +21,13 @@ is_termux() { [ -d "/data/data/com.termux/files/usr" ]; }
 
 if ! is_termux; then
     echo -e " ${GRAY}[i] Extra-keys is a Termux-only feature.${NC}"
-    echo -e " ${GRAY}[i] Skipping — not applicable on this system.${NC}"
     exit 0
 fi
 
 PROP_FILE="$HOME/.termux/termux.properties"
 
 show_current() {
-    echo -e " ${BLUE}[i] Termux detected — showing key config${NC}"
-    echo ""
     echo -e " ${WHITE}Current Layout:${NC}"
-    
     local keys_line=$(grep "^extra-keys =" "$PROP_FILE")
     if [ -z "$keys_line" ]; then
         echo -e "  ${GRAY}No custom keys found (Default).${NC}"
@@ -40,7 +41,12 @@ show_current() {
     echo ""
 }
 
-while true; do
+OPTIONS=("View Raw Config" "Edit Layout" "Reset to MAXTER" "Apply & Reload" "Back")
+ACTIONS=("view" "edit" "reset" "reload" "back")
+current_pos=0
+total_options=${#OPTIONS[@]}
+
+draw_menu() {
     clear
     echo -e " ${CYAN}⌨ Termux Extra-Keys${NC}"
     echo -e " ${GRAY}${DIV}${NC}"
@@ -48,34 +54,68 @@ while true; do
     show_current
 
     echo -e " ${WHITE}Options:${NC}"
-    echo -e "  [1] View raw config"
-    echo -e "  [2] Edit layout (opens editor)"
-    echo -e "  [3] Reset to MAXTER default"
-    echo -e "  [4] Apply & reload settings"
-    echo -e "  [0] Back to dashboard"
-    echo ""
-    read -p " Enter choice (0-4): " opt
-    
-    case $opt in
-        1) 
+    for i in "${!OPTIONS[@]}"; do
+        if [ "$current_pos" -eq "$i" ]; then
+            echo -e "  ${GREEN}${ARROW}${NC} ${BOLD}${WHITE}${OPTIONS[$i]}${NC}"
+        else
+            echo -e "     ${GRAY}${OPTIONS[$i]}${NC}"
+        fi
+    done
+
+    echo -e "${GRAY}${DIV}${NC}"
+    echo -e " ${GRAY}↑↓ Navigate   ${WHITE}Enter${GRAY} Select   ${RED}q${GRAY} Back${NC}"
+}
+
+run_action() {
+    case "$1" in
+        view)
+            echo -e "\n${WHITE}Raw configuration:${NC}"
             grep "^extra-keys" "$PROP_FILE" || echo "Default"
-            read -p "Press Enter..." ;;
-        2) 
+            echo -e "\n${GRAY}Press any key...${NC}"
+            read -n 1
+            ;;
+        edit)
             ${EDITOR:-nano} "$PROP_FILE"
             ;;
-        3)
-            # Use the specified professional layout from notes
+        reset)
             sed -i "/^extra-keys =/d" "$PROP_FILE"
             echo "extra-keys = [['ESC','DRAWER','SHIFT','HOME','UP','END','PGUP'], ['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]" >> "$PROP_FILE"
-            echo -e " ${GREEN}[✓] Reset to MAXTER layout.${NC}"
+            echo -e "\n ${GREEN}[✓] Reset to MAXTER layout.${NC}"
             sleep 1
             ;;
-        4)
+        reload)
             termux-reload-settings
-            echo -e " ${GREEN}[✓] Reloaded.${NC}"
+            echo -e "\n ${GREEN}[✓] Settings reloaded.${NC}"
             sleep 1
             ;;
-        0) break ;;
-        *) echo "Invalid." ; sleep 1 ;;
+        back)
+            exit 0
+            ;;
+    esac
+}
+
+# Main Loop
+while true; do
+    draw_menu
+    read -rsn1 key
+    case "$key" in
+        $'\x1b') # Multi-character escape
+            read -rsn2 key
+            case "$key" in
+                "[A"|"[D") # Up or Left
+                    current_pos=$(( (current_pos - 1 + total_options) % total_options ))
+                    ;;
+                "[B"|"[C") # Down or Right
+                    current_pos=$(( (current_pos + 1) % total_options ))
+                    ;;
+            esac
+            ;;
+        "") # Enter
+            run_action "${ACTIONS[$current_pos]}"
+            [ "${ACTIONS[$current_pos]}" == "back" ] && break
+            ;;
+        "q")
+            break
+            ;;
     esac
 done

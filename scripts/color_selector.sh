@@ -116,10 +116,10 @@ while true; do
         $'\x1b') # Multi-character escape
             read -rsn2 key
             case "$key" in
-                "[A") # Up
+                "[A"|"[D") # Up or Left
                     current_pos=$(( (current_pos - 1 + total_themes) % total_themes ))
                     ;;
-                "[B") # Down
+                "[B"|"[C") # Down or Right
                     current_pos=$(( (current_pos + 1) % total_themes ))
                     ;;
             esac
