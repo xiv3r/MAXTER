@@ -55,9 +55,14 @@ jobs:
           VERSION_NAME="$MAIN.$MINOR.B$BUILD"
           DISPLAY_VER="Version $VERSION_NAME"
           
+          # Generate Timestamped Build ID: MXTR + MAIN + MINOR + B + BUILD + DATE(DDMMYYYY)
+          DATE_STR=$(date +'%d%m%Y')
+          BUILD_ID="MXTR${MAIN}${MINOR}B${BUILD}${DATE_STR}"
+          
           # 5. Export to GITHUB_ENV for downstream steps
           echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
           echo "DISPLAY_VER=$DISPLAY_VER" >> $GITHUB_ENV
+          echo "BUILD_ID=$BUILD_ID" >> $GITHUB_ENV
           
           # 6. Write values back to properties file
           echo "MAIN=$MAIN" > $PROPS_FILE
@@ -80,6 +85,10 @@ jobs:
               sed -i "s/$OLD_VER_PATTERN/$DISPLAY_VER/g" "$file"
             fi
           done
+
+          # Update the Timestamped Build ID in App.jsx
+          # Pattern matches MXTR followed by any characters until the end of the line or space
+          sed -i "s/MXTR[A-Z0-9]\+/$BUILD_ID/g" docs-src/src/App.jsx
 
           # Update package.json version (semver format)
           sed -i "s/\"version\": \".*\"/\"version\": \"$MAIN.$MINOR.$BUILD\"/g" package.json

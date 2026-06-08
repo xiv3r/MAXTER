@@ -101,6 +101,7 @@ const App = () => {
   const [copied, setCopied] = useState(false);
   const [terminalStep, setTerminalStep] = useState(0);
   const installCmd = "bash <(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/install.sh)";
+  const npmInstallCmd = "npm install -g @mahendraplus/maxter";
   
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
@@ -200,15 +201,35 @@ const App = () => {
                 <span className="w-2 h-4 bg-[var(--accent)] inline-block align-middle ml-1 animate-pulse"></span>
               </p>
 
-              <div className="max-w-2xl bg-[var(--surface-2)] border border-[var(--border)] rounded-lg p-1 flex items-center mb-10 group shadow-lg">
+              <div className="max-w-2xl bg-[var(--surface-2)] border border-[var(--border)] rounded-lg p-1 flex items-center mb-4 group shadow-lg">
                 <div className="flex-1 px-4 py-3 font-mono text-[var(--accent)] text-xs sm:text-sm overflow-hidden whitespace-nowrap">
                   <span className="opacity-40 mr-2">$</span> {installCmd}
                 </div>
                 <button 
-                  onClick={copyToClipboard}
+                  onClick={() => {
+                    navigator.clipboard.writeText(installCmd);
+                    setCopied("bash");
+                    setTimeout(() => setCopied(false), 2000);
+                  }}
                   className="px-5 py-3 bg-[var(--surface)] border-l border-[var(--border)] text-[var(--text)] hover:text-[var(--accent)] transition-colors rounded-r-lg font-bold text-[10px] uppercase tracking-widest"
                 >
-                  {copied ? <FaCheck /> : <FaCopy />}
+                  {copied === "bash" ? <FaCheck /> : <FaCopy />}
+                </button>
+              </div>
+
+              <div className="max-w-2xl bg-[var(--surface-2)] border border-[var(--border)] rounded-lg p-1 flex items-center mb-10 group shadow-lg">
+                <div className="flex-1 px-4 py-3 font-mono text-[var(--accent)] text-xs sm:text-sm overflow-hidden whitespace-nowrap">
+                  <span className="opacity-40 mr-2">$</span> {npmInstallCmd}
+                </div>
+                <button 
+                  onClick={() => {
+                    navigator.clipboard.writeText(npmInstallCmd);
+                    setCopied("npm");
+                    setTimeout(() => setCopied(false), 2000);
+                  }}
+                  className="px-5 py-3 bg-[var(--surface)] border-l border-[var(--border)] text-[var(--text)] hover:text-[var(--accent)] transition-colors rounded-r-lg font-bold text-[10px] uppercase tracking-widest"
+                >
+                  {copied === "npm" ? <FaCheck /> : <FaCopy />}
                 </button>
               </div>
 
@@ -341,7 +362,7 @@ const App = () => {
           </div>
         </div>
         <div className="mt-12 text-center opacity-20 text-[8px] font-mono tracking-[0.4em] uppercase text-[var(--text-muted)]">
-           MIT LICENSE // Version 27.1.B8 // REBUILD_SYSTEM
+           MIT LICENSE // Version 27.1.B8 // REBUILD_SYSTEM // MXTR271B808062026
         </div>
       </footer>
     </div>
