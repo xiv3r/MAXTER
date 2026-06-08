@@ -90,8 +90,9 @@ jobs:
           # Pattern matches MXTR followed by any characters until the end of the line or space
           sed -i "s/MXTR[A-Z0-9]\+/$BUILD_ID/g" docs-src/src/App.jsx
 
-          # Update package.json version (semver format)
-          sed -i "s/\"version\": \".*\"/\"version\": \"$MAIN.$MINOR.$BUILD\"/g" package.json
+          # Update package.json and package-lock.json version (semver format)
+          # Use --no-git-tag-version to prevent npm from creating a git tag/commit automatically
+          npm version "$MAIN.$MINOR.$BUILD" --no-git-tag-version
           
           # Pass variable to other steps if needed via output
           echo "new_version=$DISPLAY_VER" >> $GITHUB_OUTPUT
