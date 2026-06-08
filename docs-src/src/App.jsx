@@ -259,8 +259,8 @@ const App = () => {
                   <span className="bg-[var(--surface-2)] border border-[var(--border)] px-3 py-1.5 rounded-lg text-[var(--text)] hover:border-[var(--accent)]/50 transition-colors">REBUILD_SYSTEM</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="bg-[var(--accent)]/10 border border-[var(--accent)]/20 px-3 py-1.5 rounded-lg text-[var(--accent)] font-mono tracking-widest hover:bg-[var(--accent)]/20 transition-colors">Version 27.3.B5</span>
-                  <span className="bg-[var(--accent)]/10 border border-[var(--accent)]/20 px-3 py-1.5 rounded-lg text-[var(--accent)] font-mono tracking-widest hover:bg-[var(--accent)]/20 transition-colors">MXTR273B508062026</span>
+                  <span className="bg-[var(--accent)]/10 border border-[var(--accent)]/20 px-3 py-1.5 rounded-lg text-[var(--accent)] font-mono tracking-widest hover:bg-[var(--accent)]/20 transition-colors">Version 27.3.B6</span>
+                  <span className="bg-[var(--accent)]/10 border border-[var(--accent)]/20 px-3 py-1.5 rounded-lg text-[var(--accent)] font-mono tracking-widest hover:bg-[var(--accent)]/20 transition-colors">MXTR273B608062026</span>
                 </div>
              </div>
           </div>

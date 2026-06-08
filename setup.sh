@@ -1,6 +1,6 @@
 #!/bin/bash
 # ==========================================
-# MAXTER // Version 27.3.B5
+# MAXTER // Version 27.3.B6
 # ==========================================
 # Author: Mahendra Mali (Max)
 
