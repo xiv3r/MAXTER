@@ -86,7 +86,7 @@ run_silent() {
 
 show_header() {
     clear
-    echo -e "${BOLD_CYAN}MAXTER${NC} ${DIM}Version 27.1.B3${NC}"
+    echo -e "${BOLD_CYAN}MAXTER${NC} ${DIM}Version 27.1.B4${NC}"
     echo -e "${GRAY}System: $(uname -s) $(uname -m)${NC}"
     echo -e "${DIM}${DIV_THIN}${NC}"
     echo ""

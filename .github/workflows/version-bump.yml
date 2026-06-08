@@ -45,18 +45,31 @@ jobs:
           fi
 
           # 4. Generate the Version Name string
-          VERSION_NAME="v$MAIN.$MINOR.B$BUILD"
+          VERSION_NAME="$MAIN.$MINOR.B$BUILD"
+          DISPLAY_VER="Version $VERSION_NAME"
           
           # 5. Export to GITHUB_ENV for downstream steps
           echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
+          echo "DISPLAY_VER=$DISPLAY_VER" >> $GITHUB_ENV
           
           # 6. Write values back to properties file
           echo "MAIN=$MAIN" > $PROPS_FILE
           echo "MINOR=$MINOR" >> $PROPS_FILE
           echo "BUILD=$BUILD" >> $PROPS_FILE
           
+          # 7. Update version strings in project files
+          # Using a broad regex to find "Version X.Y.BZ" or "vX.Y.BZ"
+          SED_PATTERN="[0-9]\+\.[0-9]\+\.B[0-9]\+"
+          
+          sed -i "s/Version $SED_PATTERN/$DISPLAY_VER/g" setup.sh
+          sed -i "s/Version $SED_PATTERN/$DISPLAY_VER/g" scripts/maxter_tui.sh
+          sed -i "s/Version $SED_PATTERN/$DISPLAY_VER/g" README.md
+          sed -i "s/Version $SED_PATTERN/$DISPLAY_VER/g" docs-src/src/App.jsx
+          # Also handle the v-prefix cases if any remain
+          sed -i "s/v$SED_PATTERN/$DISPLAY_VER/g" docs-src/src/App.jsx
+          
           # Pass variable to other steps if needed via output
-          echo "new_version=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "new_version=$DISPLAY_VER" >> $GITHUB_OUTPUT
 
       - name: Commit and Push Changes
         run: |
@@ -64,11 +77,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Only commit if the file actually changed (idempotency)
-          if ! git diff --exit-code version.properties; then
-            git add version.properties
-            git commit -m "chore: bump version to Version ${{ env.VERSION_NAME }}"
+          # Only commit if files actually changed (idempotency)
+          if ! git diff --exit-code; then
+            git add .
+            git commit -m "chore: bump version to ${{ env.DISPLAY_VER }}"
             git push
           else
-            echo "No version changes detected. Skipping commit."
+            echo "No changes detected. Skipping commit."
           fi
