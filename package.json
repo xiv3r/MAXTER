@@ -1,0 +1,25 @@
+{
+  "name": "maxter-cli",
+  "version": "27.1.3",
+  "description": "Professional terminal setup tool and dashboard",
+  "main": "scripts/maxter_tui.sh",
+  "bin": {
+    "maxter": "scripts/maxter_tui.sh"
+  },
+  "scripts": {
+    "install": "bash setup.sh"
+  },
+  "keywords": [
+    "terminal",
+    "zsh",
+    "termux",
+    "dashboard",
+    "setup"
+  ],
+  "author": "Mahendra Mali",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mahendraplus/MAXTER.git"
+  }
+}
