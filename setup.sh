@@ -1,6 +1,6 @@
 #!/bin/bash
 # ==========================================
-# MAXTER // Version 27.2.B8
+# MAXTER // Version 27.2.B10
 # ==========================================
 # Author: Mahendra Mali (Max)
 
@@ -102,7 +102,7 @@ show_header() {
     clear
     local sys_info="$(uname -s) $(uname -m)"
     if [ "$OS" == "termux" ]; then sys_info="Termux (Android)"; fi
-    echo -e "${BOLD_CYAN}MAXTER${NC} ${DIM}Version 27.2.B9${NC}"
+    echo -e "${BOLD_CYAN}MAXTER${NC} ${DIM}Version 27.2.B10${NC}"
     echo -e "${GRAY}System: $sys_info${NC}"
     echo -e "${DIM}${DIV_THIN}${NC}"
     echo ""

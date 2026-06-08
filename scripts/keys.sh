@@ -1,6 +1,6 @@
 #!/bin/bash
 # ==========================================
-# MAXTER // Version 27.2.B8
+# MAXTER // Version 27.2.B10
 # ==========================================
 # Termux Extra-Keys Manager (Interactive)
 
