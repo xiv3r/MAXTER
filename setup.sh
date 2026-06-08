@@ -111,10 +111,10 @@ detect_os() {
         OS="termux"
         if command -v pkg >/dev/null 2>&1; then
             INSTALL_CMD="DEBIAN_FRONTEND=noninteractive pkg install -y"
-            UPDATE_CMD="DEBIAN_FRONTEND=noninteractive pkg update -y"
+            UPDATE_CMD="DEBIAN_FRONTEND=noninteractive pkg update -y && DEBIAN_FRONTEND=noninteractive pkg upgrade -y"
         else
             INSTALL_CMD="DEBIAN_FRONTEND=noninteractive apt install -y"
-            UPDATE_CMD="DEBIAN_FRONTEND=noninteractive apt update -y"
+            UPDATE_CMD="DEBIAN_FRONTEND=noninteractive apt update -y && DEBIAN_FRONTEND=noninteractive apt upgrade -y"
         fi
     elif [ -f "/etc/os-release" ]; then
         . /etc/os-release
