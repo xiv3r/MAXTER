@@ -188,7 +188,7 @@ const App = () => {
                 initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
                 className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[var(--accent)]/10 border border-[var(--accent)]/20 text-[var(--accent)] font-mono text-[10px] uppercase tracking-widest mb-6"
               >
-                <FaMicrochip /> Version 27.2.B10
+                <FaMicrochip /> Version 27.3.B1
               </motion.div>
               
               <h1 className="text-hero mb-6">
@@ -365,7 +365,7 @@ const App = () => {
           </div>
         </div>
         <div className="mt-12 text-center opacity-20 text-[8px] font-mono tracking-[0.4em] uppercase text-[var(--text-muted)]">
-           MIT LICENSE // Version 27.2.B10 // REBUILD_SYSTEM // MXTR272B1008062026
+           MIT LICENSE // Version 27.3.B1 // REBUILD_SYSTEM // MXTR273B108062026
         </div>
       </footer>
     </div>
