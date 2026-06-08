@@ -1,6 +1,6 @@
 #!/bin/bash
 # ==========================================
-# MAXTER // Version 27.2.B4
+# MAXTER // Version 27.2.B5
 # ==========================================
 # Author: Mahendra Mali (Max)
 
@@ -88,7 +88,7 @@ run_silent() {
 
 show_header() {
     clear
-    echo -e "${BOLD_CYAN}MAXTER${NC} ${DIM}Version 27.2.B4${NC}"
+    echo -e "${BOLD_CYAN}MAXTER${NC} ${DIM}Version 27.2.B5${NC}"
     echo -e "${GRAY}System: $(uname -s) $(uname -m)${NC}"
     echo -e "${DIM}${DIV_THIN}${NC}"
     echo ""
