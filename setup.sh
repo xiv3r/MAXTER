@@ -49,6 +49,15 @@ REPO_DIR="$HOME/MAXTER"
 # --- Helper Functions ---
 clear_log() { rm -f "$LOG_FILE" && touch "$LOG_FILE"; }
 
+cleanup() {
+    local exit_code=$?
+    if [ $exit_code -ne 0 ]; then
+        echo -e "\n ${BOLD_RED}${ICON_FAIL}${NC} Installation interrupted (Exit code: $exit_code)"
+        [ -f "$LOG_FILE" ] && echo -e " ${GRAY}${ICON_INFO}${NC} Check $LOG_FILE for details."
+    fi
+}
+trap cleanup EXIT
+
 run_silent() {
     local msg="$1"
     shift
@@ -68,16 +77,19 @@ run_silent() {
     local spin_pid=$!
     
     # Execute command in foreground
-    # Temporarily disable exit-on-error to capture status
-    set +e
-    eval "$cmd" >> "$LOG_FILE" 2>&1
-    local ret=$?
-    set -e
+    # Use 'if' to capture status safely under 'set -e'
+    local ret=0
+    if eval "$cmd" >> "$LOG_FILE" 2>&1; then
+        ret=0
+    else
+        ret=$?
+    fi
     
     # Stop spinner
     { kill "$spin_pid"; wait "$spin_pid"; } 2>/dev/null || true
-    printf "\r\033[2K"
     
+    # Clear line and print result
+    printf "\r\033[2K"
     if [ $ret -eq 0 ]; then
         printf "\r ${BOLD_GREEN}${ICON_OK}${NC}  %-30s ${GREEN}successful${NC}\n" "$msg"
     else
@@ -95,27 +107,34 @@ show_header() {
 }
 
 detect_os() {
-    if [ -d "/data/data/com.termux/files/usr" ]; then
+    if [ -d "/data/data/com.termux/files/usr" ] || [ -n "${TERMUX_VERSION:-}" ]; then
         OS="termux"
-        INSTALL_CMD="DEBIAN_FRONTEND=noninteractive pkg install -y"
-        UPDATE_CMD="DEBIAN_FRONTEND=noninteractive pkg update -y"
+        if command -v pkg >/dev/null 2>&1; then
+            INSTALL_CMD="DEBIAN_FRONTEND=noninteractive pkg install -y"
+            UPDATE_CMD="DEBIAN_FRONTEND=noninteractive pkg update -y"
+        else
+            INSTALL_CMD="DEBIAN_FRONTEND=noninteractive apt install -y"
+            UPDATE_CMD="DEBIAN_FRONTEND=noninteractive apt update -y"
+        fi
     elif [ -f "/etc/os-release" ]; then
         . /etc/os-release
+        SUDO_CMD=""
+        if command -v sudo >/dev/null 2>&1; then SUDO_CMD="sudo "; fi
         case "$ID" in
             debian|ubuntu|kali|pop|mint)
                 OS="debian"
-                INSTALL_CMD="sudo DEBIAN_FRONTEND=noninteractive apt install -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\""
-                UPDATE_CMD="sudo DEBIAN_FRONTEND=noninteractive apt update -y"
+                INSTALL_CMD="${SUDO_CMD}DEBIAN_FRONTEND=noninteractive apt install -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\""
+                UPDATE_CMD="${SUDO_CMD}DEBIAN_FRONTEND=noninteractive apt update -y"
                 ;;
             arch|manjaro)
                 OS="arch"
-                INSTALL_CMD="sudo pacman -S --noconfirm"
-                UPDATE_CMD="sudo pacman -Syu --noconfirm"
+                INSTALL_CMD="${SUDO_CMD}pacman -S --noconfirm"
+                UPDATE_CMD="${SUDO_CMD}pacman -Syu --noconfirm"
                 ;;
             fedora)
                 OS="fedora"
-                INSTALL_CMD="sudo dnf install -y"
-                UPDATE_CMD="sudo dnf update -y"
+                INSTALL_CMD="${SUDO_CMD}dnf install -y"
+                UPDATE_CMD="${SUDO_CMD}dnf update -y"
                 ;;
             *) OS="unknown" ;;
         esac
