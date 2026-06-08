@@ -11,13 +11,28 @@ import {
 } from 'react-icons/si';
 import { VscTerminal, VscCloudDownload, VscGraph } from 'react-icons/vsc';
 
-// --- Premium Ambient Background Animation ---
+// --- Optimized Ambient Background (60fps guaranteed) ---
 const AmbientBackground = () => {
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[var(--accent)] opacity-[0.03] blur-[120px] rounded-full animate-pulse" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-500 opacity-[0.02] blur-[150px] rounded-full animate-pulse transition-all duration-[5000ms]" />
-      <div className="absolute top-[20%] right-[10%] w-[30%] h-[30%] bg-blue-500 opacity-[0.02] blur-[100px] rounded-full animate-pulse transition-all duration-[3000ms]" />
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" style={{ transform: 'translateZ(0)' }}>
+      {/* 
+        Using purely radial-gradients instead of CSS blur() prevents layout thrashing, 
+        repaints, and GPU lag, ensuring a buttery smooth experience on all devices.
+      */}
+      <div 
+        className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] animate-pulse" 
+        style={{ 
+          background: 'radial-gradient(circle, var(--accent-glow) 0%, transparent 70%)',
+          animationDuration: '8s'
+        }} 
+      />
+      <div 
+        className="absolute bottom-[-20%] right-[-10%] w-[70%] h-[70%] animate-pulse" 
+        style={{ 
+          background: 'radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, transparent 70%)',
+          animationDuration: '12s'
+        }} 
+      />
     </div>
   );
 };
@@ -49,7 +64,7 @@ const CommandCopy = ({ label, command }) => {
             <span className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-widest">Global Production Stream</span>
             <button 
               onClick={copy}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-[10px] uppercase tracking-widest transition-all ${
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-black text-xs uppercase tracking-widest transition-all ${
                 copied 
                 ? 'bg-green-500/10 text-green-500 border border-green-500/20' 
                 : 'bg-[var(--surface)] border border-[var(--border)] text-[var(--text)] hover:text-[var(--accent)] hover:border-[var(--accent)]/40 shadow-sm'
@@ -112,20 +127,20 @@ const App = () => {
       <motion.div className="fixed top-0 left-0 right-0 h-1 bg-[var(--accent)] z-[100] origin-left" style={{ scaleX }} />
 
       {/* Modern Navbar */}
-      <nav className="fixed top-0 w-full z-50 h-20 border-b border-[var(--border)] bg-[var(--bg)]/80 backdrop-blur-xl flex items-center">
+      <nav className="fixed top-0 w-full z-50 h-14 border-b border-[var(--border)] bg-[var(--bg)]/80 backdrop-blur-xl flex items-center">
         <div className="container-max w-full flex justify-between items-center px-6 lg:px-12">
-          <div className="flex items-center gap-4 font-black tracking-tighter text-2xl uppercase">
-            <div className="w-10 h-10 bg-[var(--accent)] rounded-xl flex items-center justify-center text-white shadow-lg shadow-[var(--accent)]/20 rotate-3 transition-transform hover:rotate-0">
-              <VscTerminal size={24} />
+          <div className="flex items-center gap-3 font-black tracking-tighter text-xl uppercase">
+            <div className="w-8 h-8 bg-[var(--accent)] rounded-lg flex items-center justify-center text-white shadow-lg shadow-[var(--accent)]/20 rotate-3 transition-transform hover:rotate-0">
+              <VscTerminal size={18} />
             </div>
             <span>MAXTER<span className="text-[var(--accent)]">_</span></span>
           </div>
           
-          <div className="flex items-center gap-2 sm:gap-6">
-            <a href="https://github.com/mahendraplus/MAXTER" target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2 border border-[var(--border)] rounded-xl text-[10px] font-bold uppercase tracking-widest hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all bg-[var(--surface)]/50">
-              <FaGithub size={16} /> <span className="hidden sm:inline">Source Code</span>
+          <div className="flex items-center gap-4 sm:gap-6">
+            <a href="https://github.com/mahendraplus/MAXTER" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] hover:text-[var(--accent)] transition-all">
+              <FaGithub size={18} /> <span className="hidden sm:inline">Source Code</span>
             </a>
-            <button onClick={toggleTheme} className="p-3 text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors bg-[var(--surface)] border border-[var(--border)] rounded-xl">
+            <button onClick={toggleTheme} className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors">
               {theme === 'dark' ? <FaSun size={18} /> : <FaMoon size={18} />}
             </button>
           </div>
@@ -136,13 +151,6 @@ const App = () => {
         {/* Refined Hero Section */}
         <section className="container-max min-h-[80vh] flex flex-col justify-center pt-32 pb-20 px-6 lg:px-12">
           <div className="max-w-4xl mx-auto text-center mb-16 sm:mb-24">
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/20 text-[var(--accent)] font-mono text-[10px] uppercase tracking-[0.3em] mb-8"
-            >
-              <FaMicrochip className="animate-spin-slow" /> One-Command Engine
-            </motion.div>
-            
             <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black mb-8 leading-[0.9] tracking-tighter">
               The Terminal,<br />
               <span className="text-[var(--accent)]">Re-Engineered.</span>
