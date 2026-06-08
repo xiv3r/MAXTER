@@ -1,23 +1,23 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import { 
   FaTerminal, FaGithub, FaCheck, FaCopy, FaShieldAlt, 
   FaPaintBrush, FaSync, FaSun, FaMoon, FaArrowRight, 
-  FaGlobe, FaLifeRing, FaBoxOpen, FaMicrochip, FaCogs
+  FaGlobe, FaLifeRing, FaMicrochip
 } from 'react-icons/fa';
 import { 
   SiDebian, SiUbuntu, SiKalilinux, SiArchlinux, 
   SiFedora, SiApple, SiAndroid 
 } from 'react-icons/si';
-import { VscTerminal, VscGear, VscCloudDownload, VscGraph } from 'react-icons/vsc';
+import { VscTerminal, VscCloudDownload, VscGraph } from 'react-icons/vsc';
 
-// --- Particle Background Component ---
+// --- Optimized Particle Background ---
 const Particles = () => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     let particles = [];
     let animationFrameId;
 
@@ -28,23 +28,25 @@ const Particles = () => {
 
     class Particle {
       constructor() {
+        this.reset();
+      }
+      reset() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 1.5 + 0.5;
-        this.speedX = Math.random() * 0.5 - 0.25;
-        this.speedY = Math.random() * 0.5 - 0.25;
-        this.opacity = Math.random() * 0.5 + 0.2;
+        this.size = Math.random() * 1.2 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.4;
+        this.speedY = (Math.random() - 0.5) * 0.4;
+        this.opacity = Math.random() * 0.4 + 0.1;
       }
       update() {
         this.x += this.speedX;
         this.y += this.speedY;
-        if (this.x > canvas.width) this.x = 0;
-        if (this.x < 0) this.x = canvas.width;
-        if (this.y > canvas.height) this.y = 0;
-        if (this.y < 0) this.y = canvas.height;
+        if (this.x > canvas.width || this.x < 0 || this.y > canvas.height || this.y < 0) {
+           this.reset();
+        }
       }
-      draw() {
-        ctx.fillStyle = `rgba(57, 255, 20, ${this.opacity})`;
+      draw(color) {
+        ctx.fillStyle = `rgba(${color}, ${this.opacity})`;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -52,16 +54,16 @@ const Particles = () => {
     }
 
     const init = () => {
-      particles = [];
-      for (let i = 0; i < 80; i++) particles.push(new Particle());
+      particles = Array.from({ length: 45 }, () => new Particle());
     };
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
-      });
+      const color = getComputedStyle(document.documentElement).getPropertyValue('--particle-color').trim();
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw(color);
+      }
       animationFrameId = requestAnimationFrame(animate);
     };
 
@@ -76,25 +78,22 @@ const Particles = () => {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0 opacity-40" />;
+  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0" />;
 };
 
-// --- Animated Counter/Typing Hook ---
-const useTypingEffect = (text, speed = 50, startDelay = 500) => {
+// --- typing tagline ---
+const Typewriter = ({ text }) => {
   const [displayedText, setDisplayedText] = useState('');
   useEffect(() => {
     let i = 0;
-    const timeout = setTimeout(() => {
-      const interval = setInterval(() => {
-        setDisplayedText(text.slice(0, i));
-        i++;
-        if (i > text.length) clearInterval(interval);
-      }, speed);
-      return () => clearInterval(interval);
-    }, startDelay);
-    return () => clearTimeout(timeout);
-  }, [text, speed, startDelay]);
-  return displayedText;
+    const interval = setInterval(() => {
+      setDisplayedText(text.slice(0, i));
+      i++;
+      if (i > text.length) clearInterval(interval);
+    }, 40);
+    return () => clearInterval(interval);
+  }, [text]);
+  return <>{displayedText}</>;
 };
 
 const App = () => {
@@ -122,7 +121,7 @@ const App = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setTerminalStep(prev => (prev < 6 ? prev + 1 : prev));
-    }, 1500);
+    }, 2000);
     return () => clearInterval(timer);
   }, []);
 
@@ -132,169 +131,147 @@ const App = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const typingTagline = useTypingEffect("Silent installation, premium themes, and industrial performance.", 40, 1000);
+  const features = useMemo(() => [
+    { icon: <VscCloudDownload />, title: "Silent Sync", desc: "Automated, non-interactive setup for any POSIX shell environment." },
+    { icon: <FaPaintBrush />, title: "20+ Themes", desc: "Premium, industrial color schemes with live real-time TUI preview." },
+    { icon: <FaSync />, title: "Auto-Healing", desc: "Self-correcting deployment engine that repairs broken configurations." },
+    { icon: <FaTerminal />, title: "Nerd Icons", desc: "Complete glyph integration for a high-fidelity visual experience." },
+    { icon: <VscGraph />, title: "Diagnostics", desc: "Deep system monitoring and performance analytics built-in." },
+    { icon: <FaShieldAlt />, title: "Universal", desc: "One core engine supporting Termux, Ubuntu, Arch, Kali, and macOS." }
+  ], []);
+
+  const platforms = useMemo(() => [
+    { icon: <SiAndroid />, name: "Termux" },
+    { icon: <SiDebian />, name: "Debian" },
+    { icon: <SiUbuntu />, name: "Ubuntu" },
+    { icon: <SiArchlinux />, name: "Arch" },
+    { icon: <SiKalilinux />, name: "Kali" },
+    { icon: <SiFedora />, name: "Fedora" },
+    { icon: <SiApple />, name: "macOS" }
+  ], []);
 
   return (
-    <div className="min-h-screen transition-colors duration-500 selection:bg-[var(--accent)] selection:text-black">
+    <div className="min-h-screen transition-colors duration-300 selection:bg-[var(--accent)] selection:text-white">
       <Particles />
       <div className="fixed inset-0 industrial-grid z-0 opacity-20 pointer-events-none"></div>
 
-      {/* Scroll Progress Bar */}
       <motion.div className="fixed top-0 left-0 right-0 h-1 bg-[var(--accent)] z-[100] origin-left" style={{ scaleX }} />
 
       {/* Navbar */}
-      <nav className="fixed top-0 w-full z-50 h-16 border-b border-[var(--border)] bg-[var(--bg)]/60 backdrop-blur-xl flex items-center transition-all">
+      <nav className="fixed top-0 w-full z-50 h-16 border-b border-[var(--border)] bg-[var(--bg)]/70 backdrop-blur-md flex items-center">
         <div className="container-max w-full flex justify-between items-center px-6">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-3 font-bold tracking-tighter text-xl text-[var(--text)] group cursor-pointer"
-          >
-            <div className="w-10 h-10 bg-[var(--accent)] rounded-lg flex items-center justify-center text-black group-hover:rotate-12 transition-transform">
-              <VscTerminal size={24} />
+          <div className="flex items-center gap-3 font-bold tracking-tighter text-xl text-[var(--text)]">
+            <div className="w-9 h-9 bg-[var(--accent)] rounded flex items-center justify-center text-white">
+              <VscTerminal size={22} />
             </div>
-            <span>MAXTER<span className="text-[var(--accent)] animate-pulse">_</span></span>
-          </motion.div>
+            <span>MAXTER<span className="text-[var(--accent)]">_</span></span>
+          </div>
           
           <div className="flex items-center gap-4">
-            <motion.a 
-              whileHover={{ scale: 1.1 }}
-              href="https://github.com/mahendraplus/MAXTER" 
-              target="_blank" 
-              rel="noreferrer" 
-              className="p-2 text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"
-            >
-              <FaGithub size={24} />
-            </motion.a>
-            <motion.button 
-              whileTap={{ rotate: 180 }}
-              onClick={toggleTheme}
-              className="p-2 text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"
-            >
-              {theme === 'dark' ? <FaSun size={24} /> : <FaMoon size={24} />}
-            </motion.button>
+            <a href="https://github.com/mahendraplus/MAXTER" target="_blank" rel="noreferrer" className="p-2 text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors">
+              <FaGithub size={22} />
+            </a>
+            <button onClick={toggleTheme} className="p-2 text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors">
+              {theme === 'dark' ? <FaSun size={22} /> : <FaMoon size={22} />}
+            </button>
           </div>
         </div>
       </nav>
 
       <main className="relative z-10">
         {/* Hero Section */}
-        <section className="container-max min-h-screen flex flex-col justify-center pt-32 pb-20 px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+        <section className="container-max min-h-[90vh] flex flex-col justify-center pt-24 pb-12 px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-7">
               <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="inline-flex items-center gap-3 px-4 py-1 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/5 text-[var(--accent)] font-mono text-xs mb-8"
+                initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
+                className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[var(--accent)]/10 border border-[var(--accent)]/20 text-[var(--accent)] font-mono text-[10px] uppercase tracking-widest mb-6"
               >
-                <FaMicrochip className="animate-spin-slow" />
-                SYSTEM_OPTIMIZED // v27.0
+                <FaMicrochip /> SYSTEM_READY // v27.0
               </motion.div>
               
-              <motion.h1 
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="text-hero mb-8"
-              >
+              <h1 className="text-hero mb-6">
                 Terminal,<br />
                 <span className="text-[var(--accent)] neon-text">Re-Engineered.</span>
-              </motion.h1>
+              </h1>
               
-              <motion.p 
-                className="text-[var(--text-muted)] font-mono h-12 text-lg mb-12 max-w-xl"
-              >
-                {typingTagline}<span className="w-2 h-5 bg-[var(--accent)] inline-block align-middle ml-1 animate-pulse"></span>
-              </motion.p>
+              <p className="text-[var(--text-muted)] font-mono text-sm sm:text-base mb-10 max-w-xl min-h-[3rem]">
+                <Typewriter text="Silent installation, premium themes, and industrial performance." />
+                <span className="w-2 h-4 bg-[var(--accent)] inline-block align-middle ml-1 animate-pulse"></span>
+              </p>
 
-              {/* Futuristic Command Input */}
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3 }}
-                className="max-w-2xl bg-black border border-[var(--accent)]/20 rounded-xl p-1 flex items-center gap-4 mb-10 shadow-[0_0_30px_rgba(57,255,20,0.05)]"
-              >
-                <div className="flex-1 px-5 py-4 font-mono text-[var(--accent)] text-sm overflow-hidden whitespace-nowrap">
-                  <span className="opacity-50 mr-2">$</span> {installCmd}
+              <div className="max-w-2xl bg-[var(--surface-2)] border border-[var(--border)] rounded-lg p-1 flex items-center mb-10 group shadow-lg">
+                <div className="flex-1 px-4 py-3 font-mono text-[var(--accent)] text-xs sm:text-sm overflow-hidden whitespace-nowrap">
+                  <span className="opacity-40 mr-2">$</span> {installCmd}
                 </div>
-                <motion.button 
-                  whileHover={{ backgroundColor: 'var(--accent)', color: '#000' }}
+                <button 
                   onClick={copyToClipboard}
-                  className="px-6 py-4 border-l border-[var(--accent)]/20 text-[var(--accent)] font-bold text-xs uppercase tracking-widest transition-all rounded-r-lg"
+                  className="px-5 py-3 bg-[var(--surface)] border-l border-[var(--border)] text-[var(--text)] hover:text-[var(--accent)] transition-colors rounded-r-lg font-bold text-[10px] uppercase tracking-widest"
                 >
                   {copied ? <FaCheck /> : <FaCopy />}
-                </motion.button>
-              </motion.div>
+                </button>
+              </div>
 
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="flex flex-wrap gap-4"
-              >
-                <a href="#features" className="px-8 py-4 bg-[var(--accent)] text-black font-black text-sm uppercase tracking-tighter hover:scale-105 active:scale-95 transition-all flex items-center gap-3 rounded-sm shadow-lg shadow-[var(--accent-glow)]">
-                  Initialize <FaArrowRight />
+              <div className="flex flex-wrap gap-4">
+                <a href="#features" className="px-7 py-3 bg-[var(--accent)] text-white font-bold text-xs uppercase tracking-widest hover:brightness-110 transition-all rounded shadow-md">
+                  Initialize
                 </a>
-                <a href="https://mahendraplus.github.io" target="_blank" className="px-8 py-4 border border-[var(--border)] text-[var(--text)] font-bold text-sm uppercase tracking-tighter hover:bg-[var(--surface-2)] transition-all rounded-sm flex items-center gap-3">
-                  <FaGlobe /> Explorer
+                <a href="https://mahendraplus.github.io" target="_blank" className="px-7 py-3 border border-[var(--border)] text-[var(--text)] font-bold text-xs uppercase tracking-widest hover:bg-[var(--surface-2)] transition-all rounded">
+                  Explorer
                 </a>
-              </motion.div>
+              </div>
             </div>
 
-            {/* Terminal Live Demo */}
             <motion.div 
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
+              initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
               className="lg:col-span-5"
             >
-              <div className="terminal-card border-[var(--accent)]/30 overflow-hidden relative group">
-                <div className="absolute inset-0 bg-[var(--accent)]/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <div className="terminal-header bg-zinc-900/50 px-5 py-3 flex gap-2 border-b border-white/5">
-                  <div className="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
-                  <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
-                  <div className="w-3 h-3 rounded-full bg-[#27c93f]"></div>
-                  <div className="flex-1 text-center font-mono text-[10px] text-zinc-500 tracking-[3px] uppercase ml-[-20px]">maxter_core</div>
+              <div className="terminal-card overflow-hidden">
+                <div className="bg-white/5 px-4 py-2 flex gap-2 border-b border-white/10">
+                  <div className="w-2.5 h-2.5 rounded-full bg-zinc-600"></div>
+                  <div className="w-2.5 h-2.5 rounded-full bg-zinc-600"></div>
+                  <div className="w-2.5 h-2.5 rounded-full bg-zinc-600"></div>
+                  <div className="flex-1 text-center font-mono text-[9px] text-zinc-500 uppercase tracking-widest">maxter_core</div>
                 </div>
-                <div className="terminal-body p-8 font-mono text-xs sm:text-sm leading-relaxed min-h-[350px]">
-                  <div className="flex items-center gap-3 mb-6">
-                    <span className="text-[var(--accent)] font-bold">➜</span>
+                <div className="p-6 font-mono text-[11px] sm:text-xs leading-relaxed min-h-[300px] text-zinc-300 bg-black">
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="text-[var(--accent)]">➜</span>
                     <span className="text-white">maxter init</span>
                   </div>
                   
                   <AnimatePresence>
                     {terminalStep >= 1 && (
-                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-zinc-500 mb-2">
-                        [*] Booting kernel module... <span className="text-[var(--accent)]">SUCCESS</span>
+                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-zinc-500 mb-1">
+                        [*] Booting kernel... <span className="text-[var(--accent)] font-bold">OK</span>
                       </motion.div>
                     )}
                     {terminalStep >= 2 && (
-                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-zinc-300 mb-2">
-                        [SYS] Detecting environment: <span className="bg-[var(--accent)] text-black px-1">Universal/Linux</span>
+                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-zinc-400 mb-1">
+                        [SYS] Env: <span className="text-white">Linux_Universal</span>
                       </motion.div>
                     )}
                     {terminalStep >= 3 && (
-                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-yellow-500 mb-2 italic">
-                        [!] Injecting Powerlevel10k firmware...
+                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-yellow-500/80 mb-1 italic">
+                        [!] Injecting P10K firmware...
                       </motion.div>
                     )}
                     {terminalStep >= 4 && (
-                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-2">
-                        <span className="text-[var(--accent)]">●</span> theme.service loaded
+                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-1">
+                        <span className="text-[var(--accent)]">●</span> theme.engine active
                       </motion.div>
                     )}
                     {terminalStep >= 5 && (
-                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-2 text-zinc-300">
-                        <span className="text-[var(--accent)]">●</span> nerd-icons.p10k deployed
+                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-1 text-zinc-400">
+                        <span className="text-[var(--accent)]">●</span> nerd-icons deployed
                       </motion.div>
                     )}
                     {terminalStep >= 6 && (
-                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-8 border border-[var(--accent)]/50 p-4 bg-[var(--accent)]/5">
-                        <div className="text-[var(--accent)] font-black text-sm uppercase mb-2">MAXTER INTERFACE READY</div>
-                        <div className="text-white text-[11px]">Control via command: <span className="font-bold underline cursor-pointer">'maxter'</span></div>
-                        <div className="flex items-center gap-2 mt-4">
+                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-6 border border-[var(--accent)]/30 p-3 bg-[var(--accent)]/5 rounded">
+                        <div className="text-[var(--accent)] font-bold text-[10px] uppercase mb-1">Interface Ready</div>
+                        <div className="text-zinc-500 text-[10px]">Type 'maxter' for dashboard.</div>
+                        <div className="flex items-center gap-1 mt-3">
                           <span className="text-[var(--accent)]">➜</span>
-                          <div className="w-2 h-4 bg-[var(--accent)] animate-pulse shadow-[0_0_10px_var(--accent)]"></div>
+                          <div className="w-1.5 h-3 bg-[var(--accent)] animate-pulse shadow-[0_0_8px_var(--accent)]"></div>
                         </div>
                       </motion.div>
                     )}
@@ -305,80 +282,39 @@ const App = () => {
           </div>
         </section>
 
-        {/* Core Engine Section */}
-        <section id="features" className="container-max py-32 px-6">
-          <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="flex flex-col lg:flex-row items-center gap-8 mb-20"
-          >
-            <div className="text-center lg:text-left">
-              <h2 className="text-5xl font-black mb-4 uppercase tracking-tighter">Core Engine</h2>
-              <p className="text-[var(--accent)] font-mono text-sm tracking-widest animate-glow">HIGH_PERFORMANCE_LAYER_ACTIVE</p>
-            </div>
-            <div className="h-px flex-1 bg-gradient-to-r from-[var(--accent)]/50 to-transparent hidden lg:block"></div>
-          </motion.div>
+        {/* Features Section */}
+        <section id="features" className="container-max py-24 px-6">
+          <div className="flex items-center gap-6 mb-16">
+            <h2 className="text-3xl font-black uppercase tracking-tighter">Core Engine</h2>
+            <div className="h-px flex-1 bg-gradient-to-r from-[var(--border)] to-transparent opacity-50"></div>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { icon: <VscCloudDownload />, title: "Silent Sync", desc: "Automated, non-interactive setup for any POSIX shell environment." },
-              { icon: <FaPaintBrush />, title: "20+ Themes", desc: "Premium, industrial color schemes with live real-time TUI preview." },
-              { icon: <FaSync />, title: "Auto-Healing", desc: "Self-correcting deployment engine that repairs broken shell configurations." },
-              { icon: <FaTerminal />, title: "Nerd Icons", desc: "Complete glyph integration for a high-fidelity visual workstation." },
-              { icon: <VscGraph />, title: "Diagnostics", desc: "Deep system monitoring and performance analytics built into the dashboard." },
-              { icon: <FaShieldAlt />, title: "Universal", desc: "One core engine supporting Termux, Ubuntu, Arch, Kali, and macOS." }
-            ].map((f, i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {features.map((f, i) => (
               <motion.div 
-                key={i} 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                whileHover={{ scale: 1.02, borderColor: 'var(--accent)' }}
-                className="bg-[var(--surface)] border border-[var(--border)] p-10 rounded-2xl transition-all relative group"
+                key={i} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}
+                className="bg-[var(--surface)] border border-[var(--border)] p-8 rounded-xl transition-all hover:border-[var(--accent)]/50 group"
               >
-                <div className="absolute top-0 right-0 p-4 opacity-5 text-8xl transition-opacity group-hover:opacity-10 pointer-events-none">{f.icon}</div>
-                <div className="text-[var(--accent)] text-4xl mb-8 group-hover:scale-110 transition-transform">{f.icon}</div>
-                <h3 className="text-xl font-bold mb-4 uppercase tracking-wide text-white">{f.title}</h3>
-                <p className="text-[var(--text-muted)] text-sm leading-relaxed font-medium">{f.desc}</p>
+                <div className="text-[var(--accent)] text-3xl mb-6 group-hover:scale-110 transition-transform duration-300">{f.icon}</div>
+                <h3 className="text-lg font-bold mb-3 uppercase tracking-wide text-[var(--text)]">{f.title}</h3>
+                <p className="text-[var(--text-muted)] text-xs leading-relaxed font-medium">{f.desc}</p>
               </motion.div>
             ))}
           </div>
         </section>
 
-        {/* System Compatibility - Visual Grid */}
-        <section className="py-40 bg-[var(--surface-2)]/20 border-y border-[var(--border)] overflow-hidden relative">
-          <div className="container-max relative z-10 text-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-4xl font-black uppercase mb-16 tracking-tight">Unified Compatibility</h2>
-            </motion.div>
-            
-            <div className="flex flex-wrap justify-center gap-6 lg:gap-10">
-               {[
-                 { icon: <SiAndroid />, name: "Termux" },
-                 { icon: <SiDebian />, name: "Debian" },
-                 { icon: <SiUbuntu />, name: "Ubuntu" },
-                 { icon: <SiArchlinux />, name: "Arch" },
-                 { icon: <SiKalilinux />, name: "Kali" },
-                 { icon: <SiFedora />, name: "Fedora" },
-                 { icon: <SiApple />, name: "macOS" }
-               ].map((p, i) => (
+        {/* Compatibility Section */}
+        <section className="py-24 bg-[var(--surface-2)]/40 border-y border-[var(--border)] px-6">
+          <div className="container-max text-center">
+            <h2 className="text-2xl font-black uppercase mb-12 tracking-tight opacity-90 text-[var(--text)]">Universal Compatibility</h2>
+            <div className="flex flex-wrap justify-center gap-4 sm:gap-6 max-w-4xl mx-auto">
+               {platforms.map((p, i) => (
                  <motion.div 
-                   key={i}
-                   initial={{ opacity: 0, y: 10 }}
-                   whileInView={{ opacity: 1, y: 0 }}
-                   viewport={{ once: true }}
-                   transition={{ delay: i * 0.1 }}
-                   whileHover={{ y: -10, color: 'var(--accent)', borderColor: 'var(--accent)' }}
-                   className="min-w-[140px] border border-[var(--border)] bg-black/40 px-8 py-8 rounded-2xl flex flex-col items-center gap-4 transition-all cursor-default"
+                   key={i} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}
+                   className="min-w-[120px] border border-[var(--border)] bg-[var(--surface)] px-5 py-5 rounded-lg flex flex-col items-center gap-3 transition-all hover:border-[var(--accent)] cursor-default shadow-sm"
                  >
-                   <span className="text-4xl" aria-hidden="true">{p.icon}</span>
-                   <span className="text-xs font-black uppercase tracking-widest opacity-60">{p.name}</span>
+                   <span className="text-3xl text-[var(--accent)]" aria-hidden="true">{p.icon}</span>
+                   <span className="text-[9px] font-black uppercase tracking-[0.15em] text-[var(--text-muted)]">{p.name}</span>
                  </motion.div>
                ))}
             </div>
@@ -386,31 +322,26 @@ const App = () => {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="py-24 bg-black border-t border-[var(--border)] relative overflow-hidden">
-        <div className="container-max relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-            <div className="text-center md:text-left">
-              <div className="text-3xl font-black tracking-tighter mb-4">MAXTER<span className="text-[var(--accent)]">_</span></div>
-              <p className="text-[var(--text-muted)] text-sm max-w-sm mb-8 font-medium">The definitive shell customization engine for professional developers and hackers.</p>
-              <div className="flex justify-center md:justify-start gap-6">
-                <motion.a whileHover={{ color: 'var(--accent)' }} href="https://github.com/mahendraplus" className="text-white text-xl transition-colors"><FaGithub /></motion.a>
-                <motion.a whileHover={{ color: 'var(--accent)' }} href="https://mahendraplus.github.io/maxlab/support/" className="text-white text-xl transition-colors"><FaLifeRing /></motion.a>
-                <motion.a whileHover={{ color: 'var(--accent)' }} href="https://mahendraplus.github.io" className="text-white text-xl transition-colors"><FaGlobe /></motion.a>
-              </div>
-            </div>
-            
-            <div className="flex flex-col items-center md:items-end gap-6 text-[10px] font-bold uppercase tracking-[0.3em]">
-               <div className="text-[var(--text-muted)] flex items-center gap-3">
-                 BY: <a href="https://mahendraplus.github.io" target="_blank" rel="noreferrer" className="text-white hover:text-[var(--accent)] transition-colors underline decoration-1 underline-offset-4">MAHENDRA MALI</a>
-               </div>
-               <div className="flex items-center gap-4 text-[var(--text-muted)]">
-                 <span>MIT LICENSE</span>
-                 <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-glow"></span>
-                 <span>STABLE_REBUILD_v27.0</span>
-               </div>
-            </div>
+      <footer className="py-16 bg-[var(--bg)] border-t border-[var(--border)] px-6">
+        <div className="container-max flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="text-center md:text-left">
+            <div className="text-2xl font-black tracking-tighter mb-2 text-[var(--text)]">MAXTER<span className="text-[var(--accent)]">_</span></div>
+            <p className="text-[var(--text-muted)] text-xs max-w-xs font-medium">Professional shell engine for developers.</p>
           </div>
+          
+          <div className="flex flex-wrap justify-center items-center gap-8 text-[9px] font-bold uppercase tracking-[0.2em]">
+             <div className="text-[var(--text-muted)]">
+               AUTHOR: <a href="https://mahendraplus.github.io" target="_blank" rel="noreferrer" className="text-[var(--text)] hover:text-[var(--accent)] transition-colors border-b border-transparent hover:border-[var(--accent)] pb-0.5">MAHENDRA MALI</a>
+             </div>
+             <div className="flex gap-6">
+               <a href="https://github.com/mahendraplus" className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"><FaGithub size={18} /></a>
+               <a href="https://mahendraplus.github.io/maxlab/support/" className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"><FaLifeRing size={18} /></a>
+               <a href="https://mahendraplus.github.io" className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"><FaGlobe size={18} /></a>
+             </div>
+          </div>
+        </div>
+        <div className="mt-12 text-center opacity-20 text-[8px] font-mono tracking-[0.4em] uppercase text-[var(--text-muted)]">
+           MIT LICENSE // STABLE_v27.0 // REBUILD_SYSTEM
         </div>
       </footer>
     </div>
