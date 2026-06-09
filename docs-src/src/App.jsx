@@ -44,7 +44,7 @@ const ScrollProgress = () => {
   }, []);
 
   return (
-    <div className="absolute bottom-[-10px] left-0 w-full h-[20px] z-50 pointer-events-none">
+    <div className="absolute bottom-0 left-[180px] lg:left-[220px] w-[calc(100%-180px)] lg:w-[calc(100%-220px)] h-[20px] z-50 pointer-events-none opacity-40">
       <motion.div 
         className="absolute top-0 left-0 h-full overflow-hidden"
         style={{ width }}
@@ -54,9 +54,9 @@ const ScrollProgress = () => {
             d={path}
             fill="transparent"
             stroke="#F5A800"
-            strokeWidth="2.5"
+            strokeWidth="1.5"
             style={{ 
-              filter: 'drop-shadow(0 0 5px #F5A800) drop-shadow(0 0 2px white)' 
+              filter: 'drop-shadow(0 0 3px #F5A800)' 
             }}
           />
         </svg>
@@ -135,9 +135,12 @@ const Navbar = ({ theme, toggleTheme }) => {
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${
       scrolled 
-      ? 'dark:bg-[#0A0A0A]/90 bg-white/90 backdrop-blur-xl py-3 shadow-[0_15px_40px_-10px_rgba(245,168,0,0.15)] dark:shadow-[0_15px_40px_-10px_rgba(245,168,0,0.25)]' 
-      : 'bg-transparent py-5 shadow-none'
+      ? 'dark:bg-[#0A0A0A]/90 bg-white/90 backdrop-blur-xl py-3' 
+      : 'bg-transparent py-5'
     }`}>
+      {/* Flame Bottom Border */}
+      <div className={`absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#F5A800]/60 to-transparent transition-opacity duration-500 shadow-[0_-4px_15px_rgba(245,168,0,0.5)] ${scrolled ? 'opacity-100' : 'opacity-0'}`} />
+      
       <ScrollProgress />
       <div className="container mx-auto px-6 lg:px-12 flex justify-between items-center mt-1 relative z-10">
         <div className="flex items-center gap-3">
