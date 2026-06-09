@@ -53,9 +53,7 @@ const Navbar = ({ theme, toggleTheme }) => {
     }`}>
       <div className="container mx-auto px-6 lg:px-12 flex justify-between items-center">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-accent-blue rounded-xl flex items-center justify-center text-white shadow-xl shadow-accent-blue/30">
-            <Terminal size={22} strokeWidth={2.5} />
-          </div>
+          <img src="assets/maxter-logo.png" alt="MAXTER Logo" className="w-10 h-10 object-contain" />
           <span className="font-mono font-black text-2xl tracking-tighter uppercase dark:text-white text-bg-primary">
             MAXTER<span className="text-accent-blue">.</span>
           </span>
