@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useSpring, useTransform } from 'framer-motion';
 import { 
   Github, Copy, Check, Terminal, Palette, RefreshCw, 
   ShieldCheck, Globe, LifeBuoy, ExternalLink, 
@@ -26,11 +26,14 @@ const SiTermux = ({ size = 24, color = "currentColor", ...props }) => (
 // --- Scroll Progress Bar (Sine Wave) ---
 const ScrollProgress = () => {
   const { scrollYProgress } = useScroll();
-  const pathLength = useSpring(scrollYProgress, {
+  const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001
   });
+  
+  // Use width instead of pathLength so the wave never distorts and perfectly ends at the screen edge
+  const width = useTransform(smoothProgress, [0, 1], ["0%", "100%"]);
 
   const path = useMemo(() => {
     let d = "M 0 10 ";
@@ -41,19 +44,23 @@ const ScrollProgress = () => {
   }, []);
 
   return (
-    <div className="absolute bottom-[-10px] left-0 w-full h-[20px] z-50 overflow-hidden pointer-events-none">
-      <svg width="6000" height="20" className="absolute top-0 left-0">
-        <motion.path 
-          d={path}
-          fill="transparent"
-          stroke="#F5A800"
-          strokeWidth="2.5"
-          style={{ 
-            pathLength, 
-            filter: 'drop-shadow(0 0 5px #F5A800) drop-shadow(0 0 2px white)' 
-          }}
-        />
-      </svg>
+    <div className="absolute bottom-[-10px] left-0 w-full h-[20px] z-50 pointer-events-none">
+      <motion.div 
+        className="absolute top-0 left-0 h-full overflow-hidden"
+        style={{ width }}
+      >
+        <svg width="6000" height="20" className="absolute top-0 left-0">
+          <path 
+            d={path}
+            fill="transparent"
+            stroke="#F5A800"
+            strokeWidth="2.5"
+            style={{ 
+              filter: 'drop-shadow(0 0 5px #F5A800) drop-shadow(0 0 2px white)' 
+            }}
+          />
+        </svg>
+      </motion.div>
     </div>
   );
 };
@@ -128,8 +135,8 @@ const Navbar = ({ theme, toggleTheme }) => {
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${
       scrolled 
-      ? 'dark:bg-[#0A0A0A]/90 bg-white/90 backdrop-blur-xl py-3 border-b dark:border-border-subtle border-gray-200 shadow-2xl' 
-      : 'bg-transparent py-5 border-transparent'
+      ? 'dark:bg-[#0A0A0A]/90 bg-white/90 backdrop-blur-xl py-3 shadow-[0_15px_40px_-10px_rgba(245,168,0,0.15)] dark:shadow-[0_15px_40px_-10px_rgba(245,168,0,0.25)]' 
+      : 'bg-transparent py-5 shadow-none'
     }`}>
       <ScrollProgress />
       <div className="container mx-auto px-6 lg:px-12 flex justify-between items-center mt-1 relative z-10">
@@ -152,7 +159,7 @@ const Navbar = ({ theme, toggleTheme }) => {
             href="https://github.com/mahendraplus/MAXTER" 
             target="_blank" 
             rel="noreferrer" 
-            className="flex items-center justify-center w-11 h-11 rounded-2xl dark:bg-[#1A1A1A] bg-gray-100 border dark:border-[#2A2A2A] border-gray-200 dark:text-white text-[var(--light-text)] hover:text-[#F5A800] dark:hover:text-[#F5A800] transition-all"
+            className="flex items-center justify-center w-11 h-11 rounded-2xl dark:bg-[#1A1A1A] bg-gray-100 dark:border-[#333333] border border-gray-200 dark:text-white text-[var(--light-text)] hover:text-[#F5A800] dark:hover:text-[#F5A800] transition-all shadow-sm"
             title="GitHub Repository"
           >
             <Github size={20} />
@@ -161,7 +168,7 @@ const Navbar = ({ theme, toggleTheme }) => {
           <motion.button 
             whileTap={{ scale: 0.85 }}
             onClick={toggleTheme}
-            className="w-11 h-11 flex items-center justify-center rounded-2xl dark:bg-[#1A1A1A] bg-gray-100 border dark:border-[#2A2A2A] border-gray-200 dark:text-white text-[var(--light-text)] hover:text-[#F5A800] dark:hover:text-[#F5A800] transition-all"
+            className="w-11 h-11 flex items-center justify-center rounded-2xl dark:bg-[#1A1A1A] bg-gray-100 dark:border-[#333333] border border-gray-200 dark:text-white text-[var(--light-text)] hover:text-[#F5A800] dark:hover:text-[#F5A800] transition-all shadow-sm"
           >
             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </motion.button>

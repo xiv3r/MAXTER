@@ -1,4 +1,4 @@
-import{r as e}from"./vendor-DQkP3h1M.js";
+import{r as e}from"./vendor-DGZtwzpJ.js";
 /**
  * @license lucide-react v0.344.0 - ISC
  *
