@@ -25,8 +25,9 @@ source "$SCRIPT_DIR/themes/definitions.sh"
 DARK_THEMES=("Matrix" "Dracula" "Nord" "Monokai" "Gruvbox Dark" "Tokyo Night" "Catppuccin" "One Dark" "Solarized Dark" "Cyberpunk")
 LIGHT_THEMES=("Solarized Light" "Catppuccin Latte" "GitHub Light")
 SPECIAL_THEMES=("Rose" "Ocean" "Industrial" "Sunset" "Forest" "Candy" "Midnight")
+PREMIUM_THEMES=("Night Owl" "Synthwave 84" "Ayu Dark" "Ayu Mirage" "Ayu Light" "Material Dark" "Material Oceanic" "Material Palenight" "Material Deep Ocean" "Tokyo Night Storm" "Tokyo Night Moon" "Tokyo Night Light" "One Light" "Dracula Pro" "Dracula Pro Alucard" "Horizon" "Andromeda" "Aurora" "Cobalt2" "Darcula" "Deep Space" "Eva Dark" "Eva Light" "Flatland" "Glacier" "Hopscotch" "Iceberg" "Moonlight" "Nova" "Oceanic Next" "Panda" "Radical" "Seti" "Shades of Purple" "Snazzy" "Spacegray" "Tomorrow Night" "Twilight" "Winter is Coming" "Xcode Dark" "Zenburn" "Rosé Pine" "Rosé Pine Moon" "Rosé Pine Dawn" "Kanagawa" "Everforest Dark" "Everforest Light" "Gruvbox Material" "Sonokai" "Onedark Pro" "Vuesion" "Breeze")
 
-ALL_THEMES=("${DARK_THEMES[@]}" "${LIGHT_THEMES[@]}" "${SPECIAL_THEMES[@]}")
+ALL_THEMES=("${DARK_THEMES[@]}" "${LIGHT_THEMES[@]}" "${SPECIAL_THEMES[@]}" "${PREMIUM_THEMES[@]}")
 
 current_pos=0
 total_themes=${#ALL_THEMES[@]}
@@ -70,14 +71,13 @@ discard_changes() {
 
 draw_menu() {
     clear
-    echo -e " ${CYAN}󱓞  Live Theme Preview${NC}"
+    echo -e " ${CYAN}󱓞  Live Theme Preview (${current_pos}/${total_themes})${NC}"
     echo -e " ${GRAY}${DIV}${NC}"
     
     # Preview Block for non-Termux
     if ! is_termux; then
         local theme_name="${ALL_THEMES[$current_pos]}"
         local theme_data="${THEMES[$theme_name]}"
-        # Extract colors (very simplified hex extraction for preview)
         local bg=$(echo "$theme_data" | grep -o "background:#[0-9a-fA-F]*" | cut -d'#' -f2)
         local fg=$(echo "$theme_data" | grep -o "foreground:#[0-9a-fA-F]*" | cut -d'#' -f2)
         echo -e "  Preview: [ BG:#$bg FG:#$fg ]"
@@ -85,34 +85,29 @@ draw_menu() {
         echo -e " ${GRAY}${DIV}${NC}"
     fi
 
-    echo -e " ${WHITE}[ Dark ]${GRAY}─────────────────────────────${NC}"
-    for i in "${!DARK_THEMES[@]}"; do
-        if [ "$current_pos" -eq "$i" ]; then
-            echo -e "  ${GREEN}${ARROW} ${DARK_THEMES[$i]}${NC}"
-        else
-            echo -e "    ${DARK_THEMES[$i]}"
-        fi
-    done
+    # Sliding Window Logic
+    local max_visible=12
+    local half_window=$((max_visible / 2))
+    local start_idx=$((current_pos - half_window))
+    
+    if [ "$start_idx" -lt 0 ]; then
+        start_idx=0
+    elif [ "$((start_idx + max_visible))" -gt "$total_themes" ]; then
+        start_idx=$((total_themes - max_visible))
+    fi
+    
+    [ "$start_idx" -lt 0 ] && start_idx=0
 
-    echo -e " ${WHITE}[ Light ]${GRAY}────────────────────────────${NC}"
-    local offset=${#DARK_THEMES[@]}
-    for i in "${!LIGHT_THEMES[@]}"; do
-        local idx=$((i + offset))
+    for (( i=0; i<max_visible; i++ )); do
+        local idx=$((start_idx + i))
+        if [ "$idx" -ge "$total_themes" ]; then break; fi
+        
+        local theme_name="${ALL_THEMES[$idx]}"
+        
         if [ "$current_pos" -eq "$idx" ]; then
-            echo -e "  ${GREEN}${ARROW} ${LIGHT_THEMES[$i]}${NC}"
+            echo -e "  ${GREEN}${ARROW} ${theme_name}${NC}"
         else
-            echo -e "    ${LIGHT_THEMES[$i]}"
-        fi
-    done
-
-    echo -e " ${WHITE}[ Special ]${GRAY}──────────────────────────${NC}"
-    offset=$((offset + ${#LIGHT_THEMES[@]}))
-    for i in "${!SPECIAL_THEMES[@]}"; do
-        local idx=$((i + offset))
-        if [ "$current_pos" -eq "$idx" ]; then
-            echo -e "  ${GREEN}${ARROW} ${SPECIAL_THEMES[$i]}${NC}"
-        else
-            echo -e "    ${SPECIAL_THEMES[$i]}"
+            echo -e "    ${theme_name}"
         fi
     done
 
