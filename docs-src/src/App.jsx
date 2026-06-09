@@ -530,20 +530,20 @@ const Platforms = () => {
   ];
   
   return (
-    <section className="py-40 px-6 lg:px-12">
+    <section className="py-16 px-6 lg:px-12">
       <div className="container mx-auto text-center">
-        <h2 className="text-4xl font-black mb-20 dark:text-white text-[var(--light-text)] uppercase tracking-tighter">Universal Support</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-8">
+        <h2 className="text-3xl font-black mb-10 dark:text-white text-[var(--light-text)] uppercase tracking-tighter">Universal Support</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-6">
           {list.map((p, i) => (
             <motion.div 
               key={i} 
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               whileHover={{ y: -5 }} 
               whileTap={{ scale: 0.9 }}
-              viewport={{ once: false }}
+              viewport={{ once: false, amount: 0 }}
               transition={{ duration: 0.5, delay: i * 0.05 }}
-              className="dark:bg-[#111111] bg-white border dark:border-border-subtle border-gray-200 p-10 rounded-[2.5rem] flex flex-col items-center gap-6 group hover:border-[#F5A800]/50 transition-all cursor-default shadow-xl"
+              className="dark:bg-[#111111] bg-white border dark:border-border-subtle border-gray-200 p-6 sm:p-8 rounded-[2rem] flex flex-col items-center gap-4 group hover:border-[#F5A800]/50 transition-all cursor-default shadow-xl"
             >
               <div className="relative flex items-center justify-center">
                 <div 
@@ -551,12 +551,12 @@ const Platforms = () => {
                   style={{ backgroundColor: p.color }}
                 />
                 <p.icon 
-                  size={56} 
+                  size={42} 
                   color={p.color} 
                   className="relative z-10 transition-transform duration-300 group-hover:scale-110" 
                 />
               </div>
-              <span className="text-xs font-black uppercase tracking-[0.2em] dark:text-gray-300 text-[var(--light-text)] group-hover:text-[#F5A800] dark:group-hover:text-[#F5A800] transition-colors">{p.name}</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] dark:text-gray-300 text-[var(--light-text)] group-hover:text-[#F5A800] dark:group-hover:text-[#F5A800] transition-colors">{p.name}</span>
             </motion.div>
           ))}
         </div>
@@ -567,11 +567,11 @@ const Platforms = () => {
 
 // --- Footer ---
 const Footer = () => (
-  <footer className="py-24 px-6 lg:px-12 dark:bg-[#0A0A0A] bg-white">
-    <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-16">
+  <footer className="py-12 px-6 lg:px-12 dark:bg-[#0A0A0A] bg-white">
+    <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
       <div className="text-center md:text-left">
-        <div className="text-3xl font-black tracking-tighter mb-5 dark:text-white text-[var(--light-text)] uppercase">MAXTER<span className="text-[#F5A800]">.</span></div>
-        <p className="dark:text-[#CCCCCC] text-gray-500 font-medium text-base max-w-xs mx-auto md:mx-0">
+        <div className="text-2xl sm:text-3xl font-black tracking-tighter mb-2 dark:text-white text-[var(--light-text)] uppercase">MAXTER<span className="text-[#F5A800]">.</span></div>
+        <p className="dark:text-[#CCCCCC] text-gray-500 font-medium text-sm sm:text-base max-w-xs mx-auto md:mx-0">
           Professional shell environment for every platform.
         </p>
       </div>
