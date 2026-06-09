@@ -48,21 +48,21 @@ const Navbar = ({ theme, toggleTheme }) => {
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-500 border-b ${
       scrolled 
-      ? 'dark:bg-bg-surface/90 bg-white/90 backdrop-blur-xl py-3 dark:border-border-subtle border-gray-200 shadow-2xl' 
+      ? 'dark:bg-[#0A0A0A]/90 bg-white/90 backdrop-blur-xl py-3 dark:border-border-subtle border-gray-200 shadow-2xl' 
       : 'bg-transparent py-5 border-transparent'
     }`}>
       <div className="container mx-auto px-6 lg:px-12 flex justify-between items-center">
         <div className="flex items-center gap-3">
           <img src="assets/maxter-logo.png" alt="MAXTER Logo" className="w-10 h-10 object-contain" />
           <span className="font-mono font-black text-2xl tracking-tighter uppercase dark:text-white text-bg-primary">
-            MAXTER<span className="text-accent-blue">.</span>
+            MAXTER<span className="text-[#F5A800]">.</span>
           </span>
         </div>
         
         <div className="flex items-center gap-3 sm:gap-8">
           <div className="hidden sm:flex items-center gap-5 mr-2 border-r dark:border-border-subtle border-gray-200 pr-6">
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-blue/5 border border-accent-blue/10">
-              <Github size={14} className="text-accent-blue" />
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#F5A800]/5 border border-[#F5A800]/10">
+              <Github size={14} className="text-[#F5A800]" />
               <span className="text-[11px] font-black dark:text-white text-bg-primary">{stats.stars}</span>
             </div>
           </div>
@@ -71,7 +71,7 @@ const Navbar = ({ theme, toggleTheme }) => {
             href="https://github.com/mahendraplus/MAXTER" 
             target="_blank" 
             rel="noreferrer" 
-            className="flex items-center justify-center w-11 h-11 rounded-2xl dark:bg-bg-elevated bg-gray-100 border dark:border-border-subtle border-gray-200 dark:text-text-secondary text-gray-600 hover:text-accent-blue transition-all"
+            className="flex items-center justify-center w-11 h-11 rounded-2xl dark:bg-bg-elevated bg-gray-100 border dark:border-border-subtle border-gray-200 dark:text-text-secondary text-gray-600 hover:text-[#F5A800] transition-all"
             title="GitHub Repository"
           >
             <Github size={20} />
@@ -80,7 +80,7 @@ const Navbar = ({ theme, toggleTheme }) => {
           <motion.button 
             whileTap={{ scale: 0.85 }}
             onClick={toggleTheme}
-            className="w-11 h-11 flex items-center justify-center rounded-2xl dark:bg-bg-elevated bg-gray-100 border dark:border-border-subtle border-gray-200 dark:text-text-secondary text-gray-600 hover:text-accent-blue transition-all"
+            className="w-11 h-11 flex items-center justify-center rounded-2xl dark:bg-bg-elevated bg-gray-100 border dark:border-border-subtle border-gray-200 dark:text-text-secondary text-gray-600 hover:text-[#F5A800] transition-all"
           >
             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </motion.button>
@@ -119,14 +119,14 @@ const Hero = ({ installCmd }) => {
 
   return (
     <section className="relative pt-48 pb-20 px-6 lg:px-12 overflow-hidden">
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent-blue/10 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#F5A800]/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="container mx-auto text-center relative z-10">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-          <h1 className="text-7xl lg:text-9xl font-black mb-10 leading-[0.9] tracking-tighter dark:text-white text-bg-primary">
-            Terminal Setup<br />Made Easy<span className="text-accent-blue">.</span>
+          <h1 className="text-7xl lg:text-9xl font-black mb-10 leading-[0.9] tracking-tighter dark:text-white text-bg-primary uppercase">
+            Terminal Setup<br />Made Easy<span className="text-[#F5A800]">.</span>
           </h1>
-          <p className="dark:text-text-secondary text-gray-500 font-medium text-lg sm:text-xl mb-16 max-w-2xl mx-auto leading-relaxed">
+          <p className="dark:text-[#CCCCCC] text-gray-500 font-medium text-lg sm:text-xl mb-16 max-w-2xl mx-auto leading-relaxed">
             One command to install Zsh, beautiful themes, and essential tools. 
             Works on Termux and all major Linux systems.
           </p>
@@ -141,8 +141,8 @@ const Hero = ({ installCmd }) => {
             className="lg:col-span-7"
           >
             <div className="relative group">
-              <div className="absolute -inset-4 bg-accent-blue/10 rounded-[3rem] blur-2xl opacity-0 group-hover:opacity-100 transition duration-700" />
-              <div className="relative dark:bg-bg-surface bg-white border dark:border-border-subtle border-gray-200 rounded-[3rem] overflow-hidden shadow-2xl">
+              <div className="absolute -inset-4 bg-[#F5A800]/5 rounded-[3rem] blur-2xl opacity-0 group-hover:opacity-100 transition duration-700" />
+              <div className="relative dark:bg-[#111111] bg-white border dark:border-border-subtle border-gray-200 rounded-[3rem] overflow-hidden shadow-2xl">
                 <div className="aspect-video relative overflow-hidden bg-black">
                   <AnimatePresence mode="wait">
                     <motion.div
@@ -171,7 +171,7 @@ const Hero = ({ installCmd }) => {
                           initial={{ y: 10, opacity: 0 }}
                           animate={{ y: 0, opacity: 1 }}
                           transition={{ delay: 0.4 }}
-                          className="text-gray-300 text-lg font-medium"
+                          className="text-[#CCCCCC] text-lg font-medium"
                         >
                           {slides[activeSlide].slogan}
                         </motion.p>
@@ -185,7 +185,7 @@ const Hero = ({ installCmd }) => {
                   {slides.map((_, i) => (
                     <div 
                       key={i} 
-                      className={`h-1.5 rounded-full transition-all duration-500 ${activeSlide === i ? 'w-8 bg-accent-blue' : 'w-2 bg-white/30'}`}
+                      className={`h-1.5 rounded-full transition-all duration-500 ${activeSlide === i ? 'w-8 bg-[#F5A800]' : 'w-2 bg-white/30'}`}
                     />
                   ))}
                 </div>
@@ -198,15 +198,15 @@ const Hero = ({ installCmd }) => {
             initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4, duration: 0.8 }}
             className="lg:col-span-5 text-left"
           >
-            <div className="dark:bg-bg-surface bg-white border dark:border-border-subtle border-gray-200 rounded-[2.5rem] p-8 sm:p-10 shadow-xl">
+            <div className="dark:bg-[#111111] bg-white border dark:border-border-subtle border-gray-200 rounded-[2.5rem] p-8 sm:p-10 shadow-xl">
               <div className="flex items-center gap-3 mb-8">
-                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                <div className="w-2 h-2 rounded-full bg-[#F5A800] animate-pulse" />
                 <span className="text-[11px] font-black uppercase tracking-[0.3em] dark:text-text-muted text-gray-400">Ready to Install</span>
               </div>
               
               <div className="dark:bg-black/40 bg-gray-50 rounded-2xl p-6 mb-8 border dark:border-border-subtle border-gray-200">
                 <div className="flex items-center gap-4 font-mono text-sm overflow-x-auto scrollbar-hide whitespace-nowrap">
-                  <span className="text-accent-blue font-black select-none">›</span>
+                  <span className="text-[#F5A800] font-black select-none">›</span>
                   <code className="dark:text-white/90 text-bg-primary font-bold">{installCmd}</code>
                 </div>
               </div>
@@ -217,7 +217,7 @@ const Hero = ({ installCmd }) => {
                 className={`w-full relative h-20 rounded-2xl font-black text-sm uppercase tracking-[0.2em] transition-all duration-500 overflow-hidden ${
                   copied 
                   ? 'bg-green-500 text-white shadow-green-500/20' 
-                  : 'bg-accent-blue text-white hover:bg-accent-blue-light shadow-2xl shadow-accent-blue/30'
+                  : 'bg-[#F5A800] text-white hover:bg-[#FFD000] shadow-2xl shadow-[#F5A800]/30'
                 }`}
               >
                 <div className="flex items-center justify-center gap-4">
@@ -243,7 +243,7 @@ const SocialStats = () => {
     { label: "Stars", value: "0", desc: "GitHub Stargazers" },
     { label: "Forks", value: "0", desc: "Project Forks" },
     { label: "Watchers", value: "0", desc: "Active Watchers" },
-    { label: "Issues", value: "0", desc: "Open Issues" }
+    { label: "Issues", value: "0", desc: "Community Support" }
   ]);
 
   useEffect(() => {
@@ -265,7 +265,7 @@ const SocialStats = () => {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center md:text-left">
         {stats.map((s, i) => (
           <div key={i} className="group">
-            <div className="text-[10px] font-black uppercase tracking-[0.4em] text-accent-blue mb-4 group-hover:translate-x-1 transition-transform">{s.label}</div>
+            <div className="text-[10px] font-black uppercase tracking-[0.4em] text-[#F5A800] mb-4 group-hover:translate-x-1 transition-transform">{s.label}</div>
             <div className="text-5xl lg:text-7xl font-black dark:text-white text-bg-primary tracking-tighter mb-2">{s.value}</div>
             <div className="text-xs font-bold text-gray-400 dark:text-text-muted uppercase tracking-[0.2em]">{s.desc}</div>
           </div>
@@ -278,9 +278,9 @@ const SocialStats = () => {
 // --- Feature Section ---
 const Features = () => {
   const items = useMemo(() => [
-    { icon: <Palette size={32} />, title: "Themes", desc: "Includes 20+ professional themes with real-time preview.", color: "#8B5CF6" },
-    { icon: <RefreshCw size={32} />, title: "Repair", desc: "Instantly fix broken shell configs and missing dependencies.", color: "#10B981" },
-    { icon: <ShieldCheck size={32} />, title: "Safety", desc: "Clean uninstallation and automated system backups.", color: "#3B82F6" }
+    { icon: <Palette size={32} />, title: "Themes", desc: "Includes 20+ professional themes with real-time preview.", color: "#F5A800" },
+    { icon: <RefreshCw size={32} />, title: "Repair", desc: "Instantly fix broken shell configs and missing dependencies.", color: "#F5A800" },
+    { icon: <ShieldCheck size={32} />, title: "Safety", desc: "Clean uninstallation and automated system backups.", color: "#F5A800" }
   ], []);
 
   return (
@@ -289,7 +289,7 @@ const Features = () => {
         {items.map((f, i) => (
           <motion.div 
             key={i} whileHover={{ y: -10 }} whileTap={{ scale: 0.95 }}
-            className="group dark:bg-bg-surface bg-white border dark:border-border-subtle border-gray-200 p-12 rounded-[3rem] transition-all duration-300 shadow-2xl hover:border-accent-blue/30"
+            className="group dark:bg-[#111111] bg-white border dark:border-border-subtle border-gray-200 p-12 rounded-[3rem] transition-all duration-300 shadow-2xl hover:border-[#F5A800]/30"
           >
             <div 
               className="w-20 h-20 rounded-[1.5rem] flex items-center justify-center mb-10 shadow-xl"
@@ -298,7 +298,7 @@ const Features = () => {
               {f.icon}
             </div>
             <h3 className="text-2xl font-black mb-5 dark:text-white text-bg-primary uppercase tracking-tight">{f.title}</h3>
-            <p className="dark:text-text-secondary text-gray-500 font-medium leading-relaxed">{f.desc}</p>
+            <p className="dark:text-[#CCCCCC] text-gray-500 font-medium leading-relaxed">{f.desc}</p>
           </motion.div>
         ))}
       </div>
@@ -318,10 +318,10 @@ const Contributors = () => {
   }, []);
 
   return (
-    <section className="py-32 px-6 lg:px-12 dark:bg-bg-surface/20 bg-gray-50/50">
+    <section className="py-32 px-6 lg:px-12 dark:bg-[#111111]/20 bg-gray-50/50">
       <div className="container mx-auto text-center">
         <h2 className="text-4xl font-black mb-6 dark:text-white text-bg-primary uppercase tracking-tighter">Community Driven</h2>
-        <p className="dark:text-text-secondary text-gray-500 font-medium mb-16 max-w-xl mx-auto">
+        <p className="dark:text-[#CCCCCC] text-gray-500 font-medium mb-16 max-w-xl mx-auto">
           Thanks to all the amazing people who have contributed to making MAXTER better every day.
         </p>
         
@@ -336,11 +336,11 @@ const Contributors = () => {
                 <img 
                   src={u.avatar_url} 
                   alt={u.login}
-                  className="w-24 h-24 rounded-[2rem] border-2 dark:border-border-subtle border-white shadow-2xl group-hover:border-accent-blue transition-all"
+                  className="w-24 h-24 rounded-[2rem] border-2 dark:border-border-subtle border-white shadow-2xl group-hover:border-[#F5A800] transition-all"
                 />
-                <div className="absolute -inset-2 bg-accent-blue/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute -inset-2 bg-[#F5A800]/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
-              <span className="text-xs font-black uppercase tracking-widest dark:text-white text-bg-primary group-hover:text-accent-blue transition-colors">
+              <span className="text-xs font-black uppercase tracking-widest dark:text-white text-bg-primary group-hover:text-[#F5A800] transition-colors">
                 {u.login}
               </span>
             </motion.a>
@@ -350,10 +350,10 @@ const Contributors = () => {
             whileHover={{ y: -5 }}
             className="flex flex-col items-center gap-4 group"
           >
-            <div className="w-24 h-24 rounded-[2rem] border-2 border-dashed dark:border-border-subtle border-gray-300 flex items-center justify-center text-gray-400 group-hover:text-accent-blue group-hover:border-accent-blue transition-all">
+            <div className="w-24 h-24 rounded-[2rem] border-2 border-dashed dark:border-border-subtle border-gray-300 flex items-center justify-center text-gray-400 group-hover:text-[#F5A800] group-hover:border-[#F5A800] transition-all">
               <Github size={32} />
             </div>
-            <span className="text-xs font-black uppercase tracking-widest text-gray-400 group-hover:text-accent-blue">
+            <span className="text-xs font-black uppercase tracking-widest text-gray-400 group-hover:text-[#F5A800]">
               View All
             </span>
           </motion.a>
@@ -366,7 +366,7 @@ const Contributors = () => {
 // --- Platform Grid ---
 const Platforms = () => {
   const list = [
-    { name: "Termux", icon: SiTermux, color: "#4ade80" },
+    { name: "Termux", icon: SiTermux, color: "#F5A800" },
     { name: "Debian", icon: SiDebian, color: "#D70A53" },
     { name: "Ubuntu", icon: SiUbuntu, color: "#E95420" },
     { name: "Arch", icon: SiArchlinux, color: "#1793D1" },
@@ -383,7 +383,7 @@ const Platforms = () => {
           {list.map((p, i) => (
             <motion.div 
               key={i} whileHover={{ y: -5 }} whileTap={{ scale: 0.9 }}
-              className="dark:bg-bg-surface bg-white border dark:border-border-subtle border-gray-200 p-10 rounded-[2.5rem] flex flex-col items-center gap-6 group hover:border-accent-blue/50 transition-all cursor-default shadow-xl"
+              className="dark:bg-[#111111] bg-white border dark:border-border-subtle border-gray-200 p-10 rounded-[2.5rem] flex flex-col items-center gap-6 group hover:border-[#F5A800]/50 transition-all cursor-default shadow-xl"
             >
               <div className="relative flex items-center justify-center">
                 <div 
@@ -396,7 +396,7 @@ const Platforms = () => {
                   className="relative z-10 transition-transform duration-300 group-hover:scale-110" 
                 />
               </div>
-              <span className="text-xs font-black uppercase tracking-[0.2em] dark:text-text-muted text-gray-400 group-hover:text-accent-blue transition-colors">{p.name}</span>
+              <span className="text-xs font-black uppercase tracking-[0.2em] dark:text-text-muted text-gray-400 group-hover:text-[#F5A800] transition-colors">{p.name}</span>
             </motion.div>
           ))}
         </div>
@@ -407,25 +407,25 @@ const Platforms = () => {
 
 // --- Footer ---
 const Footer = () => (
-  <footer className="py-24 px-6 lg:px-12 dark:bg-bg-primary bg-white">
+  <footer className="py-24 px-6 lg:px-12 dark:bg-[#0A0A0A] bg-white">
     <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-16">
       <div className="text-center md:text-left">
-        <div className="text-3xl font-black tracking-tighter mb-5 dark:text-white text-bg-primary uppercase">MAXTER<span className="text-accent-blue">.</span></div>
-        <p className="dark:text-text-secondary text-gray-500 font-medium text-base max-w-xs mx-auto md:mx-0">
+        <div className="text-3xl font-black tracking-tighter mb-5 dark:text-white text-bg-primary uppercase">MAXTER<span className="text-[#F5A800]">.</span></div>
+        <p className="dark:text-[#CCCCCC] text-gray-500 font-medium text-base max-w-xs mx-auto md:mx-0">
           Professional shell environment for every platform.
         </p>
       </div>
       
       <div className="flex gap-12">
-        <a href="https://github.com/mahendraplus/MAXTER" className="dark:text-text-secondary text-gray-400 hover:text-accent-blue transition-colors"><Github size={24} /></a>
-        <a href="#" className="dark:text-text-secondary text-gray-400 hover:text-accent-blue transition-colors"><LifeBuoy size={24} /></a>
-        <a href="#" className="dark:text-text-secondary text-gray-400 hover:text-accent-blue transition-colors"><Globe size={24} /></a>
+        <a href="https://github.com/mahendraplus/MAXTER" className="dark:text-[#CCCCCC] text-gray-400 hover:text-[#F5A800] transition-colors"><Github size={24} /></a>
+        <a href="#" className="dark:text-[#CCCCCC] text-gray-400 hover:text-[#F5A800] transition-colors"><LifeBuoy size={24} /></a>
+        <a href="#" className="dark:text-[#CCCCCC] text-gray-400 hover:text-[#F5A800] transition-colors"><Globe size={24} /></a>
       </div>
 
       <div className="text-center md:text-right">
-        <a href="https://mahendraplus.github.io" target="_blank" rel="noreferrer" className="inline-flex items-center gap-4 dark:bg-bg-surface bg-gray-50 border dark:border-border-subtle border-gray-200 px-8 py-4 rounded-[1.5rem] hover:border-accent-blue transition-all group shadow-lg">
-          <div className="w-10 h-10 rounded-full bg-accent-blue/10 flex items-center justify-center text-accent-blue font-black text-sm">M</div>
-          <span className="text-xs font-black uppercase tracking-widest dark:text-text-secondary text-gray-500 group-hover:text-bg-primary dark:group-hover:text-white">Mahendra Mali</span>
+        <a href="https://mahendraplus.github.io" target="_blank" rel="noreferrer" className="inline-flex items-center gap-4 dark:bg-[#111111] bg-gray-50 border dark:border-border-subtle border-gray-200 px-8 py-4 rounded-[1.5rem] hover:border-[#F5A800] transition-all group shadow-lg">
+          <div className="w-10 h-10 rounded-full bg-[#F5A800]/10 flex items-center justify-center text-[#F5A800] font-black text-sm">M</div>
+          <span className="text-xs font-black uppercase tracking-widest dark:text-[#CCCCCC] text-gray-500 group-hover:text-bg-primary dark:group-hover:text-white">Mahendra Mali</span>
           <ExternalLink size={14} className="text-text-muted" />
         </a>
       </div>
@@ -454,7 +454,7 @@ const App = () => {
   };
 
   return (
-    <div className={`min-h-screen relative overflow-x-hidden transition-colors duration-700 ${theme === 'dark' ? 'bg-bg-primary text-white' : 'bg-white text-bg-primary'}`}>
+    <div className={`min-h-screen relative overflow-x-hidden transition-colors duration-700 ${theme === 'dark' ? 'bg-[#0A0A0A] text-white' : 'bg-white text-bg-primary'}`}>
       <div className="industrial-grid fixed inset-0 dark:opacity-20 opacity-40 pointer-events-none" />
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <Hero installCmd={installCmd} />

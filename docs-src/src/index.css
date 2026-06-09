@@ -3,17 +3,28 @@
 @tailwind utilities;
 
 :root {
-  --bg-primary: #121212;
-  --bg-surface: #1A1A1A;
-  --bg-elevated: #242424;
-  --border-subtle: #2D2D2D;
-  --border-active: rgba(37, 99, 235, 0.25);
-  --accent-blue: #2563EB;
-  --accent-blue-light: #3B82F6;
+  /* Golden Tiger Palette */
+  --gold-primary: #F5A800;
+  --gold-bright:  #FFD000;
+  --gold-warm:    #FF8C00;
+  --gold-glow:    rgba(245, 168, 0, 0.2);
+
+  --bg-primary:   #0A0A0A;
+  --bg-surface:   #111111;
+  --bg-elevated:  #1A1A1A;
+  
   --text-primary: #FFFFFF;
-  --text-secondary: #9CA3AF;
-  --text-muted: #4B5563;
-  --glow-blue: 0 0 20px rgba(37, 99, 235, 0.15);
+  --text-secondary: #CCCCCC;
+  --text-muted:   #4B5563;
+  
+  --border-subtle: #2A2A2A;
+  --border-active: rgba(245, 168, 0, 0.25);
+  
+  /* Aliases for compatibility */
+  --accent-blue: #F5A800;
+  --accent-blue-light: #FFD000;
+  
+  --glow-blue: 0 0 20px rgba(245, 168, 0, 0.15);
   --transition-fast: 150ms ease;
   --transition-normal: 250ms ease;
   --transition-slow: 400ms ease;
@@ -21,7 +32,9 @@
 
 @layer base {
   body {
-    @apply bg-bg-primary text-white font-sans selection:bg-accent-blue/30;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   }
 }
 
@@ -49,26 +62,32 @@
 
 .star-line {
   position: absolute;
-  background: linear-gradient(to right, transparent, var(--accent-blue), transparent);
+  background: linear-gradient(to right, transparent, var(--gold-primary), transparent);
   animation: moveRight 5s linear infinite;
   opacity: 0;
 }
 
 .star-line[style*="height: 100%"] {
-  background: linear-gradient(to bottom, transparent, var(--accent-blue), transparent);
+  background: linear-gradient(to bottom, transparent, var(--gold-primary), transparent);
 }
 
 .glow-line {
   position: absolute;
   width: 150px;
   height: 2px;
-  background: linear-gradient(to right, transparent, var(--accent-blue), transparent);
-  box-shadow: 0 0 10px var(--accent-blue);
+  background: linear-gradient(to right, transparent, var(--gold-primary), transparent);
+  box-shadow: 0 0 10px var(--gold-primary);
   animation: moveRight 4s linear infinite;
 }
 
 .glow-line-1 { top: 15%; animation-duration: 6s; }
 .glow-line-2 { top: 45%; animation-duration: 4.5s; animation-delay: 2s; }
-.glow-line-3 { left: 25%; top: -150px; width: 2px; height: 150px; background: linear-gradient(to bottom, transparent, var(--accent-blue), transparent); animation: moveDown 7s linear infinite; animation-delay: 1s; }
-.glow-line-4 { left: 65%; top: -150px; width: 2px; height: 150px; background: linear-gradient(to bottom, transparent, var(--accent-blue), transparent); animation: moveDown 5s linear infinite; animation-delay: 3.5s; }
+.glow-line-3 { left: 25%; top: -150px; width: 2px; height: 150px; background: linear-gradient(to bottom, transparent, var(--gold-primary), transparent); animation: moveDown 7s linear infinite; animation-delay: 1s; }
+.glow-line-4 { left: 65%; top: -150px; width: 2px; height: 150px; background: linear-gradient(to bottom, transparent, var(--gold-primary), transparent); animation: moveDown 5s linear infinite; animation-delay: 3.5s; }
 
+.industrial-grid {
+  background-image: 
+    linear-gradient(to right, var(--border-subtle) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border-subtle) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
