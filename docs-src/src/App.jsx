@@ -43,8 +43,11 @@ const ScrollProgress = () => {
     return d;
   }, []);
 
+  // Position perfectly aligned with the horizontal center of the logo image
+  // Logo is 40px wide (w-10). Container has padding px-6 (24px). 
+  // Offset = 24px + 20px (half logo) = 44px on mobile, adjusted for lg breakpoints
   return (
-    <div className="absolute bottom-0 left-[180px] lg:left-[220px] w-[calc(100%-180px)] lg:w-[calc(100%-220px)] h-[20px] z-50 pointer-events-none opacity-40">
+    <div className="absolute top-1/2 -translate-y-1/2 left-[44px] lg:left-[68px] w-[calc(100%-44px)] lg:w-[calc(100%-68px)] h-[20px] z-0 pointer-events-none opacity-40">
       <motion.div 
         className="absolute top-0 left-0 h-full overflow-hidden"
         style={{ width }}
