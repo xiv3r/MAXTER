@@ -243,7 +243,7 @@ const Hero = ({ installCmd }) => {
         <motion.div 
           initial={{ opacity: 0, y: 20 }} 
           whileInView={{ opacity: 1, y: 0 }} 
-          viewport={{ once: false }}
+          viewport={{ once: false, amount: 0 }}
           transition={{ duration: 0.6 }}
           className="flex flex-col items-center w-full"
         >
@@ -258,7 +258,7 @@ const Hero = ({ installCmd }) => {
           <motion.div 
             initial={{ opacity: 0, x: -40 }} 
             whileInView={{ opacity: 1, x: 0 }} 
-            viewport={{ once: false, amount: 0.2 }}
+            viewport={{ once: false, amount: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
             className="lg:col-span-7"
           >
@@ -465,10 +465,10 @@ const Contributors = () => {
           {users.map((u, i) => (
             <motion.a 
               key={i} href={u.html_url} target="_blank" rel="noreferrer"
-              initial={{ opacity: 0, scale: 0.8 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               whileHover={{ y: -5 }}
-              viewport={{ once: false }}
+              viewport={{ once: false, amount: 0 }}
               transition={{ duration: 0.4, delay: (i % 12) * 0.05 }}
               className="flex flex-col items-center gap-4 group"
             >
