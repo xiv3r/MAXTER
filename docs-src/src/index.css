@@ -49,6 +49,18 @@
   scrollbar-width: none;
 }
 
+.stardos-stencil-regular {
+  font-family: "Stardos Stencil", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.stardos-stencil-bold {
+  font-family: "Stardos Stencil", system-ui;
+  font-weight: 700;
+  font-style: normal;
+}
+
 /* Character Wave Animation - Strictly One at a time */
 @keyframes character-wave {
   0%, 5%, 95%, 100% {
