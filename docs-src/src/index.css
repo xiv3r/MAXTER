@@ -7,7 +7,7 @@
   --gold-primary: #F5A800;
   --gold-bright:  #FFD000;
   --gold-warm:    #FF8C00;
-  --gold-glow:    rgba(245, 168, 0, 0.2);
+  --gold-glow:    rgba(245, 168, 0, 0.4);
 
   --bg-primary:   #0A0A0A;
   --bg-surface:   #111111;
@@ -20,6 +20,9 @@
   --border-subtle: #2A2A2A;
   --border-active: rgba(245, 168, 0, 0.25);
   
+  /* Light Mode - Slightly Orange Dark Text */
+  --light-text: #1a150e; 
+
   /* Aliases for compatibility */
   --accent-blue: #F5A800;
   --accent-blue-light: #FFD000;
@@ -34,7 +37,7 @@
   body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
-    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   }
 }
 
@@ -46,48 +49,59 @@
   scrollbar-width: none;
 }
 
-@keyframes moveDown {
-  0% { transform: translateY(-100%); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { transform: translateY(100vh); opacity: 0; }
+/* Character Wave Animation - Strictly One at a time */
+@keyframes character-wave {
+  0%, 5%, 95%, 100% {
+    color: inherit;
+    transform: scale(1);
+  }
+  50% {
+    color: var(--gold-primary);
+    transform: scale(1.1);
+  }
 }
 
-@keyframes moveRight {
-  0% { transform: translateX(-100%); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { transform: translateX(100vw); opacity: 0; }
+.char-anim {
+  display: inline-block;
+  animation: character-wave 4s linear infinite;
+  transform-origin: center;
 }
 
-.star-line {
+/* Milky Way Scroll Progress */
+.milky-way-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--gold-primary);
+  z-index: 100;
+  box-shadow: 0 0 15px var(--gold-primary), 0 0 5px white;
+}
+
+.milky-way-star {
   position: absolute;
-  background: linear-gradient(to right, transparent, var(--gold-primary), transparent);
-  animation: moveRight 5s linear infinite;
-  opacity: 0;
+  right: -5px;
+  top: -3px;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 20px 4px var(--gold-primary);
+  filter: blur(1px);
 }
 
-.star-line[style*="height: 100%"] {
-  background: linear-gradient(to bottom, transparent, var(--gold-primary), transparent);
+/* Bubble Effect */
+.glowing-bubble {
+  position: fixed;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
+  z-index: 99;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, opacity 0.6s;
 }
 
-.glow-line {
-  position: absolute;
-  width: 150px;
-  height: 2px;
-  background: linear-gradient(to right, transparent, var(--gold-primary), transparent);
-  box-shadow: 0 0 10px var(--gold-primary);
-  animation: moveRight 4s linear infinite;
-}
-
-.glow-line-1 { top: 15%; animation-duration: 6s; }
-.glow-line-2 { top: 45%; animation-duration: 4.5s; animation-delay: 2s; }
-.glow-line-3 { left: 25%; top: -150px; width: 2px; height: 150px; background: linear-gradient(to bottom, transparent, var(--gold-primary), transparent); animation: moveDown 7s linear infinite; animation-delay: 1s; }
-.glow-line-4 { left: 65%; top: -150px; width: 2px; height: 150px; background: linear-gradient(to bottom, transparent, var(--gold-primary), transparent); animation: moveDown 5s linear infinite; animation-delay: 3.5s; }
-
-.industrial-grid {
-  background-image: 
-    linear-gradient(to right, var(--border-subtle) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--border-subtle) 1px, transparent 1px);
-  background-size: 40px 40px;
+/* Light Mode Soft Shadow Logo */
+.light .logo-shadow {
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
 }
