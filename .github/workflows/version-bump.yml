@@ -103,17 +103,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Build Web UI
         run: |
           cd docs-src
           npm install
           npm run build
-          cd ..
-          rm -rf docs
-          mkdir -p docs
-          cp -r docs-src/dist/* docs/
 
       - name: Commit and Push Changes
         run: |
