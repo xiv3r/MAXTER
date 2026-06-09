@@ -23,7 +23,7 @@ const SiTermux = ({ size = 24, color = "currentColor", ...props }) => (
   </svg>
 );
 
-// --- Scroll Progress Bar ---
+// --- Scroll Progress Bar (Inside Navbar) ---
 const ScrollProgress = () => {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -33,8 +33,11 @@ const ScrollProgress = () => {
   });
 
   return (
-    <motion.div className="milky-way-progress" style={{ scaleX, transformOrigin: "0%" }}>
-      <div className="milky-way-star" />
+    <motion.div 
+      className="absolute bottom-0 left-0 h-[2px] bg-[#F5A800] w-full z-50 origin-left" 
+      style={{ scaleX, boxShadow: '0 0 10px #F5A800, 0 0 2px white' }}
+    >
+      <div className="absolute right-[-4px] top-[-3px] w-[8px] h-[8px] bg-white rounded-full blur-[1px]" style={{ boxShadow: '0 0 12px 3px #F5A800' }} />
     </motion.div>
   );
 };
@@ -112,7 +115,8 @@ const Navbar = ({ theme, toggleTheme }) => {
       ? 'dark:bg-[#0A0A0A]/90 bg-white/90 backdrop-blur-xl py-3 border-b dark:border-border-subtle border-gray-200 shadow-2xl' 
       : 'bg-transparent py-5 border-transparent'
     }`}>
-      <div className="container mx-auto px-6 lg:px-12 flex justify-between items-center mt-1">
+      <ScrollProgress />
+      <div className="container mx-auto px-6 lg:px-12 flex justify-between items-center mt-1 relative z-10">
         <div className="flex items-center gap-3">
           <img src="assets/maxter-logo.png" alt="MAXTER Logo" className="w-10 h-10 object-contain logo-shadow" />
           <span className="font-mono font-black text-2xl tracking-tighter uppercase dark:text-white text-[var(--light-text)]">
@@ -132,7 +136,7 @@ const Navbar = ({ theme, toggleTheme }) => {
             href="https://github.com/mahendraplus/MAXTER" 
             target="_blank" 
             rel="noreferrer" 
-            className="flex items-center justify-center w-11 h-11 rounded-2xl dark:bg-bg-elevated bg-gray-100 border dark:border-border-subtle border-gray-200 dark:text-text-secondary text-[var(--light-text)] hover:text-[#F5A800] transition-all"
+            className="flex items-center justify-center w-11 h-11 rounded-2xl dark:bg-[#1A1A1A] bg-gray-100 border dark:border-[#2A2A2A] border-gray-200 dark:text-white text-[var(--light-text)] hover:text-[#F5A800] dark:hover:text-[#F5A800] transition-all"
             title="GitHub Repository"
           >
             <Github size={20} />
@@ -141,7 +145,7 @@ const Navbar = ({ theme, toggleTheme }) => {
           <motion.button 
             whileTap={{ scale: 0.85 }}
             onClick={toggleTheme}
-            className="w-11 h-11 flex items-center justify-center rounded-2xl dark:bg-bg-elevated bg-gray-100 border dark:border-border-subtle border-gray-200 dark:text-text-secondary text-[var(--light-text)] hover:text-[#F5A800] transition-all"
+            className="w-11 h-11 flex items-center justify-center rounded-2xl dark:bg-[#1A1A1A] bg-gray-100 border dark:border-[#2A2A2A] border-gray-200 dark:text-white text-[var(--light-text)] hover:text-[#F5A800] dark:hover:text-[#F5A800] transition-all"
           >
             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </motion.button>
@@ -153,12 +157,9 @@ const Navbar = ({ theme, toggleTheme }) => {
 
 // --- Animated Text ---
 const AnimatedHeadline = ({ text }) => {
-  // Use a slightly smaller font size on mobile to prevent "S" from wrapping alone
   return (
     <h1 className="text-[2.8rem] sm:text-7xl lg:text-[6.5rem] font-black mb-10 leading-[1] tracking-tighter dark:text-white text-[var(--light-text)] uppercase text-center px-2 w-full">
       {text.split("").map((char, i) => {
-        // Calculate animation delay so exactly one character is active at a time
-        // Total duration is 4s, we spread the delays evenly.
         const totalDuration = 4;
         const delay = (i / text.length) * totalDuration;
         return (
@@ -482,7 +483,7 @@ const Platforms = () => {
                   className="relative z-10 transition-transform duration-300 group-hover:scale-110" 
                 />
               </div>
-              <span className="text-xs font-black uppercase tracking-[0.2em] dark:text-text-muted text-[var(--light-text)] group-hover:text-[#F5A800] transition-colors">{p.name}</span>
+              <span className="text-xs font-black uppercase tracking-[0.2em] dark:text-gray-300 text-[var(--light-text)] group-hover:text-[#F5A800] dark:group-hover:text-[#F5A800] transition-colors">{p.name}</span>
             </motion.div>
           ))}
         </div>
@@ -520,8 +521,13 @@ const Footer = () => (
 );
 
 // --- Hacker Background ---
-const HackerBackground = () => {
+const HackerBackground = ({ theme }) => {
   const canvasRef = React.useRef(null);
+  const themeRef = React.useRef(theme);
+
+  useEffect(() => {
+    themeRef.current = theme;
+  }, [theme]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -535,20 +541,25 @@ const HackerBackground = () => {
     const chars = "maxterMAXTER";
 
     const draw = () => {
-      ctx.fillStyle = 'rgba(10, 10, 10, 0.1)';
+      const isDark = themeRef.current === 'dark';
+      
+      // Adjusted background clear colors to be distinct for dark vs light mode
+      ctx.fillStyle = isDark ? 'rgba(10, 10, 10, 0.1)' : 'rgba(255, 255, 255, 0.15)';
       ctx.fillRect(0, 0, width, height);
 
-      ctx.fillStyle = '#F5A800';
+      // Adjusted font colors to stand out properly against their backgrounds
+      ctx.fillStyle = isDark ? '#F5A800' : 'rgba(245, 168, 0, 0.5)';
       ctx.font = `bold ${fontSize}px monospace`;
 
       for (let i = 0; i < drops.length; i++) {
         const text = chars.charAt(Math.floor(Math.random() * chars.length));
         ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-        if (drops[i] * fontSize > height && Math.random() > 0.985) {
+        if (drops[i] * fontSize > height && Math.random() > 0.98) {
           drops[i] = 0;
         }
-        drops[i] += 0.5; // Even slower matrix rain
+        // Exactly integer increments to prevent any vertical overlapping
+        drops[i]++;
       }
     };
 
@@ -557,7 +568,7 @@ const HackerBackground = () => {
       height = canvas.height = window.innerHeight;
     };
 
-    const interval = setInterval(draw, 60); // Slower interval for rain
+    const interval = setInterval(draw, 100); // 100ms interval for a smooth, slow, non-overlapping step
     window.addEventListener('resize', handleResize);
 
     return () => {
@@ -569,7 +580,7 @@ const HackerBackground = () => {
   return (
     <canvas 
       ref={canvasRef} 
-      className="fixed inset-0 pointer-events-none opacity-[0.25] z-0" 
+      className={`fixed inset-0 pointer-events-none z-0 transition-opacity duration-700 ${theme === 'dark' ? 'opacity-[0.3]' : 'opacity-[0.35]'}`} 
     />
   );
 };
@@ -596,8 +607,7 @@ const App = () => {
 
   return (
     <div className={`min-h-screen relative overflow-x-hidden transition-colors duration-700 ${theme === 'dark' ? 'bg-[#0A0A0A] text-white dark' : 'bg-white text-[var(--light-text)] light'}`}>
-      {theme === 'dark' && <HackerBackground />}
-      <ScrollProgress />
+      <HackerBackground theme={theme} />
       <TouchEffect />
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <Hero installCmd={installCmd} />
