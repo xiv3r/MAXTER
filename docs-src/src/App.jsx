@@ -337,14 +337,14 @@ const Hero = ({ installCmd }) => {
               <motion.button 
                 whileTap={{ scale: 0.97 }}
                 onClick={copy}
-                className={`w-full relative h-20 rounded-2xl font-black text-sm uppercase tracking-[0.2em] transition-all duration-500 overflow-hidden ${
+                className={`w-full relative h-14 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all duration-500 overflow-hidden ${
                   copied 
                   ? 'bg-green-500 text-white shadow-green-500/20' 
-                  : 'bg-[#F5A800] text-white hover:bg-[#FFD000] shadow-2xl shadow-[#F5A800]/30'
+                  : 'bg-[#F5A800] text-[#111111] hover:bg-[#FFD000] shadow-xl shadow-[#F5A800]/20'
                 }`}
               >
-                <div className="flex items-center justify-center gap-4">
-                  {copied ? <Check className="w-6 h-6" strokeWidth={4} /> : <Copy className="w-6 h-6" strokeWidth={4} />}
+                <div className="flex items-center justify-center gap-3">
+                  {copied ? <Check className="w-5 h-5" strokeWidth={4} /> : <Copy className="w-5 h-5" strokeWidth={3} />}
                   <span>{copied ? 'Copied' : 'Copy Command'}</span>
                 </div>
               </motion.button>
