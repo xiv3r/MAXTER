@@ -1,0 +1,16 @@
+{
+  "name": "MAXTER - Ultimate Terminal Setup",
+  "short_name": "MAXTER",
+  "description": "One command install for Zsh, Powerlevel10k, and full Termux config. Fast. Silent. Smart.",
+  "start_url": "/MAXTER/",
+  "display": "standalone",
+  "background_color": "#0A0A0A",
+  "theme_color": "#F5A800",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png"
+    }
+  ]
+}
