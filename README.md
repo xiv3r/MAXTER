@@ -24,6 +24,20 @@ bash <(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/inst
 ### Settings Dashboard
 Simply type `maxter` in your terminal to open the interactive settings menu.
 
+## 📸 Screenshots
+
+<p align="center">
+  <img src="assets/maxter-terminal.png" width="45%" alt="Terminal Interface" />
+  <img src="assets/maxter-install.png" width="45%" alt="Installation Process" />
+</p>
+<p align="center">
+  <img src="assets/maxter-settings.png" width="45%" alt="Settings Menu" />
+  <img src="assets/maxter-settings-theme.gif" width="45%" alt="Live Theme Preview" />
+</p>
+<p align="center">
+  <img src="assets/maxter-system-info.png" width="91%" alt="System Information" />
+</p>
+
 ## 📄 License
 
 This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for full details.
