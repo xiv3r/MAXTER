@@ -23,22 +23,38 @@ const SiTermux = ({ size = 24, color = "currentColor", ...props }) => (
   </svg>
 );
 
-// --- Scroll Progress Bar (Inside Navbar) ---
+// --- Scroll Progress Bar (Sine Wave) ---
 const ScrollProgress = () => {
   const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
+  const pathLength = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001
   });
 
+  const path = useMemo(() => {
+    let d = "M 0 10 ";
+    for (let i = 0; i < 150; i++) {
+      d += `Q ${i * 40 + 10} 0, ${i * 40 + 20} 10 T ${i * 40 + 40} 10 `;
+    }
+    return d;
+  }, []);
+
   return (
-    <motion.div 
-      className="absolute bottom-0 left-0 h-[2px] bg-[#F5A800] w-full z-50 origin-left" 
-      style={{ scaleX, boxShadow: '0 0 10px #F5A800, 0 0 2px white' }}
-    >
-      <div className="absolute right-[-4px] top-[-3px] w-[8px] h-[8px] bg-white rounded-full blur-[1px]" style={{ boxShadow: '0 0 12px 3px #F5A800' }} />
-    </motion.div>
+    <div className="absolute bottom-[-10px] left-0 w-full h-[20px] z-50 overflow-hidden pointer-events-none">
+      <svg width="6000" height="20" className="absolute top-0 left-0">
+        <motion.path 
+          d={path}
+          fill="transparent"
+          stroke="#F5A800"
+          strokeWidth="2.5"
+          style={{ 
+            pathLength, 
+            filter: 'drop-shadow(0 0 5px #F5A800) drop-shadow(0 0 2px white)' 
+          }}
+        />
+      </svg>
+    </div>
   );
 };
 
@@ -213,7 +229,8 @@ const Hero = ({ installCmd }) => {
       <div className="container mx-auto text-center relative z-10 w-full">
         <motion.div 
           initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }} 
+          whileInView={{ opacity: 1, y: 0 }} 
+          viewport={{ once: false }}
           transition={{ duration: 0.6 }}
           className="flex flex-col items-center w-full"
         >
@@ -226,7 +243,10 @@ const Hero = ({ installCmd }) => {
 
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           <motion.div 
-            initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2, duration: 0.8 }}
+            initial={{ opacity: 0, x: -40 }} 
+            whileInView={{ opacity: 1, x: 0 }} 
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
             className="lg:col-span-7"
           >
             <div className="relative group">
@@ -282,7 +302,10 @@ const Hero = ({ installCmd }) => {
           </motion.div>
 
           <motion.div 
-            initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4, duration: 0.8 }}
+            initial={{ opacity: 0, x: 40 }} 
+            whileInView={{ opacity: 1, x: 0 }} 
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
             className="lg:col-span-5 text-left"
           >
             <div className="dark:bg-[#111111] bg-white border dark:border-border-subtle border-gray-200 rounded-[2.5rem] p-8 sm:p-10 shadow-xl">
@@ -351,11 +374,18 @@ const SocialStats = () => {
     <section className="container mx-auto py-24 px-6 lg:px-12">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center md:text-left">
         {stats.map((s, i) => (
-          <div key={i} className="group">
+          <motion.div 
+            key={i} 
+            className="group"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, margin: "-50px" }}
+            transition={{ duration: 0.5, delay: i * 0.1 }}
+          >
             <div className="text-[10px] font-black uppercase tracking-[0.4em] text-[#F5A800] mb-4 group-hover:translate-x-1 transition-transform">{s.label}</div>
             <div className="text-5xl lg:text-7xl font-black dark:text-white text-[var(--light-text)] tracking-tighter mb-2">{s.value}</div>
             <div className="text-xs font-bold text-gray-500 dark:text-text-muted uppercase tracking-[0.2em]">{s.desc}</div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>
@@ -375,7 +405,13 @@ const Features = () => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-10">
         {items.map((f, i) => (
           <motion.div 
-            key={i} whileHover={{ y: -10 }} whileTap={{ scale: 0.95 }}
+            key={i} 
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            whileHover={{ y: -10 }} 
+            whileTap={{ scale: 0.95 }}
+            viewport={{ once: false, margin: "-50px" }}
+            transition={{ duration: 0.5, delay: i * 0.1 }}
             className="group dark:bg-[#111111] bg-white border dark:border-border-subtle border-gray-200 p-12 rounded-[3rem] transition-all duration-300 shadow-2xl hover:border-[#F5A800]/30"
           >
             <div 
@@ -416,7 +452,11 @@ const Contributors = () => {
           {users.map((u, i) => (
             <motion.a 
               key={i} href={u.html_url} target="_blank" rel="noreferrer"
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               whileHover={{ y: -5 }}
+              viewport={{ once: false }}
+              transition={{ duration: 0.4, delay: (i % 12) * 0.05 }}
               className="flex flex-col items-center gap-4 group"
             >
               <div className="relative">
@@ -434,7 +474,11 @@ const Contributors = () => {
           ))}
           <motion.a 
             href="https://github.com/mahendraplus/MAXTER/graphs/contributors"
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             whileHover={{ y: -5 }}
+            viewport={{ once: false }}
+            transition={{ duration: 0.4, delay: 0.6 }}
             className="flex flex-col items-center gap-4 group"
           >
             <div className="w-24 h-24 rounded-[2rem] border-2 border-dashed dark:border-border-subtle border-gray-300 flex items-center justify-center text-gray-500 group-hover:text-[#F5A800] group-hover:border-[#F5A800] transition-all">
@@ -469,7 +513,13 @@ const Platforms = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-8">
           {list.map((p, i) => (
             <motion.div 
-              key={i} whileHover={{ y: -5 }} whileTap={{ scale: 0.9 }}
+              key={i} 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -5 }} 
+              whileTap={{ scale: 0.9 }}
+              viewport={{ once: false }}
+              transition={{ duration: 0.5, delay: i * 0.05 }}
               className="dark:bg-[#111111] bg-white border dark:border-border-subtle border-gray-200 p-10 rounded-[2.5rem] flex flex-col items-center gap-6 group hover:border-[#F5A800]/50 transition-all cursor-default shadow-xl"
             >
               <div className="relative flex items-center justify-center">
@@ -543,11 +593,9 @@ const HackerBackground = ({ theme }) => {
     const draw = () => {
       const isDark = themeRef.current === 'dark';
       
-      // Adjusted background clear colors to be distinct for dark vs light mode
       ctx.fillStyle = isDark ? 'rgba(10, 10, 10, 0.1)' : 'rgba(255, 255, 255, 0.15)';
       ctx.fillRect(0, 0, width, height);
 
-      // Adjusted font colors to stand out properly against their backgrounds
       ctx.fillStyle = isDark ? '#F5A800' : 'rgba(245, 168, 0, 0.5)';
       ctx.font = `bold ${fontSize}px monospace`;
 
@@ -558,7 +606,6 @@ const HackerBackground = ({ theme }) => {
         if (drops[i] * fontSize > height && Math.random() > 0.98) {
           drops[i] = 0;
         }
-        // Exactly integer increments to prevent any vertical overlapping
         drops[i]++;
       }
     };
@@ -568,7 +615,7 @@ const HackerBackground = ({ theme }) => {
       height = canvas.height = window.innerHeight;
     };
 
-    const interval = setInterval(draw, 100); // 100ms interval for a smooth, slow, non-overlapping step
+    const interval = setInterval(draw, 100);
     window.addEventListener('resize', handleResize);
 
     return () => {
