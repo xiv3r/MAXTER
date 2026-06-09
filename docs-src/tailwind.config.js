@@ -7,24 +7,9 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        bg: {
-          primary: '#121212',
-          surface: '#1A1A1A',
-          elevated: '#242424',
-        },
-        accent: {
-          blue: '#2563EB',
-          light: '#3B82F6',
-        },
-        border: {
-          subtle: '#2D2D2D',
-          active: 'rgba(37, 99, 235, 0.25)',
-        }
-      },
       fontFamily: {
-        mono: ['JetBrains Mono', 'monospace'],
-        sans: ['Inter', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
+        sans: ['"Stardos Stencil"', 'system-ui', 'sans-serif'],
       },
     },
   },

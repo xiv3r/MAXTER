@@ -414,27 +414,32 @@ const Features = () => {
   ], []);
 
   return (
-    <section className="container mx-auto py-32 px-6 lg:px-12">
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-10">
+    <section className="container mx-auto py-16 px-6 lg:px-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {items.map((f, i) => (
           <motion.div 
             key={i} 
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            whileHover={{ y: -10 }} 
+            whileHover={{ y: -5 }} 
             whileTap={{ scale: 0.95 }}
-            viewport={{ once: false, margin: "-50px" }}
+            viewport={{ once: false, amount: 0 }}
             transition={{ duration: 0.5, delay: i * 0.1 }}
-            className="group dark:bg-[#111111] bg-white border dark:border-border-subtle border-gray-200 p-12 rounded-[3rem] transition-all duration-300 shadow-2xl hover:border-[#F5A800]/30"
+            className="relative p-[1.5px] rounded-[2rem] overflow-hidden group shadow-2xl"
           >
-            <div 
-              className="w-20 h-20 rounded-[1.5rem] flex items-center justify-center mb-10 shadow-xl"
-              style={{ backgroundColor: f.color + '10', color: f.color, border: '1px solid ' + f.color + '20' }}
-            >
-              {f.icon}
+            <div className="absolute top-1/2 left-1/2 w-[200%] h-[200%] bg-[conic-gradient(from_0deg,transparent_0%,transparent_85%,#F5A800_100%)] animate-rotate-flame -translate-x-1/2 -translate-y-1/2 z-0" />
+            <div className="relative z-10 w-full h-full dark:bg-[#111111] bg-white rounded-[calc(2rem-1.5px)] p-6 flex flex-row sm:flex-col items-center sm:items-start gap-5 sm:gap-6 sm:p-8 transition-all duration-300">
+              <div 
+                className="w-16 h-16 shrink-0 rounded-[1.2rem] flex items-center justify-center shadow-xl"
+                style={{ backgroundColor: f.color + '10', color: f.color, border: '1px solid ' + f.color + '20' }}
+              >
+                {f.icon}
+              </div>
+              <div className="text-left">
+                <h3 className="text-xl font-black mb-1 sm:mb-3 dark:text-white text-[var(--light-text)] uppercase tracking-tight">{f.title}</h3>
+                <p className="dark:text-[#CCCCCC] text-gray-600 font-medium text-sm sm:text-base leading-relaxed">{f.desc}</p>
+              </div>
             </div>
-            <h3 className="text-2xl font-black mb-5 dark:text-white text-[var(--light-text)] uppercase tracking-tight">{f.title}</h3>
-            <p className="dark:text-[#CCCCCC] text-gray-600 font-medium leading-relaxed">{f.desc}</p>
           </motion.div>
         ))}
       </div>
