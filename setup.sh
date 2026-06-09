@@ -225,7 +225,15 @@ run_silent "Backing up existing configs" "backup_configs"
 run_silent "Applying Zsh configs" "cp -f $REPO_DIR/configs/zsh/.zshrc $HOME/.zshrc && cp -f $REPO_DIR/configs/zsh/.p10k.zsh $HOME/.p10k.zsh"
 
 if [ "$OS" == "termux" ]; then
-    run_silent "Applying Termux UI" "mkdir -p $HOME/.termux && cp -f $REPO_DIR/configs/termux/termux.properties $HOME/.termux/termux.properties && cp -f $REPO_DIR/configs/termux/colors.properties $HOME/.termux/colors.properties && cp -f $REPO_DIR/assets/font.ttf $HOME/.termux/font.ttf && termux-reload-settings"
+    run_silent "Applying Termux UI" "mkdir -p $HOME/.termux && cp -f $REPO_DIR/configs/termux/termux.properties $HOME/.termux/termux.properties && cp -f $REPO_DIR/configs/termux/colors.properties $HOME/.termux/colors.properties && cp -f $REPO_DIR/assets/font.ttf $HOME/.termux/font.ttf"
+    
+    # Remove MOTD (Welcome message)
+    if [ -f "/data/data/com.termux/files/usr/etc/motd" ]; then
+        rm -f "/data/data/com.termux/files/usr/etc/motd"
+        touch "/data/data/com.termux/files/usr/etc/motd"
+    fi
+    
+    termux-reload-settings
 fi
 
 # Command setup
@@ -235,20 +243,17 @@ finalize() {
     if ! grep -q "alias maxter=" "$HOME/.zshrc"; then
         echo "alias maxter='bash $REPO_DIR/scripts/maxter_tui.sh'" >> "$HOME/.zshrc"
     fi
-    # Only create symlink if NOT running via npm
-    if [ -z "${npm_config_global:-}" ] && [ -z "${npm_lifecycle_event:-}" ]; then
-        if [ -d "/data/data/com.termux/files/usr/bin" ]; then
-            ln -sf "$REPO_DIR/scripts/maxter_tui.sh" "/data/data/com.termux/files/usr/bin/maxter"
-        fi
+    if [ -d "/data/data/com.termux/files/usr/bin" ]; then
+        ln -sf "$REPO_DIR/scripts/maxter_tui.sh" "/data/data/com.termux/files/usr/bin/maxter"
     fi
 }
 run_silent "Finalizing Dashboard" "finalize"
 
 # Shell
-ZSH_PATH=$(command -v zsh)
 if [ "$OS" == "termux" ]; then
-    run_silent "Setting default shell" "chsh -s $ZSH_PATH"
+    run_silent "Setting default shell" "chsh -s zsh"
 else
+    ZSH_PATH=$(command -v zsh)
     run_silent "Setting default shell" "sudo chsh -s $ZSH_PATH $(whoami)"
 fi
 
@@ -259,8 +264,8 @@ echo -e " ${GRAY}Type ${BOLD_CYAN}maxter${GRAY} to manage settings${NC}"
 echo -e "${DIM}${DIV_THIN}${NC}"
 echo ""
 
-# Only restart shell if in an interactive TTY and not running via npm
-if [[ -t 1 ]] && [ -z "${npm_lifecycle_event:-}" ]; then
+# Restart shell if in an interactive TTY
+if [[ -t 1 ]]; then
     exec zsh -l
 else
     echo -e " ${BOLD_BLUE}${ICON_INFO}${NC} Please restart your terminal or type ${BOLD_CYAN}zsh${NC} to apply changes."

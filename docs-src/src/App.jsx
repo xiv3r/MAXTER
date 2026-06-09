@@ -1,284 +1,280 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { motion, useScroll, useSpring } from 'framer-motion';
+import React, { useState, useEffect, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  FaTerminal, FaGithub, FaCheck, FaCopy, FaShieldAlt, 
-  FaPaintBrush, FaSync, FaSun, FaMoon, 
-  FaGlobe, FaLifeRing, FaMicrochip, FaExternalLinkAlt
-} from 'react-icons/fa';
+  Github, Copy, Check, Terminal, Palette, RefreshCw, 
+  ShieldCheck, Globe, LifeBuoy, ExternalLink, 
+  ChevronRight, Sun, Moon, Command
+} from 'lucide-react';
 import { 
-  SiDebian, SiUbuntu, SiKalilinux, SiArchlinux, 
-  SiFedora, SiApple, SiAndroid 
-} from 'react-icons/si';
-import { VscTerminal, VscCloudDownload, VscGraph } from 'react-icons/vsc';
+  SiDebian, SiUbuntu, SiArchlinux, SiKalilinux, 
+  SiFedora, SiApple 
+} from '@icons-pack/react-simple-icons';
 
-// --- Ultra Luxurious Premium Background (60fps guaranteed) ---
-const AmbientBackground = () => {
+// --- Custom Termux Icon (Official Path) ---
+const SiTermux = ({ size = 24, color = "currentColor", ...props }) => (
+  <svg 
+    width={size} height={size} viewBox="0 0 24 24" fill="none" 
+    stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}
+  >
+    <path d="M4 4h16v16H4z" fill={color} fillOpacity="0.1" />
+    <path d="M4 4h16v16H4z" />
+    <path d="M9 9l3 3-3 3" />
+    <path d="M15 15h-3" />
+  </svg>
+);
+
+// --- Navbar ---
+const Navbar = ({ theme, toggleTheme }) => {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[var(--bg)]" style={{ transform: 'translateZ(0)' }}>
-      {/* 
-        Ultra-smooth, luxurious ambient gradients.
-        Using deep, rich colors with massive transparent falloffs for a high-end feel.
-      */}
-      <div 
-        className="absolute top-[-30%] left-[-20%] w-[80%] h-[80%] opacity-40 animate-pulse" 
-        style={{ 
-          background: 'radial-gradient(circle at center, rgba(59, 130, 246, 0.15) 0%, rgba(30, 58, 138, 0.05) 40%, transparent 70%)',
-          animationDuration: '10s'
-        }} 
-      />
-      <div 
-        className="absolute bottom-[-30%] right-[-20%] w-[90%] h-[90%] opacity-30 animate-pulse" 
-        style={{ 
-          background: 'radial-gradient(circle at center, rgba(139, 92, 246, 0.12) 0%, rgba(76, 29, 149, 0.05) 40%, transparent 70%)',
-          animationDuration: '15s',
-          animationDelay: '-5s'
-        }} 
-      />
-      <div 
-        className="absolute top-[20%] right-[10%] w-[50%] h-[50%] opacity-20 animate-pulse" 
-        style={{ 
-          background: 'radial-gradient(circle at center, rgba(16, 185, 129, 0.08) 0%, transparent 60%)',
-          animationDuration: '12s',
-          animationDelay: '-2s'
-        }} 
-      />
-    </div>
+    <nav className={`fixed top-0 w-full z-50 transition-all duration-500 border-b ${
+      scrolled 
+      ? 'dark:bg-bg-surface/80 bg-white/80 backdrop-blur-xl py-3 dark:border-border-subtle border-gray-200' 
+      : 'bg-transparent py-5 border-transparent'
+    }`}>
+      <div className="container mx-auto px-6 lg:px-12 flex justify-between items-center">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-accent-blue rounded-xl flex items-center justify-center text-white shadow-xl shadow-accent-blue/30">
+            <Terminal size={22} strokeWidth={2.5} />
+          </div>
+          <span className="font-mono font-black text-2xl tracking-tighter uppercase dark:text-white text-bg-primary">
+            MAXTER<span className="text-accent-blue">.</span>
+          </span>
+        </div>
+        
+        <div className="flex items-center gap-4 sm:gap-8">
+          <a href="https://github.com/mahendraplus/MAXTER" target="_blank" rel="noreferrer" className="group flex items-center gap-2 text-[11px] font-black uppercase tracking-widest dark:text-text-secondary text-gray-500 hover:text-accent-blue transition-all">
+            <Github size={18} />
+            <span className="hidden sm:inline">Code</span>
+          </a>
+          <motion.button 
+            whileTap={{ scale: 0.85 }}
+            onClick={toggleTheme}
+            className="w-11 h-11 flex items-center justify-center rounded-2xl dark:bg-bg-elevated bg-gray-100 border dark:border-border-subtle border-gray-200 dark:text-text-secondary text-gray-600 hover:text-accent-blue transition-all"
+          >
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </motion.button>
+        </div>
+      </div>
+    </nav>
   );
 };
 
-// --- Copy Component ---
-const CommandCopy = ({ label, command }) => {
+// --- Hero Section ---
+const Hero = ({ installCmd }) => {
   const [copied, setCopied] = useState(false);
+  
   const copy = () => {
-    navigator.clipboard.writeText(command);
+    navigator.clipboard.writeText(installCmd);
+    if (navigator.vibrate) navigator.vibrate(10);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   return (
-    <div className="w-full mb-8">
-      <div className="flex justify-between items-end mb-2 px-1">
-        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)]">{label}</span>
+    <section className="relative pt-48 pb-20 px-6 lg:px-12 overflow-hidden">
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent-blue/10 blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="container mx-auto text-center relative z-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+          <h1 className="text-6xl sm:text-8xl lg:text-[10rem] font-black mb-10 leading-tight tracking-tighter dark:text-white text-bg-primary">
+            Terminal Setup<br />Made Easy<span className="text-accent-blue">.</span>
+          </h1>
+          <p className="dark:text-text-secondary text-gray-500 font-medium text-lg sm:text-xl mb-16 max-w-2xl mx-auto leading-relaxed">
+            One command to install Zsh, beautiful themes, and essential tools. 
+            Works on Termux and all major Linux systems.
+          </p>
+        </motion.div>
+
+        {/* Terminal Component */}
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.8 }}
+          className="max-w-4xl mx-auto"
+        >
+          <div className="relative group">
+            <div className="absolute -inset-2 bg-accent-blue/10 rounded-[2.5rem] blur-xl opacity-0 group-hover:opacity-100 transition duration-700" />
+            <div className="relative dark:bg-bg-surface bg-white border dark:border-border-subtle border-gray-200 rounded-[2.5rem] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.1)] dark:shadow-[0_50px_100px_rgba(0,0,0,0.5)]">
+              {/* Window Controls */}
+              <div className="dark:bg-bg-elevated bg-gray-50 px-8 py-5 border-b dark:border-border-subtle border-gray-200 flex items-center justify-between">
+                <div className="flex gap-2.5">
+                  <div className="w-3.5 h-3.5 rounded-full bg-red-500/30 border border-red-500/20" />
+                  <div className="w-3.5 h-3.5 rounded-full bg-yellow-500/30 border border-yellow-500/20" />
+                  <div className="w-3.5 h-3.5 rounded-full bg-green-500/30 border border-green-500/20" />
+                </div>
+                <span className="text-[11px] font-black uppercase tracking-[0.3em] dark:text-text-muted text-gray-400">Install Command</span>
+              </div>
+              
+              <div className="p-5 sm:p-14 text-left">
+                <div className="dark:bg-black/40 bg-gray-50 rounded-2xl sm:rounded-[1.5rem] p-5 sm:p-8 mb-8 sm:mb-12 border dark:border-border-subtle border-gray-200">
+                  <div className="flex items-center gap-3 sm:gap-5 font-mono text-[11px] sm:text-xl overflow-x-auto scrollbar-hide whitespace-nowrap">
+                    <span className="text-accent-blue font-black select-none">›</span>
+                    <code className="dark:text-white/90 text-bg-primary font-bold">{installCmd}</code>
+                  </div>
+                </div>
+
+                <motion.button 
+                  whileTap={{ scale: 0.97 }}
+                  onClick={copy}
+                  className={`w-full relative h-14 sm:h-24 rounded-xl sm:rounded-2xl font-black text-[11px] sm:text-base uppercase tracking-[0.15em] sm:tracking-[0.3em] transition-all duration-500 overflow-hidden ${
+                    copied 
+                    ? 'bg-green-500 text-white shadow-green-500/20' 
+                    : 'bg-accent-blue text-white hover:bg-accent-blue-light shadow-lg sm:shadow-2xl shadow-accent-blue/30'
+                  }`}
+                >
+                  <div className="flex items-center justify-center gap-2 sm:gap-4 px-2">
+                    {copied ? <Check className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={4} /> : <Copy className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={4} />}
+                    <span className="truncate">{copied ? 'Copied' : 'Copy and Run'}</span>
+                  </div>
+                </motion.button>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
-      <div className="relative group">
-        <div className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl p-4 sm:p-5 flex flex-col gap-4 transition-all hover:border-[var(--accent)]/30 hover:bg-[var(--surface-2)]/80 shadow-sm overflow-hidden">
-          <div className="overflow-x-auto scrollbar-hide flex items-center">
-            <code className="whitespace-nowrap font-mono text-xs sm:text-sm text-[var(--text)] pr-4">
-              <span className="text-[var(--accent)] opacity-60 mr-2">$</span>
-              {command}
-            </code>
-          </div>
-          <div className="h-px w-full bg-gradient-to-r from-[var(--border)] to-transparent" />
-          <div className="flex justify-end items-center">
-            <button 
-              onClick={copy}
-              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-black text-xs uppercase tracking-widest transition-all ${
-                copied 
-                ? 'bg-green-500/10 text-green-500 border border-green-500/20' 
-                : 'bg-[var(--surface)] border border-[var(--border)] text-[var(--text)] hover:text-[var(--accent)] hover:border-[var(--accent)]/40 shadow-sm'
-              }`}
+    </section>
+  );
+};
+
+// --- Feature Section ---
+const Features = () => {
+  const items = useMemo(() => [
+    { icon: <Palette size={32} />, title: "Themes", desc: "Includes 20+ professional themes with real-time preview.", color: "#8B5CF6" },
+    { icon: <RefreshCw size={32} />, title: "Repair", desc: "Instantly fix broken shell configs and missing dependencies.", color: "#10B981" },
+    { icon: <ShieldCheck size={32} />, title: "Safety", desc: "Clean uninstallation and automated system backups.", color: "#3B82F6" }
+  ], []);
+
+  return (
+    <section className="container mx-auto py-32 px-6 lg:px-12">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-10">
+        {items.map((f, i) => (
+          <motion.div 
+            key={i} whileHover={{ y: -10 }} whileTap={{ scale: 0.95 }}
+            className="group dark:bg-bg-surface bg-white border dark:border-border-subtle border-gray-200 p-12 rounded-[3rem] transition-all duration-300 shadow-2xl hover:border-accent-blue/30"
+          >
+            <div 
+              className="w-20 h-20 rounded-[1.5rem] flex items-center justify-center mb-10 shadow-xl"
+              style={{ backgroundColor: f.color + '10', color: f.color, border: '1px solid ' + f.color + '20' }}
             >
-              {copied ? <><FaCheck className="animate-bounce" /> Copied</> : <><FaCopy /> Copy Command</>}
-            </button>
-          </div>
+              {f.icon}
+            </div>
+            <h3 className="text-2xl font-black mb-5 dark:text-white text-bg-primary uppercase tracking-tight">{f.title}</h3>
+            <p className="dark:text-text-secondary text-gray-500 font-medium leading-relaxed">{f.desc}</p>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+// --- Platform Grid ---
+const Platforms = () => {
+  const list = [
+    { name: "Termux", icon: SiTermux, color: "#4ade80" },
+    { name: "Debian", icon: SiDebian, color: "#D70A53" },
+    { name: "Ubuntu", icon: SiUbuntu, color: "#E95420" },
+    { name: "Arch", icon: SiArchlinux, color: "#1793D1" },
+    { name: "Kali", icon: SiKalilinux, color: "#2683E2" },
+    { name: "Fedora", icon: SiFedora, color: "#51A2DA" },
+    { name: "macOS", icon: SiApple, color: "#A2AAAD" }
+  ];
+  
+  return (
+    <section className="py-40 dark:bg-bg-surface/30 bg-gray-50/50 border-y dark:border-border-subtle border-gray-200 px-6 lg:px-12">
+      <div className="container mx-auto text-center">
+        <h2 className="text-4xl font-black mb-20 dark:text-white text-bg-primary uppercase tracking-tighter">Universal Support</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-8">
+          {list.map((p, i) => (
+            <motion.div 
+              key={i} whileHover={{ y: -5 }} whileTap={{ scale: 0.9 }}
+              className="dark:bg-bg-surface bg-white border dark:border-border-subtle border-gray-200 p-10 rounded-[2.5rem] flex flex-col items-center gap-6 group hover:border-accent-blue/50 transition-all cursor-default shadow-xl"
+            >
+              <div className="relative flex items-center justify-center">
+                <div 
+                  className="absolute inset-0 blur-2xl opacity-0 group-hover:opacity-40 transition-opacity rounded-full duration-500" 
+                  style={{ backgroundColor: p.color }}
+                />
+                <p.icon 
+                  size={56} 
+                  color={p.color} 
+                  className="relative z-10 transition-transform duration-300 group-hover:scale-110" 
+                />
+              </div>
+              <span className="text-xs font-black uppercase tracking-[0.2em] dark:text-text-muted text-gray-400 group-hover:text-accent-blue transition-colors">{p.name}</span>
+            </motion.div>
+          ))}
         </div>
       </div>
-    </div>
+    </section>
+  );
+};
+
+// --- Footer ---
+const Footer = () => {
+  return (
+    <footer className="py-24 px-6 lg:px-12 border-t dark:border-border-subtle border-gray-200 dark:bg-bg-primary bg-white">
+      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-16">
+        <div className="text-center md:text-left">
+          <div className="text-3xl font-black tracking-tighter mb-5 dark:text-white text-bg-primary uppercase">MAXTER<span className="text-accent-blue">.</span></div>
+          <p className="dark:text-text-secondary text-gray-500 font-medium text-base max-w-xs mx-auto md:mx-0">
+            Professional shell environment for every platform.
+          </p>
+        </div>
+        
+        <div className="flex gap-12">
+          <a href="https://github.com/mahendraplus/MAXTER" className="dark:text-text-secondary text-gray-400 hover:text-accent-blue transition-colors"><Github size={24} /></a>
+          <a href="#" className="dark:text-text-secondary text-gray-400 hover:text-accent-blue transition-colors"><LifeBuoy size={24} /></a>
+          <a href="#" className="dark:text-text-secondary text-gray-400 hover:text-accent-blue transition-colors"><Globe size={24} /></a>
+        </div>
+
+        <div className="text-center md:text-right">
+          <a href="https://mahendraplus.github.io" target="_blank" rel="noreferrer" className="inline-flex items-center gap-4 dark:bg-bg-surface bg-gray-50 border dark:border-border-subtle border-gray-200 px-8 py-4 rounded-[1.5rem] hover:border-accent-blue transition-all group shadow-lg">
+            <div className="w-10 h-10 rounded-full bg-accent-blue/10 flex items-center justify-center text-accent-blue font-black text-sm">M</div>
+            <span className="text-xs font-black uppercase tracking-widest dark:text-text-secondary text-gray-500 group-hover:text-bg-primary dark:group-hover:text-white">Mahendra Mali</span>
+            <ExternalLink size={14} className="text-text-muted" />
+          </a>
+        </div>
+      </div>
+    </footer>
   );
 };
 
 const App = () => {
   const [theme, setTheme] = useState('dark');
   const installCmd = "bash <(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/install.sh)";
-  const npmInstallCmd = "npm install -g github:mahendraplus/MAXTER#Max";
-  
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    setTheme(savedTheme);
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const saved = localStorage.getItem('theme');
+    const initial = saved || (isDark ? 'dark' : 'light');
+    setTheme(initial);
+    document.documentElement.className = initial;
   }, []);
 
   const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
     setTheme(next);
-    document.documentElement.setAttribute('data-theme', next);
+    document.documentElement.className = next;
     localStorage.setItem('theme', next);
+    if (navigator.vibrate) navigator.vibrate(5);
   };
 
-  const features = useMemo(() => [
-    { icon: <VscCloudDownload />, title: "Silent Sync", desc: "Automated, non-interactive setup for any POSIX shell environment." },
-    { icon: <FaPaintBrush />, title: "20+ Themes", desc: "Premium, industrial color schemes with live real-time TUI preview." },
-    { icon: <FaSync />, title: "Auto-Healing", desc: "Self-correcting deployment engine that repairs broken configurations." },
-    { icon: <FaTerminal />, title: "Nerd Icons", desc: "Complete glyph integration for a high-fidelity visual experience." },
-    { icon: <VscGraph />, title: "Diagnostics", desc: "Deep system monitoring and performance analytics built-in." },
-    { icon: <FaShieldAlt />, title: "Universal", desc: "One core engine supporting Termux, Ubuntu, Arch, Kali, and macOS." }
-  ], []);
-
-  const platforms = useMemo(() => [
-    { icon: <SiAndroid />, name: "Termux" },
-    { icon: <SiDebian />, name: "Debian" },
-    { icon: <SiUbuntu />, name: "Ubuntu" },
-    { icon: <SiArchlinux />, name: "Arch" },
-    { icon: <SiKalilinux />, name: "Kali" },
-    { icon: <SiFedora />, name: "Fedora" },
-    { icon: <SiApple />, name: "macOS" }
-  ], []);
-
   return (
-    <div className="min-h-screen transition-colors duration-300 select-none bg-[var(--bg)] text-[var(--text)] overflow-x-hidden">
-      <AmbientBackground />
-      <div className="fixed inset-0 industrial-grid z-0 opacity-10 pointer-events-none"></div>
-
-      <motion.div className="fixed top-0 left-0 right-0 h-1 bg-[var(--accent)] z-[100] origin-left" style={{ scaleX }} />
-
-      {/* Modern Navbar */}
-      <nav className="fixed top-0 w-full z-50 h-14 border-b border-[var(--border)] bg-[var(--bg)]/80 backdrop-blur-xl flex items-center">
-        <div className="container-max w-full flex justify-between items-center px-6 lg:px-12">
-          <div className="flex items-center gap-3 font-black tracking-tighter text-xl uppercase">
-            <div className="w-8 h-8 bg-[var(--accent)] rounded-lg flex items-center justify-center text-white shadow-lg shadow-[var(--accent)]/20 rotate-3 transition-transform hover:rotate-0">
-              <VscTerminal size={18} />
-            </div>
-            <span>MAXTER<span className="text-[var(--accent)]">_</span></span>
-          </div>
-          
-          <div className="flex items-center gap-4 sm:gap-6">
-            <a href="https://github.com/mahendraplus/MAXTER" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] hover:text-[var(--accent)] transition-all">
-              <FaGithub size={18} /> <span className="hidden sm:inline">Source Code</span>
-            </a>
-            <button onClick={toggleTheme} className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors">
-              {theme === 'dark' ? <FaSun size={18} /> : <FaMoon size={18} />}
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      <main className="relative z-10">
-        {/* Refined Hero Section */}
-        <section className="container-max min-h-[80vh] flex flex-col justify-center pt-32 pb-20 px-6 lg:px-12">
-          <div className="max-w-4xl mx-auto text-center mb-16 sm:mb-24">
-            <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black mb-8 leading-[0.9] tracking-tighter">
-              The Terminal,<br />
-              <span className="text-[var(--accent)]">Re-Engineered.</span>
-            </h1>
-            
-            <p className="text-[var(--text-muted)] font-medium text-sm sm:text-lg mb-12 max-w-2xl mx-auto leading-relaxed">
-              Experience the fastest way to deploy a professional shell environment. 
-              Silent, smart, and built for high-performance engineers.
-            </p>
-          </div>
-
-          <div className="max-w-3xl mx-auto w-full">
-            <CommandCopy label="Direct Installation (Curl)" command={installCmd} />
-            <CommandCopy label="Global NPM Deployment" command={npmInstallCmd} />
-          </div>
-        </section>
-
-        {/* CORE ENGINE SECTION - FIXED SPACING */}
-        <section id="features" className="container-max py-24 px-6 lg:px-12">
-          <div className="relative mb-20">
-             <div className="flex items-center gap-6">
-                <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tighter flex items-center gap-4">
-                  <span className="w-12 h-1 bg-[var(--accent)] rounded-full"></span>
-                  Core Engine
-                </h2>
-             </div>
-             <p className="mt-4 text-[var(--text-muted)] text-sm sm:text-base font-medium max-w-lg">Advanced architecture designed for maximum stability and speed across all unix environments.</p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {features.map((f, i) => (
-              <motion.div 
-                key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ delay: i * 0.1 }}
-                className="bg-[var(--surface)] border border-[var(--border)] p-10 rounded-2xl transition-all hover:border-[var(--accent)]/40 hover:shadow-2xl hover:shadow-[var(--accent)]/5 group"
-              >
-                <div className="w-14 h-14 bg-[var(--surface-2)] rounded-2xl flex items-center justify-center text-[var(--accent)] text-3xl mb-8 group-hover:scale-110 group-hover:bg-[var(--accent)]/10 transition-all duration-300">{f.icon}</div>
-                <h3 className="text-xl font-black mb-4 uppercase tracking-wide text-[var(--text)]">{f.title}</h3>
-                <p className="text-[var(--text-muted)] text-sm leading-relaxed font-medium">{f.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        {/* COMPATIBILITY SECTION - BALANCED GRID */}
-        <section className="py-32 bg-[var(--surface-2)]/30 border-y border-[var(--border)] px-6 lg:px-12 relative overflow-hidden">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[var(--accent)]/5 blur-[120px] rounded-full pointer-events-none" />
-          
-          <div className="container-max text-center relative z-10">
-            <h2 className="text-3xl sm:text-4xl font-black uppercase mb-16 tracking-tight flex flex-col items-center gap-4">
-              <span className="text-[var(--accent)] text-sm font-mono tracking-[0.5em] mb-2 uppercase">Platform Architecture</span>
-              Universal Compatibility
-            </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto">
-               {platforms.map((p, i) => (
-                 <motion.div 
-                   key={i} initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}
-                   className="border border-[var(--border)] bg-[var(--surface)]/80 backdrop-blur-sm px-6 py-8 rounded-2xl flex flex-col items-center gap-4 transition-all hover:border-[var(--accent)] hover:shadow-lg shadow-sm group"
-                 >
-                   <span className="text-4xl text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:scale-110 transition-all duration-300" aria-hidden="true">{p.icon}</span>
-                   <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] group-hover:text-[var(--text)] transition-colors">{p.name}</span>
-                 </motion.div>
-               ))}
-               <motion.div 
-                 initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
-                 className="border border-[var(--border)] bg-[var(--surface)]/80 backdrop-blur-sm px-6 py-8 rounded-2xl flex flex-col items-center justify-center gap-2 transition-all hover:border-[var(--accent)] hover:shadow-lg shadow-sm group border-dashed"
-               >
-                 <span className="text-xs font-black uppercase tracking-[0.2em] text-[var(--accent)]">+ MORE</span>
-                 <span className="text-[9px] font-bold uppercase tracking-[0.1em] text-[var(--text-muted)] text-center px-4">POSIX Standard Ready</span>
-               </motion.div>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      {/* Improved Footer */}
-      <footer className="py-24 bg-[var(--bg)] border-t border-[var(--border)] px-6 lg:px-12 relative overflow-hidden">
-        <div className="container-max relative z-10">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-12 pb-16 border-b border-[var(--border)]">
-            <div className="text-center md:text-left">
-              <div className="text-3xl font-black tracking-tighter mb-4 text-[var(--text)] uppercase">MAXTER<span className="text-[var(--accent)]">_</span></div>
-              <p className="text-[var(--text-muted)] text-sm max-w-xs font-medium leading-relaxed">
-                Empowering developers with the ultimate command-line experience. Designed for productivity, built for speed.
-              </p>
-            </div>
-            
-            <div className="flex flex-col items-center md:items-end gap-6">
-               <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--accent)] mb-2">Developed By</div>
-               <a href="https://mahendraplus.github.io" target="_blank" rel="noreferrer" className="group flex items-center gap-3 bg-[var(--surface)] border border-[var(--border)] px-6 py-3 rounded-2xl hover:border-[var(--accent)] transition-all">
-                  <div className="w-8 h-8 rounded-full bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent)] font-black text-sm">M</div>
-                  <span className="text-xs font-black uppercase tracking-widest group-hover:text-[var(--accent)] transition-colors">Mahendra Mali</span>
-                  <FaExternalLinkAlt size={10} className="text-[var(--text-muted)]" />
-               </a>
-            </div>
-          </div>
-
-          <div className="pt-12 flex flex-col sm:flex-row justify-between items-center gap-8">
-             <div className="flex gap-10">
-               <a href="https://github.com/mahendraplus/MAXTER" className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"><FaGithub size={22} /></a>
-               <a href="https://mahendraplus.github.io/maxlab/support/" className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"><FaLifeRing size={22} /></a>
-               <a href="https://mahendraplus.github.io" className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"><FaGlobe size={22} /></a>
-             </div>
-             
-             <div className="flex flex-col sm:flex-row items-center sm:items-end gap-3 text-[9px] font-black uppercase tracking-[0.15em]">
-                <div className="flex items-center gap-2 opacity-80">
-                  <span className="bg-[var(--surface-2)] border border-[var(--border)] px-3 py-1.5 rounded-lg text-[var(--text)] hover:border-[var(--accent)]/50 transition-colors">MIT LICENSE</span>
-                  <span className="bg-[var(--surface-2)] border border-[var(--border)] px-3 py-1.5 rounded-lg text-[var(--text)] hover:border-[var(--accent)]/50 transition-colors">REBUILD_SYSTEM</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="bg-[var(--accent)]/10 border border-[var(--accent)]/20 px-3 py-1.5 rounded-lg text-[var(--accent)] font-mono tracking-widest hover:bg-[var(--accent)]/20 transition-colors">Version 27.3.B7</span>
-                  <span className="bg-[var(--accent)]/10 border border-[var(--accent)]/20 px-3 py-1.5 rounded-lg text-[var(--accent)] font-mono tracking-widest hover:bg-[var(--accent)]/20 transition-colors">MXTR273B708062026</span>
-                </div>
-             </div>
-          </div>
-        </div>
-      </footer>
+    <div className={`min-h-screen relative overflow-x-hidden transition-colors duration-700 ${theme === 'dark' ? 'bg-bg-primary text-white' : 'bg-white text-bg-primary'}`}>
+      <div className="industrial-grid fixed inset-0 dark:opacity-20 opacity-40 pointer-events-none" />
+      <Navbar theme={theme} toggleTheme={toggleTheme} />
+      <Hero installCmd={installCmd} />
+      <Features />
+      <Platforms />
+      <Footer />
     </div>
   );
 };
 
 export default App;
-
-
-

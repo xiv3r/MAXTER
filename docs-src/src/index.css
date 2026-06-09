@@ -1,99 +1,74 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700;900&family=IBM+Plex+Mono:wght@400;700&display=swap');
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --bg: #030303;
-  --surface: #0a0a0a;
-  --surface-2: #121212;
-  --accent: #3b82f6; /* Modern Blue Accent for a professional look */
-  --accent-glow: rgba(59, 130, 246, 0.3);
-  --text: #ffffff;
-  --text-muted: #a0a0a0;
-  --border: #1a1a1a;
-  --font-main: 'IBM Plex Sans', sans-serif;
-  --font-heading: 'Space Grotesk', sans-serif;
-  --font-mono: 'IBM Plex Mono', monospace;
-}
-
-[data-theme="light"] {
-  --bg: #fdfdfc;
-  --surface: #ffffff;
-  --surface-2: #f4f4f2;
-  --accent: #2563eb;
-  --accent-glow: rgba(37, 99, 235, 0.2);
-  --text: #0a0a0a;
-  --text-muted: #525252;
-  --border: #e5e7eb;
+  --bg-primary: #121212;
+  --bg-surface: #1A1A1A;
+  --bg-elevated: #242424;
+  --border-subtle: #2D2D2D;
+  --border-active: rgba(37, 99, 235, 0.25);
+  --accent-blue: #2563EB;
+  --accent-blue-light: #3B82F6;
+  --text-primary: #FFFFFF;
+  --text-secondary: #9CA3AF;
+  --text-muted: #4B5563;
+  --glow-blue: 0 0 20px rgba(37, 99, 235, 0.15);
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 400ms ease;
 }
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
   body {
-    @apply bg-[var(--bg)] text-[var(--text)] antialiased overflow-x-hidden transition-colors duration-500;
-    font-family: var(--font-main);
+    @apply bg-bg-primary text-white font-sans selection:bg-accent-blue/30;
   }
 }
 
-/* Industrial Grid Refinement */
-.industrial-grid {
-  background-image: 
-    linear-gradient(to right, var(--border) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
-  background-size: 50px 50px;
-  mask-image: radial-gradient(circle at 50% 50%, black 20%, transparent 90%);
-}
-
-/* Premium Scrollbar */
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { 
-  background: var(--border); 
-  border-radius: 10px;
-  transition: all 0.3s;
-}
-::-webkit-scrollbar-thumb:hover { background: var(--accent); }
-
-/* Hide scrollbar for Chrome, Safari and Opera */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
-
-/* Hide scrollbar for IE, Edge and Firefox */
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-/* Custom Animations */
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-.animate-spin-slow {
-  animation: spin-slow 12s linear infinite;
+@keyframes moveDown {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(100vh); opacity: 0; }
 }
 
-/* Typography */
-.text-hero {
-  font-family: var(--font-heading);
-  font-size: clamp(3rem, 12vw, 6.5rem);
-  font-weight: 900;
-  line-height: 0.85;
-  letter-spacing: -0.06em;
+@keyframes moveRight {
+  0% { transform: translateX(-100%); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
 }
 
-/* Performance optimization */
-* {
-  backface-visibility: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.star-line {
+  position: absolute;
+  background: linear-gradient(to right, transparent, var(--accent-blue), transparent);
+  animation: moveRight 5s linear infinite;
+  opacity: 0;
 }
 
-/* Focus styles for accessibility */
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 4px;
+.star-line[style*="height: 100%"] {
+  background: linear-gradient(to bottom, transparent, var(--accent-blue), transparent);
 }
+
+.glow-line {
+  position: absolute;
+  width: 150px;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--accent-blue), transparent);
+  box-shadow: 0 0 10px var(--accent-blue);
+  animation: moveRight 4s linear infinite;
+}
+
+.glow-line-1 { top: 15%; animation-duration: 6s; }
+.glow-line-2 { top: 45%; animation-duration: 4.5s; animation-delay: 2s; }
+.glow-line-3 { left: 25%; top: -150px; width: 2px; height: 150px; background: linear-gradient(to bottom, transparent, var(--accent-blue), transparent); animation: moveDown 7s linear infinite; animation-delay: 1s; }
+.glow-line-4 { left: 65%; top: -150px; width: 2px; height: 150px; background: linear-gradient(to bottom, transparent, var(--accent-blue), transparent); animation: moveDown 5s linear infinite; animation-delay: 3.5s; }
 
