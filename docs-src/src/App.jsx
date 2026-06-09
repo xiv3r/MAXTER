@@ -43,11 +43,11 @@ const ScrollProgress = () => {
     return d;
   }, []);
 
-  // Position perfectly aligned with the horizontal center of the logo image
-  // Logo is 40px wide (w-10). Container has padding px-6 (24px). 
-  // Offset = 24px + 20px (half logo) = 44px on mobile, adjusted for lg breakpoints
+  // Precise alignment to start exactly from the golden dot "." in "MAXTER."
+  // Base padding px-6 (24px) + logo w-10 (40px) + gap-3 (12px) + MAXTER text approx width (100px)
+  // Total offset roughly 176px on mobile. Scaled for lg screens.
   return (
-    <div className="absolute top-1/2 -translate-y-1/2 left-[44px] lg:left-[68px] w-[calc(100%-44px)] lg:w-[calc(100%-68px)] h-[20px] z-0 pointer-events-none opacity-40">
+    <div className="absolute top-[28px] left-[176px] lg:left-[216px] w-[calc(100%-176px)] lg:w-[calc(100%-216px)] h-[20px] z-0 pointer-events-none opacity-40">
       <motion.div 
         className="absolute top-0 left-0 h-full overflow-hidden"
         style={{ width }}
@@ -187,7 +187,7 @@ const Navbar = ({ theme, toggleTheme }) => {
 // --- Animated Text ---
 const AnimatedHeadline = ({ text }) => {
   return (
-    <h1 className="stardos-stencil-bold text-[2.8rem] sm:text-7xl lg:text-[6.5rem] font-black mb-10 leading-[1] tracking-tighter dark:text-white text-[var(--light-text)] uppercase text-center px-2 w-full">
+    <h1 className="stardos-stencil-bold text-[2.8rem] sm:text-7xl lg:text-[6.5rem] font-black mb-6 leading-[1] tracking-tighter dark:text-white text-[var(--light-text)] uppercase text-center px-2 w-full">
       {text.split("").map((char, i) => {
         const totalDuration = 4;
         const delay = (i / text.length) * totalDuration;
@@ -236,7 +236,7 @@ const Hero = ({ installCmd }) => {
   };
 
   return (
-    <section className="relative pt-28 pb-20 px-4 sm:px-6 lg:px-12 overflow-hidden w-full">
+    <section className="relative pt-24 pb-12 px-4 sm:px-6 lg:px-12 overflow-hidden w-full">
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#F5A800]/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="container mx-auto text-center relative z-10 w-full">
@@ -248,13 +248,13 @@ const Hero = ({ installCmd }) => {
           className="flex flex-col items-center w-full"
         >
           <AnimatedHeadline text="Terminal Setup Made Easy" />
-          <p className="dark:text-[#CCCCCC] text-gray-600 font-medium text-lg sm:text-xl mb-16 max-w-2xl mx-auto leading-relaxed">
+          <p className="dark:text-[#CCCCCC] text-gray-600 font-medium text-lg sm:text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
             One command to install Zsh, beautiful themes, and essential tools. 
             Works on Termux and all major Linux systems.
           </p>
         </motion.div>
 
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <motion.div 
             initial={{ opacity: 0, x: -40 }} 
             whileInView={{ opacity: 1, x: 0 }} 
