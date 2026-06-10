@@ -6,7 +6,7 @@
 
 **A simple and fast terminal setup tool for Termux, Debian, Ubuntu, and Kali Linux**
 
-[![Website](https://img.shields.io/badge/🌐_VISIT_PREMIUM_WEBSITE-FF6B35?style=for-the-badge&logo=globe&logoColor=white)](https://mahendraplus.github.io/MAXTER/)
+[![Website](https://img.shields.io/badge/🌐_VISIT_WEBSITE-FF6B35?style=for-the-badge&logo=globe&logoColor=white)](https://mahendraplus.github.io/MAXTER/)
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/mahendraplus/MAXTER?style=flat-square&color=gold)](https://github.com/mahendraplus/MAXTER)
 [![GitHub Forks](https://img.shields.io/github/forks/mahendraplus/MAXTER?style=flat-square&color=blue)](https://github.com/mahendraplus/MAXTER/fork)
@@ -18,21 +18,21 @@
 
 ## 📝 About MAXTER
 
-**MAXTER** is a professional-grade, lightning-fast terminal setup tool engineered for developers, students, penetration testers, and power users. Designed with precision for **Termux**, **Kali Linux**, **Ubuntu**, **Debian**, **Arch Linux**, and **Fedora**, MAXTER transforms your shell experience in seconds.
+**MAXTER** is a professional-grade, lightning-fast terminal setup tool engineered for developers, students, penetration testers, and power users. Designed with precision for **Termux**, **Kali Linux**, **Ubuntu**, and **Debian**, MAXTER transforms your shell environment in seconds.
 
-Unlike traditional setup scripts that require tedious manual configuration, MAXTER automates the entire installation process with a single command—installing **Zsh**, **Oh My Zsh**, **Powerlevel10k**, and **Meslo Nerd Fonts** seamlessly across all supported platforms.
+Unlike traditional setup scripts that require tedious manual configuration, MAXTER automates the entire installation process with a single command—installing **Zsh**, **Oh My Zsh**, **Powerlevel10k**, and **Meslo Nerd Fonts** seamlessly.
 
 ### Why Choose MAXTER?
 
 - **⚡ Blazing Fast**: Complete setup in under 60 seconds
 - **🎯 Precision Engineered**: Tailored for multiple operating systems
 - **🔐 Lightweight & Secure**: Minimal dependencies, maximum efficiency
-- **🌟 Production-Ready**: Trusted by developers worldwide
-- **💎 Premium Experience**: Industrial-grade aesthetic and functionality
+- **🌟 Production-Ready**: Battle-tested and reliable
+- **✨ Elite Experience**: Industrial-grade aesthetic and functionality
 
 ---
 
-## ✨ Premium Features
+## ✨ Advanced Features
 
 ### 🎛️ Maxter TUI Dashboard
 An intuitive terminal user interface that puts powerful tools at your fingertips:
@@ -167,7 +167,7 @@ This opens an interactive menu where you can:
 ## 📸 Visual Experience
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/assets/maxter-terminal.png" width="48%" alt="Premium Terminal Interface" />
+  <img src="https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/assets/maxter-terminal.png" width="48%" alt="Professional Terminal Interface" />
   <img src="https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/assets/maxter-install.png" width="48%" alt="Installation Process" />
 </p>
 
@@ -256,10 +256,6 @@ p10k configure
 | 📦 JavaScript | 18% | TUI Dashboard and interactive tools |
 | 🎨 HTML | 3.7% | Web documentation and website |
 | 💅 CSS | 1.6% | Website styling and theming |
-
-**Total Downloads**: 10,000+ ⬇️  
-**Active Users**: 5,000+ 👥  
-**GitHub Stars**: 500+ ⭐  
 
 ---
 
@@ -407,7 +403,7 @@ Join our growing community:
 If MAXTER has enhanced your terminal experience, please:
 
 [![Star the Repo](https://img.shields.io/badge/⭐_Star_This_Repo-yellow?style=for-the-badge)](https://github.com/mahendraplus/MAXTER/stargazers)
-[![Share on Twitter](https://img.shields.io/badge/🐦_Share_on_Twitter-1DA1F2?style=for-the-badge)](https://twitter.com/intent/tweet?text=Check%20out%20MAXTER%20-%20a%20premium%20terminal%20setup%20tool%20for%20Termux%2C%20Debian%2C%20Ubuntu%2C%20and%20Kali%20Linux%20%F0%9F%9A%80&url=https://github.com/mahendraplus/MAXTER)
+[![Share on Twitter](https://img.shields.io/badge/🐦_Share_on_Twitter-1DA1F2?style=for-the-badge)](https://twitter.com/intent/tweet?text=Check%20out%20MAXTER%20-%20a%20professional%20terminal%20setup%20tool%20for%20Termux,%20Debian,%20Ubuntu,%20and%20Kali%20Linux!)
 [![Sponsor Development](https://img.shields.io/badge/💖_Sponsor_Development-pink?style=for-the-badge)](SPONSORSHIP.md)
 
 ### 🎉 Thank You!
@@ -424,7 +420,7 @@ Your support fuels continued development and improvement. Together, we're buildi
 
 **Created with ❤️ by [Mahendra Mali](https://github.com/mahendraplus)**
 
-- 🌐 **Website**: [MAXTER Premium Website](https://mahendraplus.github.io/MAXTER/)
+- 🌐 **Website**: [MAXTER Official Website](https://mahendraplus.github.io/MAXTER/)
 - 💼 **GitHub**: [@mahendraplus](https://github.com/mahendraplus)
 - 📧 **Email**: [Contact](https://github.com/mahendraplus)
 
