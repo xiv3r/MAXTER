@@ -16,6 +16,11 @@ BOLD='\033[1m'
 ARROW="󰁔"
 DIV="────────────────────────────────────────"
 
+# ── Logic ──────────────────────────────────────────
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/utils.sh"
+VERSION=$(get_version)
+
 # Helper: Detect Termux
 is_termux() { [ -d "/data/data/com.termux/files/usr" ]; }
 
@@ -62,9 +67,12 @@ draw_menu() {
         fi
     done
 
-    echo -e "${GRAY}${DIV}${NC}"
-    echo -e " ${GRAY}↑↓ Navigate   ${WHITE}Enter${GRAY} Select   ${RED}q${GRAY} Back${NC}"
-}
+    echo -e " ${GRAY}${DIV}${NC}"
+    echo -e " ${GRAY}↑↓ Navigate   ${WHITE}Enter${GRAY} Select   ${RED}q${GRAY} Exit${NC}"
+    echo -e " ${CYAN}󰖟  mahendraplus.github.io/?utm_source=maxter&utm_medium=tui${NC}"
+    echo -e " ${GRAY}󰮔  Support: ${WHITE}https://mahendraplus.github.io/maxlab/support/${NC}"
+    echo -e " ${GRAY}${DIV}${NC}"
+    }
 
 run_action() {
     case "$1" in

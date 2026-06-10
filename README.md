@@ -10,7 +10,7 @@
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/mahendraplus/MAXTER?style=flat-square&color=gold)](https://github.com/mahendraplus/MAXTER)
 [![GitHub Forks](https://img.shields.io/github/forks/mahendraplus/MAXTER?style=flat-square&color=blue)](https://github.com/mahendraplus/MAXTER/fork)
-[![Version](https://img.shields.io/badge/version-27.3.B10-blue.svg?style=flat-square)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-27.4.B1-blue.svg?style=flat-square)](CHANGELOG.md)
 
 </div>
 

@@ -31,21 +31,7 @@ DIV="─────────────────────────
 
 # --- Logic ---
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-REPO_DIR="$HOME/MAXTER"
-PROPS_FILE="$REPO_DIR/version.properties"
-
-# Dynamic Versioning
-get_version() {
-    local fallback="27.3.B1"
-    if [ -f "$PROPS_FILE" ]; then
-        local v_main=$(grep 'MAIN=' "$PROPS_FILE" | cut -d'=' -f2)
-        local v_minor=$(grep 'MINOR=' "$PROPS_FILE" | cut -d'=' -f2)
-        local v_build=$(grep 'BUILD=' "$PROPS_FILE" | cut -d'=' -f2)
-        echo "$v_main.$v_minor.B$v_build"
-    else
-        echo "$fallback"
-    fi
-}
+source "$SCRIPT_DIR/utils.sh"
 VERSION=$(get_version)
 
 check_for_updates() {
@@ -102,15 +88,15 @@ detect_system() {
 }
 
 detect_system
-OPTIONS=("Update" "Color Selector" "System Info" "Help" "Uninstall" "Exit")
-ICONS=("$ICON_UP" "$ICON_COLOR" "$ICON_INFO" "$ICON_HELP" "$ICON_DEL" "$ICON_EXIT")
-ACTIONS=("update" "color" "info" "help" "uninstall" "exit")
+OPTIONS=("Update" "Color Selector" "System Info" "Support" "Help" "Uninstall" "Exit")
+ICONS=("$ICON_UP" "$ICON_COLOR" "$ICON_INFO" "$ICON_SUPPORT" "$ICON_HELP" "$ICON_DEL" "$ICON_EXIT")
+ACTIONS=("update" "color" "info" "support" "help" "uninstall" "exit")
 
 if [ "$SYSTEM" == "termux" ]; then
     # Insert Keys option at index 2
-    OPTIONS=("Update" "Color Selector" "Extra Keys" "System Info" "Help" "Uninstall" "Exit")
-    ICONS=("$ICON_UP" "$ICON_COLOR" "$ICON_KEYS" "$ICON_INFO" "$ICON_HELP" "$ICON_DEL" "$ICON_EXIT")
-    ACTIONS=("update" "color" "keys" "info" "help" "uninstall" "exit")
+    OPTIONS=("Update" "Color Selector" "Extra Keys" "System Info" "Support" "Help" "Uninstall" "Exit")
+    ICONS=("$ICON_UP" "$ICON_COLOR" "$ICON_KEYS" "$ICON_INFO" "$ICON_SUPPORT" "$ICON_HELP" "$ICON_DEL" "$ICON_EXIT")
+    ACTIONS=("update" "color" "keys" "info" "support" "help" "uninstall" "exit")
 fi
 
 current_pos=0
@@ -131,7 +117,7 @@ draw_menu() {
 
     echo -e "${GRAY}${DIV}${NC}"
     echo -e " ${GRAY}↑↓ Navigate   ${WHITE}Enter${GRAY} Select   ${RED}q${GRAY} Exit${NC}"
-    echo -e " ${ICON_GLOBE} ${DIM}mahendraplus.github.io${NC}"
+    echo -e " ${ICON_GLOBE} ${DIM}mahendraplus.github.io/?utm_source=maxter&utm_medium=tui${NC}"
 }
 
 run_action() {
@@ -152,6 +138,19 @@ run_action() {
         info)
             clear
             bash "$SCRIPT_DIR/sysinfo.sh" 2>/dev/null || uname -a
+            echo -e "\n ${GRAY}Press any key to return...${NC}"
+            read -n 1
+            ;;
+        support)
+            clear
+            echo -e " ${BOLD}${CYAN}${ICON_SUPPORT} MAXTER Support${NC}"
+            echo -e " ${GRAY}${DIV}${NC}"
+            echo -e " ${WHITE}Need help or want to report a bug?${NC}"
+            echo -e " Visit our support portal:"
+            echo -e " ${CYAN}https://mahendraplus.github.io/maxlab/support/${NC}"
+            echo -e "\n ${WHITE}Other ways to get help:${NC}"
+            echo -e "   - GitHub Issues: ${GRAY}github.com/mahendraplus/MAXTER/issues${NC}"
+            echo -e "   - Portfolio: ${GRAY}mahendraplus.github.io${NC}"
             echo -e "\n ${GRAY}Press any key to return...${NC}"
             read -n 1
             ;;

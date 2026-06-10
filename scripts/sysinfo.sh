@@ -10,7 +10,12 @@ GRAY='\033[0;90m'
 NC='\033[0m'
 DIV="────────────────────────────────────────"
 
-echo -e " ${CYAN}󱚥  System Diagnostics${NC}"
+# ── Logic ──────────────────────────────────────────
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/utils.sh"
+VERSION=$(get_version)
+
+echo -e " ${CYAN}󱚥  System Diagnostics${NC} ${DIM}v$VERSION${NC}"
 echo -e " ${GRAY}${DIV}${NC}"
 
 printf "  %-15s : %s\n" "󰟀  OS" "$(uname -s)"
@@ -35,7 +40,7 @@ if [ -d "$HOME/MAXTER" ]; then
 fi
 
 echo -e " ${GRAY}${DIV}${NC}"
-echo -e " ${WHITE}󰖟  mahendraplus.github.io${NC}"
+echo -e " ${WHITE}󰖟  mahendraplus.github.io/?utm_source=maxter&utm_medium=tui${NC}"
 echo -e " ${GRAY}󰮔  Support: ${WHITE}https://mahendraplus.github.io/maxlab/support/${NC}"
 echo -e " ${GRAY}${DIV}${NC}"
 read -p " Press Enter to return..."

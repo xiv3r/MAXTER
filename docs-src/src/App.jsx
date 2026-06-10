@@ -148,9 +148,14 @@ const Navbar = ({ theme, toggleTheme }) => {
       <div className="container mx-auto px-6 lg:px-12 flex justify-between items-center mt-1 relative z-10">
         <div className="flex items-center gap-3">
           <img src="assets/maxter-logo.png" alt="MAXTER Logo" className="w-10 h-10 object-contain logo-shadow" />
-          <span className="font-mono font-black text-2xl tracking-tighter uppercase dark:text-white text-[var(--light-text)]">
-            MAXTER<span className="text-[#F5A800]">.</span>
-          </span>
+          <div className="flex flex-col">
+            <span className="font-mono font-black text-2xl tracking-tighter uppercase dark:text-white text-[var(--light-text)] leading-none">
+              MAXTER<span className="text-[#F5A800]">.</span>
+            </span>
+            <span className="text-[10px] font-bold text-[#F5A800] tracking-[0.2em] uppercase mt-1 opacity-80">
+              Version 27.4.B1
+            </span>
+          </div>
         </div>
         
         <div className="flex items-center gap-3 sm:gap-8">
@@ -577,13 +582,13 @@ const Footer = () => (
       </div>
       
       <div className="flex gap-12">
-        <a href="https://github.com/mahendraplus/MAXTER" className="dark:text-[#CCCCCC] text-gray-500 hover:text-[#F5A800] transition-colors"><Github size={24} /></a>
-        <a href="#" className="dark:text-[#CCCCCC] text-gray-500 hover:text-[#F5A800] transition-colors"><LifeBuoy size={24} /></a>
-        <a href="#" className="dark:text-[#CCCCCC] text-gray-500 hover:text-[#F5A800] transition-colors"><Globe size={24} /></a>
+        <a href="https://github.com/mahendraplus/MAXTER" target="_blank" rel="noreferrer" className="dark:text-[#CCCCCC] text-gray-500 hover:text-[#F5A800] transition-colors" title="GitHub"><Github size={24} /></a>
+        <a href="https://mahendraplus.github.io/maxlab/support/" target="_blank" rel="noreferrer" className="dark:text-[#CCCCCC] text-gray-500 hover:text-[#F5A800] transition-colors" title="Support"><LifeBuoy size={24} /></a>
+        <a href="https://mahendraplus.github.io/?utm_source=maxter&utm_medium=web&utm_campaign=referral" target="_blank" rel="noreferrer" className="dark:text-[#CCCCCC] text-gray-500 hover:text-[#F5A800] transition-colors" title="Portfolio"><Globe size={24} /></a>
       </div>
 
       <div className="text-center md:text-right">
-        <a href="https://mahendraplus.github.io" target="_blank" rel="noreferrer" className="inline-flex items-center gap-4 dark:bg-[#111111] bg-gray-50 border dark:border-border-subtle border-gray-200 px-8 py-4 rounded-[1.5rem] hover:border-[#F5A800] transition-all group shadow-lg">
+        <a href="https://mahendraplus.github.io/?utm_source=maxter&utm_medium=web&utm_campaign=referral" target="_blank" rel="noreferrer" className="inline-flex items-center gap-4 dark:bg-[#111111] bg-gray-50 border dark:border-border-subtle border-gray-200 px-8 py-4 rounded-[1.5rem] hover:border-[#F5A800] transition-all group shadow-lg">
           <div className="w-10 h-10 rounded-full bg-[#F5A800]/10 flex items-center justify-center text-[#F5A800] font-black text-sm">M</div>
           <span className="text-xs font-black uppercase tracking-widest dark:text-[#CCCCCC] text-gray-600 group-hover:text-[var(--light-text)] dark:group-hover:text-white">Mahendra Mali</span>
           <ExternalLink size={14} className="text-text-muted" />

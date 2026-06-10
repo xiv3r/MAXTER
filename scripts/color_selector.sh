@@ -19,7 +19,9 @@ DIV="─────────────────────────
 
 # Load Definitions
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/utils.sh"
 source "$SCRIPT_DIR/themes/definitions.sh"
+VERSION=$(get_version)
 
 # Theme Categories
 DARK_THEMES=("Matrix" "Dracula" "Nord" "Monokai" "Gruvbox Dark" "Tokyo Night" "Catppuccin" "One Dark" "Solarized Dark" "Cyberpunk")
@@ -46,7 +48,8 @@ apply_preview() {
     local theme_data="${THEMES[$theme_name]}"
     
     if is_termux; then
-        echo -e "${theme_data}" | tr ';' '\n' > ~/.termux/colors.properties
+        # Convert : to = and ; to \n for Termux properties format
+        echo -e "${theme_data}" | tr ':' '=' | tr ';' '\n' > ~/.termux/colors.properties
         termux-reload-settings
     fi
 }
@@ -112,8 +115,11 @@ draw_menu() {
     done
 
     echo -e " ${GRAY}${DIV}${NC}"
-    echo -e " ${GRAY}↑↓ Navigate   ${WHITE}Enter${GRAY} Save   ${RED}q${GRAY} Discard${NC}"
-}
+    echo -e " ${GRAY}↑↓ Navigate   ${WHITE}Enter${GRAY} Select   ${RED}q${GRAY} Exit${NC}"
+    echo -e " ${CYAN}󰖟  mahendraplus.github.io/?utm_source=maxter&utm_medium=tui${NC}"
+    echo -e " ${GRAY}󰮔  Support: ${WHITE}https://mahendraplus.github.io/maxlab/support/${NC}"
+    echo -e " ${GRAY}${DIV}${NC}"
+    }
 
 # Main Loop
 while true; do
