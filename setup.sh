@@ -47,6 +47,14 @@ ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$SCRIPT_DIR/scripts/utils.sh"
 VERSION=$(get_version)
+RESET_MODE=false
+
+# Check for flags
+for arg in "$@"; do
+    case $arg in
+        --reset) RESET_MODE=true ;;
+    esac
+done
 
 # --- Helper Functions ---
 clear_log() { rm -f "$LOG_FILE" && touch "$LOG_FILE"; }
@@ -209,10 +217,29 @@ backup_configs() {
     [ -f "$HOME/.p10k.zsh" ] && cp "$HOME/.p10k.zsh" "$HOME/.p10k.zsh.bak.$(date +%s)" || true
 }
 run_silent "Backing up existing configs" "backup_configs"
-run_silent "Applying Zsh configs" "cp -f $REPO_DIR/configs/zsh/.zshrc $HOME/.zshrc && cp -f $REPO_DIR/configs/zsh/.p10k.zsh $HOME/.p10k.zsh"
+
+apply_zsh_configs() {
+    if [ "$RESET_MODE" == "true" ] || [ ! -f "$HOME/.zshrc" ]; then
+        cp -f "$REPO_DIR/configs/zsh/.zshrc" "$HOME/.zshrc"
+    fi
+    if [ "$RESET_MODE" == "true" ] || [ ! -f "$HOME/.p10k.zsh" ]; then
+        cp -f "$REPO_DIR/configs/zsh/.p10k.zsh" "$HOME/.p10k.zsh"
+    fi
+}
+run_silent "Applying Zsh configs" "apply_zsh_configs"
 
 if [ "$OS" == "termux" ]; then
-    run_silent "Applying Termux UI" "mkdir -p $HOME/.termux && cp -f $REPO_DIR/configs/termux/termux.properties $HOME/.termux/termux.properties && cp -f $REPO_DIR/configs/termux/colors.properties $HOME/.termux/colors.properties && cp -f $REPO_DIR/assets/font.ttf $HOME/.termux/font.ttf"
+    apply_termux_ui() {
+        mkdir -p "$HOME/.termux"
+        if [ "$RESET_MODE" == "true" ] || [ ! -f "$HOME/.termux/termux.properties" ]; then
+            cp -f "$REPO_DIR/configs/termux/termux.properties" "$HOME/.termux/termux.properties"
+        fi
+        if [ "$RESET_MODE" == "true" ] || [ ! -f "$HOME/.termux/colors.properties" ]; then
+            cp -f "$REPO_DIR/configs/termux/colors.properties" "$HOME/.termux/colors.properties"
+        fi
+        cp -f "$REPO_DIR/assets/font.ttf" "$HOME/.termux/font.ttf"
+    }
+    run_silent "Applying Termux UI" "apply_termux_ui"
     
     # Remove MOTD (Welcome message)
     if [ -f "/data/data/com.termux/files/usr/etc/motd" ]; then

@@ -13,6 +13,7 @@ WHITE='\033[1;37m'
 GRAY='\033[0;90m'
 NC='\033[0m'
 BOLD='\033[1m'
+DIM='\033[2m'
 ARROW="󰁔"
 DIV="────────────────────────────────────────"
 
@@ -32,16 +33,16 @@ fi
 PROP_FILE="$HOME/.termux/termux.properties"
 
 show_current() {
-    echo -e " ${WHITE}Current Layout:${NC}"
+    local pad="$1"
+    echo -e "${pad}${WHITE}Current Layout:${NC}"
     local keys_line=$(grep "^extra-keys =" "$PROP_FILE")
     if [ -z "$keys_line" ]; then
-        echo -e "  ${GRAY}No custom keys found (Default).${NC}"
+        echo -e "${pad}  ${GRAY}No custom keys found (Default).${NC}"
     else
-        # Very simple extraction for display
         local r1=$(echo "$keys_line" | sed -E "s/.*\[\s*\[(.*)\],\s*\[(.*)\].*/\1/")
         local r2=$(echo "$keys_line" | sed -E "s/.*\[\s*\[(.*)\],\s*\[(.*)\].*/\2/")
-        echo -e "  Row 1: ${CYAN}${r1//\'/}${NC}"
-        echo -e "  Row 2: ${CYAN}${r2//\'/}${NC}"
+        echo -e "${pad}  Row 1: ${CYAN}${r1//\'/}${NC}"
+        echo -e "${pad}  Row 2: ${CYAN}${r2//\'/}${NC}"
     fi
     echo ""
 }
@@ -53,47 +54,52 @@ total_options=${#OPTIONS[@]}
 
 draw_menu() {
     clear
-    echo -e " ${CYAN}⌨ Termux Extra-Keys${NC}"
-    echo -e " ${GRAY}${DIV}${NC}"
-    
-    show_current
+    local term_width=$(tput cols 2>/dev/null || echo 40)
+    local padding=$(( (term_width - 40) / 2 ))
+    [ $padding -lt 0 ] && padding=0
+    local pad_str=$(printf '%*s' "$padding" "")
 
-    echo -e " ${WHITE}Options:${NC}"
+    echo -e "${pad_str}${BOLD}${CYAN}󰌌  Extra Keys Manager${NC} ${DIM}v$VERSION${NC}"
+    echo -e "${pad_str}${GRAY}${DIV}${NC}"
+    
+    show_current "$pad_str"
+
     for i in "${!OPTIONS[@]}"; do
         if [ "$current_pos" -eq "$i" ]; then
-            echo -e "  ${GREEN}${ARROW}${NC} ${BOLD}${WHITE}${OPTIONS[$i]}${NC}"
+            printf "${pad_str} ${GREEN}${ARROW}${NC} ${BOLD}${WHITE}%-30s${NC} ${GREEN}󰄬${NC}\n" "${OPTIONS[$i]}"
         else
-            echo -e "     ${GRAY}${OPTIONS[$i]}${NC}"
+            printf "${pad_str}    ${GRAY}%-30s${NC}\n" "${OPTIONS[$i]}"
         fi
     done
 
-    echo -e " ${GRAY}${DIV}${NC}"
-    echo -e " ${GRAY}↑↓ Navigate   ${WHITE}Enter${GRAY} Select   ${RED}q${GRAY} Exit${NC}"
-    echo -e " ${CYAN}󰖟  mahendraplus.github.io/?utm_source=maxter&utm_medium=tui${NC}"
-    echo -e " ${GRAY}󰮔  Support: ${WHITE}https://mahendraplus.github.io/maxlab/support/${NC}"
-    echo -e " ${GRAY}${DIV}${NC}"
-    }
+    echo -e "${pad_str}${GRAY}${DIV}${NC}"
+    echo -e "${pad_str} ${GRAY}↑↓ Navigate   ${WHITE}Enter${GRAY} Select   ${RED}q${GRAY} Exit${NC}"
+    echo -e "${pad_str} ${CYAN}󰖟  mahendraplus.github.io${NC}"
+    echo -e "${pad_str} ${GRAY}󰮔  Support: ${WHITE}https://mahendraplus.github.io/maxlab/support/${NC}"
+    echo -e "${pad_str}${GRAY}${DIV}${NC}"
+}
 
 run_action() {
     case "$1" in
         view)
             echo -e "\n${WHITE}Raw configuration:${NC}"
-            grep "^extra-keys" "$PROP_FILE" || echo "Default"
-            echo -e "\n${GRAY}Press any key...${NC}"
+            grep "^extra-keys =" "$PROP_FILE" || echo "No config found."
+            echo -ne "\nPress any key to return..."
             read -n 1
             ;;
         edit)
             ${EDITOR:-nano} "$PROP_FILE"
             ;;
         reset)
+            local default_keys="extra-keys = [['ESC','/','-','HOME','UP','END','PGUP'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]"
             sed -i "/^extra-keys =/d" "$PROP_FILE"
-            echo "extra-keys = [['ESC','DRAWER','SHIFT','HOME','UP','END','PGUP'], ['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]" >> "$PROP_FILE"
-            echo -e "\n ${GREEN}[✓] Reset to MAXTER layout.${NC}"
+            echo "$default_keys" >> "$PROP_FILE"
+            echo -e "\n ${GREEN}󰄬${NC} Reset to MAXTER defaults."
             sleep 1
             ;;
         reload)
             termux-reload-settings
-            echo -e "\n ${GREEN}[✓] Settings reloaded.${NC}"
+            echo -e "\n ${BLUE}󰑐${NC} Settings reloaded."
             sleep 1
             ;;
         back)
@@ -102,28 +108,22 @@ run_action() {
     esac
 }
 
-# Main Loop
 while true; do
     draw_menu
     read -rsn1 key
     case "$key" in
-        $'\x1b') # Multi-character escape
+        $'\x1b')
             read -rsn2 key
             case "$key" in
-                "[A"|"[D") # Up or Left
-                    current_pos=$(( (current_pos - 1 + total_options) % total_options ))
-                    ;;
-                "[B"|"[C") # Down or Right
-                    current_pos=$(( (current_pos + 1) % total_options ))
-                    ;;
+                "[A") current_pos=$(( (current_pos - 1 + total_options) % total_options )) ;;
+                "[B") current_pos=$(( (current_pos + 1) % total_options )) ;;
             esac
             ;;
-        "") # Enter
+        "")
             run_action "${ACTIONS[$current_pos]}"
-            [ "${ACTIONS[$current_pos]}" == "back" ] && break
             ;;
         "q")
-            break
+            exit 0
             ;;
     esac
 done

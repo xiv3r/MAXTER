@@ -87,7 +87,7 @@ jobs:
           
           # Replace all version occurrences
           # For fallback=", we need to handle it separately to avoid adding "Version " inside the quotes
-          FILES_TO_UPDATE="setup.sh scripts/maxter_tui.sh README.md docs-src/src/App.jsx install.sh scripts/keys.sh scripts/color_selector.sh scripts/sysinfo.sh scripts/themes/definitions.sh"
+          FILES_TO_UPDATE="setup.sh scripts/maxter_tui.sh README.md docs-src/src/App.jsx install.sh scripts/keys.sh scripts/color_selector.sh scripts/sysinfo.sh"
           
           for file in $FILES_TO_UPDATE; do
             if [ -f "$file" ]; then

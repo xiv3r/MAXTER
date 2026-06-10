@@ -25,7 +25,8 @@ ICON_INFO="󰋼"
 ICON_HELP="󰘥"
 ICON_GLOBE="󰖟"
 ICON_SUPPORT="󰮔"
-ICON_EXIT="󰈆"
+ICON_RESET="󰦛"
+ICON_EXIT="󰀚"
 ARROW="󰁔"
 DIV="────────────────────────────────────────"
 
@@ -88,15 +89,15 @@ detect_system() {
 }
 
 detect_system
-OPTIONS=("Update" "Color Selector" "System Info" "Support" "Help" "Uninstall" "Exit")
-ICONS=("$ICON_UP" "$ICON_COLOR" "$ICON_INFO" "$ICON_SUPPORT" "$ICON_HELP" "$ICON_DEL" "$ICON_EXIT")
-ACTIONS=("update" "color" "info" "support" "help" "uninstall" "exit")
+OPTIONS=("Update" "Color Selector" "System Info" "Reset to Default" "Support" "Help" "Uninstall" "Exit")
+ICONS=("$ICON_UP" "$ICON_COLOR" "$ICON_INFO" "$ICON_RESET" "$ICON_SUPPORT" "$ICON_HELP" "$ICON_DEL" "$ICON_EXIT")
+ACTIONS=("update" "color" "info" "reset" "support" "help" "uninstall" "exit")
 
 if [ "$SYSTEM" == "termux" ]; then
     # Insert Keys option at index 2
-    OPTIONS=("Update" "Color Selector" "Extra Keys" "System Info" "Support" "Help" "Uninstall" "Exit")
-    ICONS=("$ICON_UP" "$ICON_COLOR" "$ICON_KEYS" "$ICON_INFO" "$ICON_SUPPORT" "$ICON_HELP" "$ICON_DEL" "$ICON_EXIT")
-    ACTIONS=("update" "color" "keys" "info" "support" "help" "uninstall" "exit")
+    OPTIONS=("Update" "Color Selector" "Extra Keys" "System Info" "Reset to Default" "Support" "Help" "Uninstall" "Exit")
+    ICONS=("$ICON_UP" "$ICON_COLOR" "$ICON_KEYS" "$ICON_INFO" "$ICON_RESET" "$ICON_SUPPORT" "$ICON_HELP" "$ICON_DEL" "$ICON_EXIT")
+    ACTIONS=("update" "color" "keys" "info" "reset" "support" "help" "uninstall" "exit")
 fi
 
 current_pos=0
@@ -104,20 +105,27 @@ total_options=${#OPTIONS[@]}
 
 draw_menu() {
     clear
-    echo -e "${BOLD}${CYAN}󰀼  MAXTER${NC} ${DIM}Version $VERSION${NC}       ${GRAY}System: ${BOLD}${SYSTEM} $(uname -m)${NC}"
-    echo -e "${GRAY}${DIV}${NC}"
+    local term_width=$(tput cols 2>/dev/null || echo 40)
+    local padding=$(( (term_width - 40) / 2 ))
+    [ $padding -lt 0 ] && padding=0
+    local pad_str=$(printf '%*s' "$padding" "")
+
+    echo -e "${pad_str}${BOLD}${CYAN}󰀼  MAXTER${NC} ${DIM}Version $VERSION${NC}"
+    echo -e "${pad_str}${GRAY}System: ${BOLD}${SYSTEM} $(uname -m)${NC}"
+    echo -e "${pad_str}${GRAY}${DIV}${NC}"
     
     for i in "${!OPTIONS[@]}"; do
         if [ "$current_pos" -eq "$i" ]; then
-            printf " ${GREEN}${ARROW}${NC} ${BOLD}${WHITE}%-2s %-20s${NC} ${GREEN}󰄬${NC}\n" "${ICONS[$i]}" "${OPTIONS[$i]}"
+            printf "${pad_str} ${GREEN}${ARROW}${NC} ${BOLD}${WHITE}%-2s %-25s${NC} ${GREEN}󰄬${NC}\n" "${ICONS[$i]}" "${OPTIONS[$i]}"
         else
-            printf "    ${GRAY}%-2s %-20s${NC}\n" "${ICONS[$i]}" "${OPTIONS[$i]}"
+            printf "${pad_str}    ${GRAY}%-2s %-25s${NC}\n" "${ICONS[$i]}" "${OPTIONS[$i]}"
         fi
     done
 
-    echo -e "${GRAY}${DIV}${NC}"
-    echo -e " ${GRAY}↑↓ Navigate   ${WHITE}Enter${GRAY} Select   ${RED}q${GRAY} Exit${NC}"
-    echo -e " ${ICON_GLOBE} ${DIM}mahendraplus.github.io/?utm_source=maxter&utm_medium=tui${NC}"
+    echo -e "${pad_str}${GRAY}${DIV}${NC}"
+    echo -e "${pad_str} ${GRAY}↑↓ Navigate   ${WHITE}Enter${GRAY} Select   ${RED}q${GRAY} Exit${NC}"
+    echo -e "${pad_str} ${ICON_GLOBE} ${DIM}mahendraplus.github.io${NC}"
+    echo -e "${pad_str}${GRAY}${DIV}${NC}"
 }
 
 run_action() {
@@ -140,6 +148,18 @@ run_action() {
             bash "$SCRIPT_DIR/sysinfo.sh" 2>/dev/null || uname -a
             echo -e "\n ${GRAY}Press any key to return...${NC}"
             read -n 1
+            ;;
+        reset)
+            echo -e "\n ${YELLOW}${ICON_RESET}${NC} Resetting configurations to default..."
+            echo -ne " ${GRAY}All custom themes and settings will be replaced. Continue? (y/n): ${NC}"
+            read -n 1 confirm_reset
+            echo ""
+            if [[ "$confirm_reset" =~ ^[Yy]$ ]]; then
+                bash "$REPO_DIR/setup.sh" --reset
+            else
+                echo -e " ${GRAY}Reset cancelled.${NC}"
+                sleep 1
+            fi
             ;;
         support)
             clear
