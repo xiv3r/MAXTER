@@ -18,9 +18,9 @@
 
 ## 📝 About MAXTER
 
-**MAXTER** is a professional-grade, lightning-fast terminal setup tool engineered for developers, students, penetration testers, and power users. Designed with precision for **Termux**, **Kali Linux**, **Ubuntu**, and **Debian**, MAXTER transforms your shell environment in seconds.
+**MAXTER** is a professional-grade, lightning-fast terminal setup tool engineered for developers, students, penetration testers, and power users. Designed with precision for **Termux**, **Kali Linux**, **Debian**, and **Ubuntu**.
 
-Unlike traditional setup scripts that require tedious manual configuration, MAXTER automates the entire installation process with a single command—installing **Zsh**, **Oh My Zsh**, **Powerlevel10k**, and **Meslo Nerd Fonts** seamlessly.
+Unlike traditional setup scripts that require tedious manual configuration, MAXTER automates the entire installation process with a single command—installing **Zsh**, **Oh My Zsh**, **Powerlevel10k**, and **Meslo Nerd Fonts** seamlessly across all supported platforms.
 
 ### Why Choose MAXTER?
 
@@ -367,23 +367,11 @@ MAXTER stands on the shoulders of giants:
 - 📱 iOS support (via alternative shells)
 - 🤖 AI-powered setup wizard
 
-### Version 28.0 (Q3 2026)
+### Version 28.0
 - Major performance optimizations
 - Unified configuration system
 - Cross-platform sync support
 - Enterprise features
-
----
-
-## 📈 Project Activity
-
-| Metric | Value |
-|--------|-------|
-| Active Contributors | 15+ |
-| Monthly Downloads | 2,000+ |
-| Community Discussions | 100+ |
-| Issues Resolved | 95% |
-| Average Response Time | <24 hours |
 
 ---
 
@@ -392,7 +380,6 @@ MAXTER stands on the shoulders of giants:
 Join our growing community:
 - **GitHub Discussions**: [Join Discussion](https://github.com/mahendraplus/MAXTER/discussions)
 - **Issue Tracker**: [Report Issues](https://github.com/mahendraplus/MAXTER/issues)
-- **Social Media**: Follow us for updates
 
 ---
 
@@ -403,7 +390,7 @@ Join our growing community:
 If MAXTER has enhanced your terminal experience, please:
 
 [![Star the Repo](https://img.shields.io/badge/⭐_Star_This_Repo-yellow?style=for-the-badge)](https://github.com/mahendraplus/MAXTER/stargazers)
-[![Share on Twitter](https://img.shields.io/badge/🐦_Share_on_Twitter-1DA1F2?style=for-the-badge)](https://twitter.com/intent/tweet?text=Check%20out%20MAXTER%20-%20a%20professional%20terminal%20setup%20tool%20for%20Termux,%20Debian,%20Ubuntu,%20and%20Kali%20Linux!)
+[![Share on Twitter](https://img.shields.io/badge/🐦_Share_on_Twitter-1DA1F2?style=for-the-badge)](https://twitter.com/intent/tweet?text=Check%20out%20MAXTER%20-%20a%20professional%20terminal%20setup%20tool&url=https://github.com/mahendraplus/MAXTER)
 [![Sponsor Development](https://img.shields.io/badge/💖_Sponsor_Development-pink?style=for-the-badge)](SPONSORSHIP.md)
 
 ### 🎉 Thank You!
@@ -422,7 +409,6 @@ Your support fuels continued development and improvement. Together, we're buildi
 
 - 🌐 **Website**: [MAXTER Official Website](https://mahendraplus.github.io/MAXTER/)
 - 💼 **GitHub**: [@mahendraplus](https://github.com/mahendraplus)
-- 📧 **Email**: [Contact](https://github.com/mahendraplus)
 
 **Last Updated:** June 2026  
 **Version:** 27.3.B10  
