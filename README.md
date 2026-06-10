@@ -1,4 +1,4 @@
-# 🚀 MAXTER // Version 27.3.B10
+# 🚀 MAXTER // Version 27.4.B1
 
 <div align="center">
 
@@ -367,7 +367,7 @@ MAXTER stands on the shoulders of giants:
 - 📱 iOS support (via alternative shells)
 - 🤖 AI-powered setup wizard
 
-### Version 28.0
+### Version 27.4.B1
 - Major performance optimizations
 - Unified configuration system
 - Cross-platform sync support
