@@ -2,7 +2,7 @@
 # MAXTER // Version 27.4.B1
 # Shared Utilities
 
-REPO_DIR="$HOME/MAXTER"
+REPO_DIR="$HOME/.MAXTER"
 PROPS_FILE="$REPO_DIR/version.properties"
 
 get_version() {
