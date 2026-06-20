@@ -1,6 +1,6 @@
 #!/bin/bash
 # ==========================================
-# MAXTER // Version 27.4.B7
+# MAXTER // Version 27.4.B8
 # ==========================================
 # Author: Mahendra Mali (Max)
 
@@ -50,7 +50,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 # Dynamic Versioning
 get_version() {
-    local fallback="27.4.B6"
+    local fallback="27.4.B8"
     if [ -f "$PROPS_FILE" ]; then
         local v_main=$(grep 'MAIN=' "$PROPS_FILE" | cut -d'=' -f2)
         local v_minor=$(grep 'MINOR=' "$PROPS_FILE" | cut -d'=' -f2)

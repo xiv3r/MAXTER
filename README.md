@@ -1,4 +1,4 @@
-# 🚀 MAXTER // Version 27.4.B7
+# 🚀 MAXTER // Version 27.4.B8
 
 <div align="center">
 
@@ -10,7 +10,7 @@
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/mahendraplus/MAXTER?style=flat-square&color=gold)](https://github.com/mahendraplus/MAXTER)
 [![GitHub Forks](https://img.shields.io/github/forks/mahendraplus/MAXTER?style=flat-square&color=blue)](https://github.com/mahendraplus/MAXTER/fork)
-[![Version](https://img.shields.io/badge/version-27.4.B7-blue.svg?style=flat-square)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-27.4.B8-blue.svg?style=flat-square)](CHANGELOG.md)
 
 </div>
 
@@ -367,7 +367,7 @@ MAXTER stands on the shoulders of giants:
 - 📱 iOS support (via alternative shells)
 - 🤖 AI-powered setup wizard
 
-### Version 27.4.B7
+### Version 27.4.B8
 - Major performance optimizations
 - Unified configuration system
 - Cross-platform sync support
