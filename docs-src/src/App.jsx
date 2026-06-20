@@ -153,7 +153,7 @@ const Navbar = ({ theme, toggleTheme }) => {
               MAXTER<span className="text-[#F5A800]">.</span>
             </span>
             <span className="text-[10px] font-bold text-[#F5A800] tracking-[0.2em] uppercase mt-1 opacity-80">
-              Version 27.4.B4
+              Version 27.4.B5
             </span>
           </div>
         </div>

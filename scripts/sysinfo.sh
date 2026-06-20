@@ -1,5 +1,5 @@
 #!/bin/bash
-# MAXTER // Version 27.4.B4
+# MAXTER // Version 27.4.B5
 # System Diagnostics with Centered TUI
 
 # ── Colors ──────────────────────────────────────────
