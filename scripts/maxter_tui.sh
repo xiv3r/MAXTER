@@ -1,6 +1,6 @@
 #!/bin/bash
 # ==========================================
-# MAXTER // Version 27.4.B3
+# MAXTER // Version 27.4.B4
 # ==========================================
 # Fully Interactive TUI with Arrow Navigation
 
