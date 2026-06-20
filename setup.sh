@@ -44,8 +44,22 @@ DIV_THIN="───────────────────────�
 REPO_URL="https://github.com/mahendraplus/MAXTER"
 LOG_FILE="$HOME/.maxter_install.log"
 ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+REPO_DIR="$HOME/.MAXTER"
+PROPS_FILE="$REPO_DIR/version.properties"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-source "$SCRIPT_DIR/scripts/utils.sh"
+
+# Dynamic Versioning
+get_version() {
+    local fallback="27.4.B6"
+    if [ -f "$PROPS_FILE" ]; then
+        local v_main=$(grep 'MAIN=' "$PROPS_FILE" | cut -d'=' -f2)
+        local v_minor=$(grep 'MINOR=' "$PROPS_FILE" | cut -d'=' -f2)
+        local v_build=$(grep 'BUILD=' "$PROPS_FILE" | cut -d'=' -f2)
+        echo "$v_main.$v_minor.B$v_build"
+    else
+        echo "$fallback"
+    fi
+}
 VERSION=$(get_version)
 RESET_MODE=false
 
