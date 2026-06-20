@@ -24,5 +24,5 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 if [ -f "$SCRIPT_DIR/setup.sh" ]; then
     bash "$SCRIPT_DIR/setup.sh"
 else
-    bash <(curl -fsSL "$REPO_URL/setup.sh")
+    curl -fsSL "$REPO_URL/setup.sh" | bash
 fi

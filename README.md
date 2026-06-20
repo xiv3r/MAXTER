@@ -92,7 +92,7 @@ Build on MAXTER's foundation:
 Run this single command to install MAXTER:
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/install.sh)
+curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/install.sh | bash
 ```
 
 **Installation typically completes in 30-60 seconds.**
