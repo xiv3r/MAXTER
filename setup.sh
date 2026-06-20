@@ -283,7 +283,9 @@ finalize() {
     chmod +x "$REPO_DIR/scripts/p10k_theme_selector.sh"
     chmod +x "$REPO_DIR/scripts/color_selector.sh"
     chmod +x "$REPO_DIR/scripts/uninstall.sh"
-    if ! grep -q "alias maxter=" "$HOME/.zshrc"; then
+    if grep -q "alias maxter=" "$HOME/.zshrc"; then
+        sed -i "s|alias maxter=.*|alias maxter='bash $REPO_DIR/scripts/maxter_tui.sh'|" "$HOME/.zshrc"
+    else
         echo "alias maxter='bash $REPO_DIR/scripts/maxter_tui.sh'" >> "$HOME/.zshrc"
     fi
     if [ -d "/data/data/com.termux/files/usr/bin" ]; then
