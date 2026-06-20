@@ -662,7 +662,7 @@ const HackerBackground = ({ theme }) => {
 
 const App = () => {
   const [theme, setTheme] = useState('dark');
-  const installCmd = "bash <(curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/install.sh)";
+  const installCmd = "curl -fsSL https://raw.githubusercontent.com/mahendraplus/MAXTER/Max/install.sh | bash";
 
   useEffect(() => {
     const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
