@@ -75,29 +75,31 @@ check_for_updates() {
 }
 
 detect_system() {
-    if [ -d "/data/data/com.termux" ]; then
+    if [ -d "/data/data/com.termux" ] && ! [ -f /etc/os-release ]; then
         SYSTEM="termux"
     elif [ "$(uname)" = "Darwin" ]; then
         SYSTEM="macos"
-    elif [ -f "/etc/arch-release" ]; then
-        SYSTEM="arch"
-    elif [ -f "/etc/debian_version" ]; then
-        SYSTEM="debian"
+    elif [ -f "/etc/os-release" ]; then
+        . /etc/os-release
+        case "$ID" in
+            debian|ubuntu|kali|pop|mint|linuxmint|alpine) SYSTEM="$ID" ;;
+            *) SYSTEM="linux" ;;
+        esac
     else
         SYSTEM="linux"
     fi
 }
 
 detect_system
-OPTIONS=("Update" "Color Selector" "System Info" "Reset to Default" "Support" "Help" "Uninstall" "Exit")
-ICONS=("$ICON_UP" "$ICON_COLOR" "$ICON_INFO" "$ICON_RESET" "$ICON_SUPPORT" "$ICON_HELP" "$ICON_DEL" "$ICON_EXIT")
-ACTIONS=("update" "color" "info" "reset" "support" "help" "uninstall" "exit")
 
 if [ "$SYSTEM" == "termux" ]; then
-    # Insert Keys option at index 2
-    OPTIONS=("Update" "Color Selector" "Extra Keys" "System Info" "Reset to Default" "Support" "Help" "Uninstall" "Exit")
-    ICONS=("$ICON_UP" "$ICON_COLOR" "$ICON_KEYS" "$ICON_INFO" "$ICON_RESET" "$ICON_SUPPORT" "$ICON_HELP" "$ICON_DEL" "$ICON_EXIT")
-    ACTIONS=("update" "color" "keys" "info" "reset" "support" "help" "uninstall" "exit")
+    OPTIONS=("Update" "Color Selector" "P10k Themes" "Extra Keys" "System Info" "Reset to Default" "Support" "Help" "Uninstall" "Exit")
+    ICONS=("$ICON_UP" "$ICON_COLOR" "" "$ICON_KEYS" "$ICON_INFO" "$ICON_RESET" "$ICON_SUPPORT" "$ICON_HELP" "$ICON_DEL" "$ICON_EXIT")
+    ACTIONS=("update" "color" "p10k_theme" "keys" "info" "reset" "support" "help" "uninstall" "exit")
+else
+    OPTIONS=("Update" "P10k Themes" "System Info" "Reset to Default" "Support" "Help" "Uninstall" "Exit")
+    ICONS=("$ICON_UP" "" "$ICON_INFO" "$ICON_RESET" "$ICON_SUPPORT" "$ICON_HELP" "$ICON_DEL" "$ICON_EXIT")
+    ACTIONS=("update" "p10k_theme" "info" "reset" "support" "help" "uninstall" "exit")
 fi
 
 current_pos=0
@@ -105,27 +107,23 @@ total_options=${#OPTIONS[@]}
 
 draw_menu() {
     clear
-    local term_width=$(tput cols 2>/dev/null || echo 40)
-    local padding=$(( (term_width - 40) / 2 ))
-    [ $padding -lt 0 ] && padding=0
-    local pad_str=$(printf '%*s' "$padding" "")
-
-    echo -e "${pad_str}${BOLD}${CYAN}󰀼  MAXTER${NC} ${DIM}Version $VERSION${NC}"
-    echo -e "${pad_str}${GRAY}System: ${BOLD}${SYSTEM} $(uname -m)${NC}"
-    echo -e "${pad_str}${GRAY}${DIV}${NC}"
+    local system_display=$(echo "$SYSTEM" | awk '{print toupper(substr($0,1,1))tolower(substr($0,2))}')
+    echo -e "${BOLD}${CYAN}󰀼  MAXTER${NC} ${DIM}Version $VERSION${NC}"
+    echo -e "${GRAY}System: ${BOLD}${system_display} $(uname -m)${NC}"
+    echo -e "${GRAY}${DIV}${NC}"
     
     for i in "${!OPTIONS[@]}"; do
         if [ "$current_pos" -eq "$i" ]; then
-            printf "${pad_str} ${GREEN}${ARROW}${NC} ${BOLD}${WHITE}%-2s %-25s${NC} ${GREEN}󰄬${NC}\n" "${ICONS[$i]}" "${OPTIONS[$i]}"
+            printf " ${GREEN}${ARROW}${NC} ${BOLD}${WHITE}%-2s %-25s${NC} ${GREEN}󰄬${NC}\n" "${ICONS[$i]}" "${OPTIONS[$i]}"
         else
-            printf "${pad_str}    ${GRAY}%-2s %-25s${NC}\n" "${ICONS[$i]}" "${OPTIONS[$i]}"
+            printf "    ${GRAY}%-2s %-25s${NC}\n" "${ICONS[$i]}" "${OPTIONS[$i]}"
         fi
     done
 
-    echo -e "${pad_str}${GRAY}${DIV}${NC}"
-    echo -e "${pad_str} ${GRAY}↑↓ Navigate   ${WHITE}Enter${GRAY} Select   ${RED}q${GRAY} Exit${NC}"
-    echo -e "${pad_str} ${ICON_GLOBE} ${DIM}mahendraplus.github.io${NC}"
-    echo -e "${pad_str}${GRAY}${DIV}${NC}"
+    echo -e "${GRAY}${DIV}${NC}"
+    echo -e " ${GRAY}↑↓ Navigate   ${WHITE}Enter${GRAY} Select   ${RED}q${GRAY} Exit${NC}"
+    echo -e " ${ICON_GLOBE} ${DIM}mahendraplus.github.io${NC}"
+    echo -e "${GRAY}${DIV}${NC}"
 }
 
 run_action() {
@@ -139,6 +137,9 @@ run_action() {
             ;;
         color)
             bash "$SCRIPT_DIR/color_selector.sh"
+            ;;
+        p10k_theme)
+            bash "$SCRIPT_DIR/p10k_theme_selector.sh"
             ;;
         keys)
             bash "$SCRIPT_DIR/keys.sh"

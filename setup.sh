@@ -109,7 +109,7 @@ run_silent() {
 }
 
 show_header() {
-    clear
+    clear 2>/dev/null || true
     local sys_info="$(uname -s) $(uname -m)"
     if [ "$OS" == "termux" ]; then sys_info="Termux (Android)"; fi
     echo -e "${BOLD_CYAN}MAXTER${NC} ${DIM}Version $VERSION${NC}"
@@ -119,21 +119,20 @@ show_header() {
 }
 
 detect_os() {
-    if [ -d "/data/data/com.termux/files/usr" ] || [ -n "${TERMUX_VERSION:-}" ]; then
-        OS="termux"
-        # Use DEBIAN_FRONTEND=noninteractive and Dpkg options for full automation
-        local common_opts="-y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\""
-        INSTALL_CMD="DEBIAN_FRONTEND=noninteractive apt install $common_opts"
-        UPDATE_CMD="DEBIAN_FRONTEND=noninteractive apt update -y && DEBIAN_FRONTEND=noninteractive apt upgrade $common_opts"
-    elif [ -f "/etc/os-release" ]; then
+    if [ -f "/etc/os-release" ]; then
         . /etc/os-release
         SUDO_CMD=""
-        if command -v sudo >/dev/null 2>&1; then SUDO_CMD="sudo "; fi
+        if [ "$(id -u)" -ne 0 ] && command -v sudo >/dev/null 2>&1 && sudo -h >/dev/null 2>&1; then SUDO_CMD="sudo "; fi
         case "$ID" in
-            debian|ubuntu|kali|pop|mint)
+            debian|ubuntu|kali|pop|mint|linuxmint)
                 OS="debian"
                 INSTALL_CMD="${SUDO_CMD}DEBIAN_FRONTEND=noninteractive apt install -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\""
                 UPDATE_CMD="${SUDO_CMD}DEBIAN_FRONTEND=noninteractive apt update -y"
+                ;;
+            alpine)
+                OS="alpine"
+                INSTALL_CMD="${SUDO_CMD}apk add --no-cache"
+                UPDATE_CMD="${SUDO_CMD}apk update"
                 ;;
             arch|manjaro)
                 OS="arch"
@@ -147,6 +146,12 @@ detect_os() {
                 ;;
             *) OS="unknown" ;;
         esac
+    elif [ -d "/data/data/com.termux/files/usr" ] || [ -n "${TERMUX_VERSION:-}" ]; then
+        OS="termux"
+        # Use DEBIAN_FRONTEND=noninteractive and Dpkg options for full automation
+        local common_opts="-y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\""
+        INSTALL_CMD="DEBIAN_FRONTEND=noninteractive apt install $common_opts"
+        UPDATE_CMD="DEBIAN_FRONTEND=noninteractive apt update -y && DEBIAN_FRONTEND=noninteractive apt upgrade $common_opts"
     else
         OS="unknown"
     fi
@@ -166,6 +171,14 @@ is_installed() {
 
 # --- Main Flow ---
 OS="unknown"
+HAD_ZSHRC=true
+if [ ! -f "$HOME/.zshrc" ]; then
+    HAD_ZSHRC=false
+fi
+HAD_P10K_ZSH=true
+if [ ! -f "$HOME/.p10k.zsh" ]; then
+    HAD_P10K_ZSH=false
+fi
 clear_log
 detect_os
 show_header
@@ -208,7 +221,11 @@ if is_installed autosugg; then printf " ${GRAY}${ICON_SKIP}${NC}  %-30s ${GRAY}a
 if [ ! -d "$REPO_DIR" ]; then
     run_silent "Cloning MAXTER repo" "git clone -b Max $REPO_URL $REPO_DIR"
 else
-    run_silent "Syncing configurations" "cd $REPO_DIR && git fetch origin Max && git reset --hard origin/Max"
+    if [ "$SCRIPT_DIR" != "$REPO_DIR" ]; then
+        run_silent "Syncing configurations" "cd $REPO_DIR && git fetch origin Max && git reset --hard origin/Max"
+    else
+        run_silent "Syncing configurations" "echo 'Running from local repo, skipping reset'"
+    fi
 fi
 
 # Apply
@@ -219,10 +236,10 @@ backup_configs() {
 run_silent "Backing up existing configs" "backup_configs"
 
 apply_zsh_configs() {
-    if [ "$RESET_MODE" == "true" ] || [ ! -f "$HOME/.zshrc" ]; then
+    if [ "$RESET_MODE" == "true" ] || [ "$HAD_ZSHRC" == "false" ] || [ ! -f "$HOME/.zshrc" ] || ! grep -q "powerlevel10k/powerlevel10k" "$HOME/.zshrc"; then
         cp -f "$REPO_DIR/configs/zsh/.zshrc" "$HOME/.zshrc"
     fi
-    if [ "$RESET_MODE" == "true" ] || [ ! -f "$HOME/.p10k.zsh" ]; then
+    if [ "$RESET_MODE" == "true" ] || [ "$HAD_P10K_ZSH" == "false" ] || [ ! -f "$HOME/.p10k.zsh" ]; then
         cp -f "$REPO_DIR/configs/zsh/.p10k.zsh" "$HOME/.p10k.zsh"
     fi
 }
@@ -247,18 +264,30 @@ if [ "$OS" == "termux" ]; then
         touch "/data/data/com.termux/files/usr/etc/motd"
     fi
     
-    termux-reload-settings
+    termux-reload-settings 2>/dev/null || true
+else
+    apply_linux_font() {
+        local font_dir="$HOME/.local/share/fonts"
+        mkdir -p "$font_dir"
+        cp -f "$REPO_DIR/assets/font.ttf" "$font_dir/maxter_font.ttf"
+        if command -v fc-cache >/dev/null 2>&1; then
+            fc-cache -f "$font_dir" >/dev/null 2>&1 || true
+        fi
+    }
+    run_silent "Applying Linux Desktop Fonts" "apply_linux_font"
 fi
 
 # Command setup
 finalize() {
     chmod +x "$REPO_DIR/scripts/maxter_tui.sh"
+    chmod +x "$REPO_DIR/scripts/p10k_theme_selector.sh"
+    chmod +x "$REPO_DIR/scripts/color_selector.sh"
     chmod +x "$REPO_DIR/scripts/uninstall.sh"
     if ! grep -q "alias maxter=" "$HOME/.zshrc"; then
         echo "alias maxter='bash $REPO_DIR/scripts/maxter_tui.sh'" >> "$HOME/.zshrc"
     fi
     if [ -d "/data/data/com.termux/files/usr/bin" ]; then
-        ln -sf "$REPO_DIR/scripts/maxter_tui.sh" "/data/data/com.termux/files/usr/bin/maxter"
+        ln -sf "$REPO_DIR/scripts/maxter_tui.sh" "/data/data/com.termux/files/usr/bin/maxter" 2>/dev/null || true
     fi
 }
 run_silent "Finalizing Dashboard" "finalize"
@@ -268,7 +297,11 @@ if [ "$OS" == "termux" ]; then
     run_silent "Setting default shell" "chsh -s zsh"
 else
     ZSH_PATH=$(command -v zsh)
-    run_silent "Setting default shell" "sudo chsh -s $ZSH_PATH $(whoami)"
+    if [ "$(id -u)" -eq 0 ] && [ -f /etc/passwd ]; then
+        run_silent "Setting default shell" "sed -i \"s|^\($(whoami)\):\(.*\):[^:]*$|\1:\2:$ZSH_PATH|\" /etc/passwd"
+    else
+        run_silent "Setting default shell" "sudo chsh -s $ZSH_PATH $(whoami) < /dev/null || chsh -s $ZSH_PATH < /dev/null || true"
+    fi
 fi
 
 echo ""

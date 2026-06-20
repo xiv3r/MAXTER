@@ -26,7 +26,7 @@ source "$SCRIPT_DIR/utils.sh"
 VERSION=$(get_version)
 
 # Helper: Detect Termux
-is_termux() { [ -d "/data/data/com.termux/files/usr" ]; }
+is_termux() { [ -d "/data/data/com.termux/files/usr" ] && ! [ -f /etc/os-release ]; }
 
 # Load all themes from directory
 load_themes() {
@@ -58,7 +58,7 @@ apply_preview() {
     local theme_file="${THEME_FILES[$current_pos]}"
     if is_termux; then
         cp -f "$theme_file" ~/.termux/colors.properties
-        termux-reload-settings
+        termux-reload-settings 2>/dev/null || true
     fi
 }
 
@@ -74,7 +74,7 @@ discard_changes() {
         else
             rm -f ~/.termux/colors.properties
         fi
-        termux-reload-settings
+        termux-reload-settings 2>/dev/null || true
     fi
     echo -e "\n ${RED}󰆴${NC} ${GRAY}Changes Discarded${NC}"
     sleep 1
@@ -82,22 +82,18 @@ discard_changes() {
 
 draw_menu() {
     clear
-    local term_width=$(tput cols 2>/dev/null || echo 40)
-    local padding=$(( (term_width - 40) / 2 ))
-    [ $padding -lt 0 ] && padding=0
-    local pad_str=$(printf '%*s' "$padding" "")
 
-    echo -e "${pad_str}${CYAN}${ICON_PALETTE}  Live Theme Preview (${current_pos}/${total_themes})${NC}"
-    echo -e "${pad_str}${GRAY}${DIV}${NC}"
+    echo -e "${CYAN}${ICON_PALETTE}  Live Theme Preview (${current_pos}/${total_themes})${NC}"
+    echo -e "${GRAY}${DIV}${NC}"
     
     # Preview Block for non-Termux
     if ! is_termux; then
         local theme_file="${THEME_FILES[$current_pos]}"
         local bg=$(grep "background=" "$theme_file" | cut -d= -f2)
         local fg=$(grep "foreground=" "$theme_file" | cut -d= -f2)
-        echo -e "${pad_str}  Preview: [ BG:${bg} FG:${fg} ]"
-        echo -e "${pad_str}  ${WHITE}Note: Live preview only active on Termux.${NC}"
-        echo -e "${pad_str}${GRAY}${DIV}${NC}"
+        echo -e "  Preview: [ BG:${bg} FG:${fg} ]"
+        echo -e "  ${WHITE}Note: Live preview only active on Termux.${NC}"
+        echo -e "${GRAY}${DIV}${NC}"
     fi
 
     # Sliding Window Logic
@@ -120,17 +116,17 @@ draw_menu() {
         local theme_name="${ALL_THEMES[$idx]}"
         
         if [ "$current_pos" -eq "$idx" ]; then
-            printf "${pad_str} ${GREEN}${ARROW} ${BOLD}${WHITE}%-30s${NC} ${GREEN}󰄬${NC}\n" "$theme_name"
+            printf " ${GREEN}${ARROW} ${BOLD}${WHITE}%-30s${NC} ${GREEN}󰄬${NC}\n" "$theme_name"
         else
-            printf "${pad_str}    %-30s\n" "$theme_name"
+            printf "    %-30s\n" "$theme_name"
         fi
     done
 
-    echo -e "${pad_str}${GRAY}${DIV}${NC}"
-    echo -e "${pad_str} ${GRAY}↑↓ Navigate   ${WHITE}Enter${GRAY} Select   ${RED}q${GRAY} Exit${NC}"
-    echo -e "${pad_str} ${CYAN}󰖟  mahendraplus.github.io${NC}"
-    echo -e "${pad_str} ${GRAY}󰮔  Support: ${WHITE}https://mahendraplus.github.io/maxlab/support/${NC}"
-    echo -e "${pad_str}${GRAY}${DIV}${NC}"
+    echo -e "${GRAY}${DIV}${NC}"
+    echo -e " ${GRAY}↑↓ Navigate   ${WHITE}Enter${GRAY} Select   ${RED}q${GRAY} Exit${NC}"
+    echo -e " ${CYAN}󰖟  mahendraplus.github.io${NC}"
+    echo -e " ${GRAY}󰮔  Support: ${WHITE}https://mahendraplus.github.io/maxlab/support/${NC}"
+    echo -e "${GRAY}${DIV}${NC}"
 }
 
 # Main Loop
